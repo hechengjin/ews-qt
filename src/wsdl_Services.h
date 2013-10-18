@@ -9,9 +9,9 @@
 #include <QtCore/QVariant>
 #include <QtCore/QSharedData>
 #include <KDSoapClient/KDDateTime.h>
-#include <QtCore/QTime>
-#include <QtCore/QDate>
 #include <KDSoapClient/KDSoapValue.h>
+#include <QtCore/QDate>
+#include <QtCore/QTime>
 #include <QtCore/QByteArray>
 #include <KDSoapClient/KDSoapJob.h>
 #include <QtCore/QObject>
@@ -379,32 +379,6 @@ private:
 };
 
 /**
-    This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__ExternalAudience you can
-    also pass the enum directly.
-    Example:
-    someMethod(T__ExternalAudience::None).
- */
-class T__ExternalAudience
-{
-public:
-    enum Type { None, Known, All };
-
-public:
-    T__ExternalAudience( const Type &type );
-    void setType( Type type );
-    T__ExternalAudience::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__ExternalAudience();
-    ~T__ExternalAudience();
-
-private:
-    Type mType;
-};
-
-/**
     Type of conflict resolution to attempt during update
  */
 class T__ConflictResolutionType
@@ -421,28 +395,6 @@ public:
     void deserialize( const QVariant& value );
     T__ConflictResolutionType();
     ~T__ConflictResolutionType();
-
-private:
-    Type mType;
-};
-
-/**
-    Surfaces the various id types that are supported for conversion
- */
-class T__IdFormatType
-{
-public:
-    enum Type { EwsLegacyId, EwsId, EntryId, HexEntryId, StoreId, OwaId };
-
-public:
-    T__IdFormatType( const Type &type );
-    void setType( Type type );
-    T__IdFormatType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__IdFormatType();
-    ~T__IdFormatType();
 
 private:
     Type mType;
@@ -475,29 +427,24 @@ private:
 };
 
 /**
-    This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__AffectedTaskOccurrencesType
-    you can also pass the enum directly.
-    Example:
-    someMethod(T__AffectedTaskOccurrencesType::AllOccurrences).
+    This class encapsulates a simple type.
+    Whenever you have to pass an object of type T__NonEmptyStringType you can
+    also pass the value directly as a QString.
  */
-class T__AffectedTaskOccurrencesType
+class T__NonEmptyStringType
 {
 public:
-    enum Type { AllOccurrences, SpecifiedOccurrenceOnly };
-
-public:
-    T__AffectedTaskOccurrencesType( const Type &type );
-    void setType( Type type );
-    T__AffectedTaskOccurrencesType::Type type() const;
-    operator Type() const;
+    void setValue( const QString& value );
+    QString value() const;
+    T__NonEmptyStringType( const QString& value );
+    operator QString() const;
     QVariant serialize() const;
     void deserialize( const QVariant& value );
-    T__AffectedTaskOccurrencesType();
-    ~T__AffectedTaskOccurrencesType();
+    T__NonEmptyStringType();
+    ~T__NonEmptyStringType();
 
 private:
-    Type mType;
+    QString mValue;
 };
 
 /**
@@ -523,32 +470,6 @@ private:
 
 /**
     This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__ExchangeVersionType you can
-    also pass the enum directly.
-    Example:
-    someMethod(T__ExchangeVersionType::Exchange2007).
- */
-class T__ExchangeVersionType
-{
-public:
-    enum Type { Exchange2007, Exchange2007_SP1 };
-
-public:
-    T__ExchangeVersionType( const Type &type );
-    void setType( Type type );
-    T__ExchangeVersionType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__ExchangeVersionType();
-    ~T__ExchangeVersionType();
-
-private:
-    Type mType;
-};
-
-/**
-    This class is a wrapper for an enumeration.
     Whenever you have to pass an object of type T__MessageDispositionType you
     can also pass the enum directly.
     Example:
@@ -568,50 +489,6 @@ public:
     void deserialize( const QVariant& value );
     T__MessageDispositionType();
     ~T__MessageDispositionType();
-
-private:
-    Type mType;
-};
-
-/**
-    Types of sub-tree traversal for deletion and enumeration
- */
-class T__ItemQueryTraversalType
-{
-public:
-    enum Type { Shallow, SoftDeleted };
-
-public:
-    T__ItemQueryTraversalType( const Type &type );
-    void setType( Type type );
-    T__ItemQueryTraversalType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__ItemQueryTraversalType();
-    ~T__ItemQueryTraversalType();
-
-private:
-    Type mType;
-};
-
-/**
-    Types of sub-tree traversal for deletion and enumeration
- */
-class T__FolderQueryTraversalType
-{
-public:
-    enum Type { Shallow, Deep, SoftDeleted };
-
-public:
-    T__FolderQueryTraversalType( const Type &type );
-    void setType( Type type );
-    T__FolderQueryTraversalType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__FolderQueryTraversalType();
-    ~T__FolderQueryTraversalType();
 
 private:
     Type mType;
@@ -644,6 +521,28 @@ private:
 };
 
 /**
+    Types of sub-tree traversal for deletion and enumeration
+ */
+class T__FolderQueryTraversalType
+{
+public:
+    enum Type { Shallow, Deep, SoftDeleted };
+
+public:
+    T__FolderQueryTraversalType( const Type &type );
+    void setType( Type type );
+    T__FolderQueryTraversalType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__FolderQueryTraversalType();
+    ~T__FolderQueryTraversalType();
+
+private:
+    Type mType;
+};
+
+/**
     This class is a wrapper for an enumeration.
     Whenever you have to pass an object of type T__DeliverMeetingRequestsType
     you can also pass the enum directly.
@@ -670,24 +569,47 @@ private:
 };
 
 /**
-    This class encapsulates a simple type.
-    Whenever you have to pass an object of type T__NonEmptyStringType you can
-    also pass the value directly as a QString.
+    Surfaces the various id types that are supported for conversion
  */
-class T__NonEmptyStringType
+class T__IdFormatType
 {
 public:
-    void setValue( const QString& value );
-    QString value() const;
-    T__NonEmptyStringType( const QString& value );
-    operator QString() const;
+    enum Type { EwsLegacyId, EwsId, EntryId, HexEntryId, StoreId, OwaId };
+
+public:
+    T__IdFormatType( const Type &type );
+    void setType( Type type );
+    T__IdFormatType::Type type() const;
+    operator Type() const;
     QVariant serialize() const;
     void deserialize( const QVariant& value );
-    T__NonEmptyStringType();
-    ~T__NonEmptyStringType();
+    T__IdFormatType();
+    ~T__IdFormatType();
 
 private:
-    QString mValue;
+    Type mType;
+};
+
+/**
+    Types of sub-tree traversal for deletion and enumeration
+ */
+class T__ItemQueryTraversalType
+{
+public:
+    enum Type { Shallow, SoftDeleted };
+
+public:
+    T__ItemQueryTraversalType( const Type &type );
+    void setType( Type type );
+    T__ItemQueryTraversalType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__ItemQueryTraversalType();
+    ~T__ItemQueryTraversalType();
+
+private:
+    Type mType;
 };
 
 /**
@@ -719,6 +641,84 @@ private:
 
 /**
     This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__ExternalAudience you can
+    also pass the enum directly.
+    Example:
+    someMethod(T__ExternalAudience::None).
+ */
+class T__ExternalAudience
+{
+public:
+    enum Type { None, Known, All };
+
+public:
+    T__ExternalAudience( const Type &type );
+    void setType( Type type );
+    T__ExternalAudience::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__ExternalAudience();
+    ~T__ExternalAudience();
+
+private:
+    Type mType;
+};
+
+/**
+    This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__ExchangeVersionType you can
+    also pass the enum directly.
+    Example:
+    someMethod(T__ExchangeVersionType::Exchange2007).
+ */
+class T__ExchangeVersionType
+{
+public:
+    enum Type { Exchange2007, Exchange2007_SP1 };
+
+public:
+    T__ExchangeVersionType( const Type &type );
+    void setType( Type type );
+    T__ExchangeVersionType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__ExchangeVersionType();
+    ~T__ExchangeVersionType();
+
+private:
+    Type mType;
+};
+
+/**
+    This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__AffectedTaskOccurrencesType
+    you can also pass the enum directly.
+    Example:
+    someMethod(T__AffectedTaskOccurrencesType::AllOccurrences).
+ */
+class T__AffectedTaskOccurrencesType
+{
+public:
+    enum Type { AllOccurrences, SpecifiedOccurrenceOnly };
+
+public:
+    T__AffectedTaskOccurrencesType( const Type &type );
+    void setType( Type type );
+    T__AffectedTaskOccurrencesType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__AffectedTaskOccurrencesType();
+    ~T__AffectedTaskOccurrencesType();
+
+private:
+    Type mType;
+};
+
+/**
+    This class is a wrapper for an enumeration.
     Whenever you have to pass an object of type T__DisposalType you can also
     pass the enum directly. Example:
     someMethod(T__DisposalType::HardDelete).
@@ -743,26 +743,117 @@ private:
 };
 
 /**
-    This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__ResponseClassType you can
-    also pass the enum directly.
-    Example:
-    someMethod(T__ResponseClassType::Success).
+    This class encapsulates a simple type.
+    Whenever you have to pass an object of type T__SubscriptionTimeoutType you
+    can also pass the value directly as a int.
  */
-class T__ResponseClassType
+class T__SubscriptionTimeoutType
 {
 public:
-    enum Type { Success, Warning, Error };
+    void setValue( int value );
+    int value() const;
+    T__SubscriptionTimeoutType( int value );
+    operator int() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__SubscriptionTimeoutType();
+    ~T__SubscriptionTimeoutType();
+
+private:
+    int mValue;
+};
+
+/**
+    Represents standard groupings for GroupBy queries.
+ */
+class T__StandardGroupByType
+{
+public:
+    enum Type { ConversationTopic };
 
 public:
-    T__ResponseClassType( const Type &type );
+    T__StandardGroupByType( const Type &type );
     void setType( Type type );
-    T__ResponseClassType::Type type() const;
+    T__StandardGroupByType::Type type() const;
     operator Type() const;
     QVariant serialize() const;
     void deserialize( const QVariant& value );
-    T__ResponseClassType();
-    ~T__ResponseClassType();
+    T__StandardGroupByType();
+    ~T__StandardGroupByType();
+
+private:
+    Type mType;
+};
+
+/**
+    Represents the message keys that can be returned by response error messages
+ */
+class TNS__ResponseCodeType
+{
+public:
+    enum Type { NoError, ErrorAccessDenied, ErrorAccountDisabled, ErrorAddDelegatesFailed, ErrorAddressSpaceNotFound, ErrorADOperation, ErrorADSessionFilter, ErrorADUnavailable, ErrorAutoDiscoverFailed, ErrorAffectedTaskOccurrencesRequired, ErrorAttachmentSizeLimitExceeded, ErrorAvailabilityConfigNotFound, ErrorBatchProcessingStopped, ErrorCalendarCannotMoveOrCopyOccurrence, ErrorCalendarCannotUpdateDeletedItem, ErrorCalendarCannotUseIdForOccurrenceId, ErrorCalendarCannotUseIdForRecurringMasterId, ErrorCalendarDurationIsTooLong, ErrorCalendarEndDateIsEarlierThanStartDate, ErrorCalendarFolderIsInvalidForCalendarView, ErrorCalendarInvalidAttributeValue, ErrorCalendarInvalidDayForTimeChangePattern, ErrorCalendarInvalidDayForWeeklyRecurrence, ErrorCalendarInvalidPropertyState, ErrorCalendarInvalidPropertyValue, ErrorCalendarInvalidRecurrence, ErrorCalendarInvalidTimeZone, ErrorCalendarIsDelegatedForAccept, ErrorCalendarIsDelegatedForDecline, ErrorCalendarIsDelegatedForRemove, ErrorCalendarIsDelegatedForTentative, ErrorCalendarIsNotOrganizer, ErrorCalendarIsOrganizerForAccept, ErrorCalendarIsOrganizerForDecline, ErrorCalendarIsOrganizerForRemove, ErrorCalendarIsOrganizerForTentative, ErrorCalendarOccurrenceIndexIsOutOfRecurrenceRange, ErrorCalendarOccurrenceIsDeletedFromRecurrence, ErrorCalendarOutOfRange, ErrorCalendarMeetingRequestIsOutOfDate, ErrorCalendarViewRangeTooBig, ErrorCannotCreateCalendarItemInNonCalendarFolder, ErrorCannotCreateContactInNonContactFolder, ErrorCannotCreatePostItemInNonMailFolder, ErrorCannotCreateTaskInNonTaskFolder, ErrorCannotDeleteObject, ErrorCannotOpenFileAttachment, ErrorCannotDeleteTaskOccurrence, ErrorCannotSetCalendarPermissionOnNonCalendarFolder, ErrorCannotSetNonCalendarPermissionOnCalendarFolder, ErrorCannotSetPermissionUnknownEntries, ErrorCannotUseFolderIdForItemId, ErrorCannotUseItemIdForFolderId, ErrorChangeKeyRequired, ErrorChangeKeyRequiredForWriteOperations, ErrorConnectionFailed, ErrorContentConversionFailed, ErrorCorruptData, ErrorCreateItemAccessDenied, ErrorCreateManagedFolderPartialCompletion, ErrorCreateSubfolderAccessDenied, ErrorCrossMailboxMoveCopy, ErrorDataSizeLimitExceeded, ErrorDataSourceOperation, ErrorDelegateAlreadyExists, ErrorDelegateCannotAddOwner, ErrorDelegateMissingConfiguration, ErrorDelegateNoUser, ErrorDelegateValidationFailed, ErrorDeleteDistinguishedFolder, ErrorDeleteItemsFailed, ErrorDistinguishedUserNotSupported, ErrorDuplicateInputFolderNames, ErrorDuplicateUserIdsSpecified, ErrorEmailAddressMismatch, ErrorEventNotFound, ErrorExpiredSubscription, ErrorFolderCorrupt, ErrorFolderNotFound, ErrorFolderPropertRequestFailed, ErrorFolderSave, ErrorFolderSaveFailed, ErrorFolderSavePropertyError, ErrorFolderExists, ErrorFreeBusyGenerationFailed, ErrorGetServerSecurityDescriptorFailed, ErrorImpersonateUserDenied, ErrorImpersonationDenied, ErrorImpersonationFailed, ErrorIncorrectSchemaVersion, ErrorIncorrectUpdatePropertyCount, ErrorIndividualMailboxLimitReached, ErrorInsufficientResources, ErrorInternalServerError, ErrorInternalServerTransientError, ErrorInvalidAccessLevel, ErrorInvalidAttachmentId, ErrorInvalidAttachmentSubfilter, ErrorInvalidAttachmentSubfilterTextFilter, ErrorInvalidAuthorizationContext, ErrorInvalidChangeKey, ErrorInvalidClientSecurityContext, ErrorInvalidCompleteDate, ErrorInvalidCrossForestCredentials, ErrorInvalidDelegatePermission, ErrorInvalidDelegateUserId, ErrorInvalidExcludesRestriction, ErrorInvalidExpressionTypeForSubFilter, ErrorInvalidExtendedProperty, ErrorInvalidExtendedPropertyValue, ErrorInvalidFolderId, ErrorInvalidFolderTypeForOperation, ErrorInvalidFractionalPagingParameters, ErrorInvalidFreeBusyViewType, ErrorInvalidId, ErrorInvalidIdEmpty, ErrorInvalidIdMalformed, ErrorInvalidIdMalformedEwsLegacyIdFormat, ErrorInvalidIdMonikerTooLong, ErrorInvalidIdNotAnItemAttachmentId, ErrorInvalidIdReturnedByResolveNames, ErrorInvalidIdStoreObjectIdTooLong, ErrorInvalidIdTooManyAttachmentLevels, ErrorInvalidIdXml, ErrorInvalidIndexedPagingParameters, ErrorInvalidInternetHeaderChildNodes, ErrorInvalidItemForOperationCreateItemAttachment, ErrorInvalidItemForOperationCreateItem, ErrorInvalidItemForOperationAcceptItem, ErrorInvalidItemForOperationDeclineItem, ErrorInvalidItemForOperationCancelItem, ErrorInvalidItemForOperationExpandDL, ErrorInvalidItemForOperationRemoveItem, ErrorInvalidItemForOperationSendItem, ErrorInvalidItemForOperationTentative, ErrorInvalidManagedFolderProperty, ErrorInvalidManagedFolderQuota, ErrorInvalidManagedFolderSize, ErrorInvalidMergedFreeBusyInterval, ErrorInvalidNameForNameResolution, ErrorInvalidOperation, ErrorInvalidNetworkServiceContext, ErrorInvalidOofParameter, ErrorInvalidPagingMaxRows, ErrorInvalidParentFolder, ErrorInvalidPercentCompleteValue, ErrorInvalidPermissionSettings, ErrorInvalidUserInfo, ErrorInvalidPropertyAppend, ErrorInvalidPropertyDelete, ErrorInvalidPropertyForExists, ErrorInvalidPropertyForOperation, ErrorInvalidPropertyRequest, ErrorInvalidPropertySet, ErrorInvalidPropertyUpdateSentMessage, ErrorInvalidProxySecurityContext, ErrorInvalidPullSubscriptionId, ErrorInvalidPushSubscriptionUrl, ErrorInvalidRecipients, ErrorInvalidRecipientSubfilter, ErrorInvalidRecipientSubfilterComparison, ErrorInvalidRecipientSubfilterOrder, ErrorInvalidRecipientSubfilterTextFilter, ErrorInvalidReferenceItem, ErrorInvalidRequest, ErrorInvalidRestriction, ErrorInvalidRoutingType, ErrorInvalidScheduledOofDuration, ErrorInvalidSecurityDescriptor, ErrorInvalidSendItemSaveSettings, ErrorInvalidSerializedAccessToken, ErrorInvalidServerVersion, ErrorInvalidSid, ErrorInvalidSmtpAddress, ErrorInvalidSubfilterType, ErrorInvalidSubfilterTypeNotAttendeeType, ErrorInvalidSubfilterTypeNotRecipientType, ErrorInvalidSubscription, ErrorInvalidSubscriptionRequest, ErrorInvalidSyncStateData, ErrorInvalidTimeInterval, ErrorInvalidUserOofSettings, ErrorInvalidUserPrincipalName, ErrorInvalidUserSid, ErrorInvalidUserSidMissingUPN, ErrorInvalidValueForProperty, ErrorInvalidWatermark, ErrorIrresolvableConflict, ErrorItemCorrupt, ErrorItemNotFound, ErrorItemPropertyRequestFailed, ErrorItemSave, ErrorItemSavePropertyError, ErrorLegacyMailboxFreeBusyViewTypeNotMerged, ErrorLocalServerObjectNotFound, ErrorLogonAsNetworkServiceFailed, ErrorMailboxConfiguration, ErrorMailboxDataArrayEmpty, ErrorMailboxDataArrayTooBig, ErrorMailboxLogonFailed, ErrorMailboxMoveInProgress, ErrorMailboxStoreUnavailable, ErrorMailRecipientNotFound, ErrorManagedFolderAlreadyExists, ErrorManagedFolderNotFound, ErrorManagedFoldersRootFailure, ErrorMeetingSuggestionGenerationFailed, ErrorMessageDispositionRequired, ErrorMessageSizeExceeded, ErrorMimeContentConversionFailed, ErrorMimeContentInvalid, ErrorMimeContentInvalidBase64String, ErrorMissingArgument, ErrorMissingEmailAddress, ErrorMissingEmailAddressForManagedFolder, ErrorMissingInformationEmailAddress, ErrorMissingInformationReferenceItemId, ErrorMissingItemForCreateItemAttachment, ErrorMissingManagedFolderId, ErrorMissingRecipients, ErrorMissingUserIdInformation, ErrorMoreThanOneAccessModeSpecified, ErrorMoveCopyFailed, ErrorMoveDistinguishedFolder, ErrorNameResolutionMultipleResults, ErrorNameResolutionNoMailbox, ErrorNameResolutionNoResults, ErrorNoApplicableProxyCASServersAvailable, ErrorNoCalendar, ErrorNoDestinationCASDueToKerberosRequirements, ErrorNoDestinationCASDueToSSLRequirements, ErrorNoDestinationCASDueToVersionMismatch, ErrorNoFolderClassOverride, ErrorNoFreeBusyAccess, ErrorNonExistentMailbox, ErrorNonPrimarySmtpAddress, ErrorNoPropertyTagForCustomProperties, ErrorNoPublicFolderReplicaAvailable, ErrorNoRespondingCASInDestinationSite, ErrorNotDelegate, ErrorNotEnoughMemory, ErrorObjectTypeChanged, ErrorOccurrenceCrossingBoundary, ErrorOccurrenceTimeSpanTooBig, ErrorOperationNotAllowedWithPublicFolderRoot, ErrorParentFolderIdRequired, ErrorParentFolderNotFound, ErrorPasswordChangeRequired, ErrorPasswordExpired, ErrorPropertyUpdate, ErrorPropertyValidationFailure, ErrorProxiedSubscriptionCallFailure, ErrorProxyCallFailed, ErrorProxyGroupSidLimitExceeded, ErrorProxyRequestNotAllowed, ErrorProxyRequestProcessingFailed, ErrorProxyServiceDiscoveryFailed, ErrorProxyTokenExpired, ErrorPublicFolderRequestProcessingFailed, ErrorPublicFolderServerNotFound, ErrorQueryFilterTooLong, ErrorQuotaExceeded, ErrorReadEventsFailed, ErrorReadReceiptNotPending, ErrorRecurrenceEndDateTooBig, ErrorRecurrenceHasNoOccurrence, ErrorRemoveDelegatesFailed, ErrorRequestAborted, ErrorRequestStreamTooBig, ErrorRequiredPropertyMissing, ErrorResolveNamesInvalidFolderType, ErrorResolveNamesOnlyOneContactsFolderAllowed, ErrorResponseSchemaValidation, ErrorRestrictionTooLong, ErrorRestrictionTooComplex, ErrorResultSetTooBig, ErrorInvalidExchangeImpersonationHeaderData, ErrorSavedItemFolderNotFound, ErrorSchemaValidation, ErrorSearchFolderNotInitialized, ErrorSendAsDenied, ErrorSendMeetingCancellationsRequired, ErrorSendMeetingInvitationsOrCancellationsRequired, ErrorSendMeetingInvitationsRequired, ErrorSentMeetingRequestUpdate, ErrorSentTaskRequestUpdate, ErrorServerBusy, ErrorServiceDiscoveryFailed, ErrorStaleObject, ErrorSubscriptionAccessDenied, ErrorSubscriptionDelegateAccessNotSupported, ErrorSubscriptionNotFound, ErrorSyncFolderNotFound, ErrorTimeIntervalTooBig, ErrorTimeoutExpired, ErrorTimeZone, ErrorToFolderNotFound, ErrorTokenSerializationDenied, ErrorUpdatePropertyMismatch, ErrorUnableToGetUserOofSettings, ErrorUnsupportedSubFilter, ErrorUnsupportedCulture, ErrorUnsupportedMapiPropertyType, ErrorUnsupportedMimeConversion, ErrorUnsupportedPathForQuery, ErrorUnsupportedPathForSortGroup, ErrorUnsupportedPropertyDefinition, ErrorUnsupportedQueryFilter, ErrorUnsupportedRecurrence, ErrorUnsupportedTypeForConversion, ErrorUpdateDelegatesFailed, ErrorVoiceMailNotImplemented, ErrorVirusDetected, ErrorVirusMessageDeleted, ErrorWebRequestInInvalidState, ErrorWin32InteropError, ErrorWorkingHoursSaveFailed, ErrorWorkingHoursXmlMalformed };
+
+public:
+    TNS__ResponseCodeType( const Type &type );
+    void setType( Type type );
+    TNS__ResponseCodeType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    TNS__ResponseCodeType();
+    ~TNS__ResponseCodeType();
+
+private:
+    Type mType;
+};
+
+/**
+    This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__DefaultShapeNamesType you
+    can also pass the enum directly.
+    Example:
+    someMethod(T__DefaultShapeNamesType::IdOnly).
+ */
+class T__DefaultShapeNamesType
+{
+public:
+    enum Type { IdOnly, Default, AllProperties };
+
+public:
+    T__DefaultShapeNamesType( const Type &type );
+    void setType( Type type );
+    T__DefaultShapeNamesType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__DefaultShapeNamesType();
+    ~T__DefaultShapeNamesType();
+
+private:
+    Type mType;
+};
+
+/**
+    This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__BodyTypeResponseType you can
+    also pass the enum directly.
+    Example:
+    someMethod(T__BodyTypeResponseType::Best).
+ */
+class T__BodyTypeResponseType
+{
+public:
+    enum Type { Best, HTML, Text };
+
+public:
+    T__BodyTypeResponseType( const Type &type );
+    void setType( Type type );
+    T__BodyTypeResponseType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__BodyTypeResponseType();
+    ~T__BodyTypeResponseType();
 
 private:
     Type mType;
@@ -785,27 +876,6 @@ public:
     void deserialize( const QVariant& value );
     T__SubscriptionStatusFrequencyType();
     ~T__SubscriptionStatusFrequencyType();
-
-private:
-    int mValue;
-};
-
-/**
-    This class encapsulates a simple type.
-    Whenever you have to pass an object of type T__SubscriptionTimeoutType you
-    can also pass the value directly as a int.
- */
-class T__SubscriptionTimeoutType
-{
-public:
-    void setValue( int value );
-    int value() const;
-    T__SubscriptionTimeoutType( int value );
-    operator int() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__SubscriptionTimeoutType();
-    ~T__SubscriptionTimeoutType();
 
 private:
     int mValue;
@@ -855,73 +925,25 @@ private:
 };
 
 /**
-    Represents standard groupings for GroupBy queries.
- */
-class T__StandardGroupByType
-{
-public:
-    enum Type { ConversationTopic };
-
-public:
-    T__StandardGroupByType( const Type &type );
-    void setType( Type type );
-    T__StandardGroupByType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__StandardGroupByType();
-    ~T__StandardGroupByType();
-
-private:
-    Type mType;
-};
-
-/**
     This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__DefaultShapeNamesType you
-    can also pass the enum directly.
-    Example:
-    someMethod(T__DefaultShapeNamesType::IdOnly).
+    Whenever you have to pass an object of type T__MailboxTypeType you can also
+    pass the enum directly. Example:
+    someMethod(T__MailboxTypeType::Mailbox).
  */
-class T__DefaultShapeNamesType
+class T__MailboxTypeType
 {
 public:
-    enum Type { IdOnly, Default, AllProperties };
+    enum Type { Mailbox, PublicDL, PrivateDL, Contact, PublicFolder };
 
 public:
-    T__DefaultShapeNamesType( const Type &type );
+    T__MailboxTypeType( const Type &type );
     void setType( Type type );
-    T__DefaultShapeNamesType::Type type() const;
+    T__MailboxTypeType::Type type() const;
     operator Type() const;
     QVariant serialize() const;
     void deserialize( const QVariant& value );
-    T__DefaultShapeNamesType();
-    ~T__DefaultShapeNamesType();
-
-private:
-    Type mType;
-};
-
-/**
-    This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__OofState you can also pass
-    the enum directly. Example:
-    someMethod(T__OofState::Disabled).
- */
-class T__OofState
-{
-public:
-    enum Type { Disabled, Enabled, Scheduled };
-
-public:
-    T__OofState( const Type &type );
-    void setType( Type type );
-    T__OofState::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__OofState();
-    ~T__OofState();
+    T__MailboxTypeType();
+    ~T__MailboxTypeType();
 
 private:
     Type mType;
@@ -955,47 +977,25 @@ private:
 
 /**
     This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__BodyTypeResponseType you can
+    Whenever you have to pass an object of type T__ResponseClassType you can
     also pass the enum directly.
     Example:
-    someMethod(T__BodyTypeResponseType::Best).
+    someMethod(T__ResponseClassType::Success).
  */
-class T__BodyTypeResponseType
+class T__ResponseClassType
 {
 public:
-    enum Type { Best, HTML, Text };
+    enum Type { Success, Warning, Error };
 
 public:
-    T__BodyTypeResponseType( const Type &type );
+    T__ResponseClassType( const Type &type );
     void setType( Type type );
-    T__BodyTypeResponseType::Type type() const;
+    T__ResponseClassType::Type type() const;
     operator Type() const;
     QVariant serialize() const;
     void deserialize( const QVariant& value );
-    T__BodyTypeResponseType();
-    ~T__BodyTypeResponseType();
-
-private:
-    Type mType;
-};
-
-/**
-    Represents the message keys that can be returned by response error messages
- */
-class TNS__ResponseCodeType
-{
-public:
-    enum Type { NoError, ErrorAccessDenied, ErrorAccountDisabled, ErrorAddDelegatesFailed, ErrorAddressSpaceNotFound, ErrorADOperation, ErrorADSessionFilter, ErrorADUnavailable, ErrorAutoDiscoverFailed, ErrorAffectedTaskOccurrencesRequired, ErrorAttachmentSizeLimitExceeded, ErrorAvailabilityConfigNotFound, ErrorBatchProcessingStopped, ErrorCalendarCannotMoveOrCopyOccurrence, ErrorCalendarCannotUpdateDeletedItem, ErrorCalendarCannotUseIdForOccurrenceId, ErrorCalendarCannotUseIdForRecurringMasterId, ErrorCalendarDurationIsTooLong, ErrorCalendarEndDateIsEarlierThanStartDate, ErrorCalendarFolderIsInvalidForCalendarView, ErrorCalendarInvalidAttributeValue, ErrorCalendarInvalidDayForTimeChangePattern, ErrorCalendarInvalidDayForWeeklyRecurrence, ErrorCalendarInvalidPropertyState, ErrorCalendarInvalidPropertyValue, ErrorCalendarInvalidRecurrence, ErrorCalendarInvalidTimeZone, ErrorCalendarIsDelegatedForAccept, ErrorCalendarIsDelegatedForDecline, ErrorCalendarIsDelegatedForRemove, ErrorCalendarIsDelegatedForTentative, ErrorCalendarIsNotOrganizer, ErrorCalendarIsOrganizerForAccept, ErrorCalendarIsOrganizerForDecline, ErrorCalendarIsOrganizerForRemove, ErrorCalendarIsOrganizerForTentative, ErrorCalendarOccurrenceIndexIsOutOfRecurrenceRange, ErrorCalendarOccurrenceIsDeletedFromRecurrence, ErrorCalendarOutOfRange, ErrorCalendarMeetingRequestIsOutOfDate, ErrorCalendarViewRangeTooBig, ErrorCannotCreateCalendarItemInNonCalendarFolder, ErrorCannotCreateContactInNonContactFolder, ErrorCannotCreatePostItemInNonMailFolder, ErrorCannotCreateTaskInNonTaskFolder, ErrorCannotDeleteObject, ErrorCannotOpenFileAttachment, ErrorCannotDeleteTaskOccurrence, ErrorCannotSetCalendarPermissionOnNonCalendarFolder, ErrorCannotSetNonCalendarPermissionOnCalendarFolder, ErrorCannotSetPermissionUnknownEntries, ErrorCannotUseFolderIdForItemId, ErrorCannotUseItemIdForFolderId, ErrorChangeKeyRequired, ErrorChangeKeyRequiredForWriteOperations, ErrorConnectionFailed, ErrorContentConversionFailed, ErrorCorruptData, ErrorCreateItemAccessDenied, ErrorCreateManagedFolderPartialCompletion, ErrorCreateSubfolderAccessDenied, ErrorCrossMailboxMoveCopy, ErrorDataSizeLimitExceeded, ErrorDataSourceOperation, ErrorDelegateAlreadyExists, ErrorDelegateCannotAddOwner, ErrorDelegateMissingConfiguration, ErrorDelegateNoUser, ErrorDelegateValidationFailed, ErrorDeleteDistinguishedFolder, ErrorDeleteItemsFailed, ErrorDistinguishedUserNotSupported, ErrorDuplicateInputFolderNames, ErrorDuplicateUserIdsSpecified, ErrorEmailAddressMismatch, ErrorEventNotFound, ErrorExpiredSubscription, ErrorFolderCorrupt, ErrorFolderNotFound, ErrorFolderPropertRequestFailed, ErrorFolderSave, ErrorFolderSaveFailed, ErrorFolderSavePropertyError, ErrorFolderExists, ErrorFreeBusyGenerationFailed, ErrorGetServerSecurityDescriptorFailed, ErrorImpersonateUserDenied, ErrorImpersonationDenied, ErrorImpersonationFailed, ErrorIncorrectSchemaVersion, ErrorIncorrectUpdatePropertyCount, ErrorIndividualMailboxLimitReached, ErrorInsufficientResources, ErrorInternalServerError, ErrorInternalServerTransientError, ErrorInvalidAccessLevel, ErrorInvalidAttachmentId, ErrorInvalidAttachmentSubfilter, ErrorInvalidAttachmentSubfilterTextFilter, ErrorInvalidAuthorizationContext, ErrorInvalidChangeKey, ErrorInvalidClientSecurityContext, ErrorInvalidCompleteDate, ErrorInvalidCrossForestCredentials, ErrorInvalidDelegatePermission, ErrorInvalidDelegateUserId, ErrorInvalidExcludesRestriction, ErrorInvalidExpressionTypeForSubFilter, ErrorInvalidExtendedProperty, ErrorInvalidExtendedPropertyValue, ErrorInvalidFolderId, ErrorInvalidFolderTypeForOperation, ErrorInvalidFractionalPagingParameters, ErrorInvalidFreeBusyViewType, ErrorInvalidId, ErrorInvalidIdEmpty, ErrorInvalidIdMalformed, ErrorInvalidIdMalformedEwsLegacyIdFormat, ErrorInvalidIdMonikerTooLong, ErrorInvalidIdNotAnItemAttachmentId, ErrorInvalidIdReturnedByResolveNames, ErrorInvalidIdStoreObjectIdTooLong, ErrorInvalidIdTooManyAttachmentLevels, ErrorInvalidIdXml, ErrorInvalidIndexedPagingParameters, ErrorInvalidInternetHeaderChildNodes, ErrorInvalidItemForOperationCreateItemAttachment, ErrorInvalidItemForOperationCreateItem, ErrorInvalidItemForOperationAcceptItem, ErrorInvalidItemForOperationDeclineItem, ErrorInvalidItemForOperationCancelItem, ErrorInvalidItemForOperationExpandDL, ErrorInvalidItemForOperationRemoveItem, ErrorInvalidItemForOperationSendItem, ErrorInvalidItemForOperationTentative, ErrorInvalidManagedFolderProperty, ErrorInvalidManagedFolderQuota, ErrorInvalidManagedFolderSize, ErrorInvalidMergedFreeBusyInterval, ErrorInvalidNameForNameResolution, ErrorInvalidOperation, ErrorInvalidNetworkServiceContext, ErrorInvalidOofParameter, ErrorInvalidPagingMaxRows, ErrorInvalidParentFolder, ErrorInvalidPercentCompleteValue, ErrorInvalidPermissionSettings, ErrorInvalidUserInfo, ErrorInvalidPropertyAppend, ErrorInvalidPropertyDelete, ErrorInvalidPropertyForExists, ErrorInvalidPropertyForOperation, ErrorInvalidPropertyRequest, ErrorInvalidPropertySet, ErrorInvalidPropertyUpdateSentMessage, ErrorInvalidProxySecurityContext, ErrorInvalidPullSubscriptionId, ErrorInvalidPushSubscriptionUrl, ErrorInvalidRecipients, ErrorInvalidRecipientSubfilter, ErrorInvalidRecipientSubfilterComparison, ErrorInvalidRecipientSubfilterOrder, ErrorInvalidRecipientSubfilterTextFilter, ErrorInvalidReferenceItem, ErrorInvalidRequest, ErrorInvalidRestriction, ErrorInvalidRoutingType, ErrorInvalidScheduledOofDuration, ErrorInvalidSecurityDescriptor, ErrorInvalidSendItemSaveSettings, ErrorInvalidSerializedAccessToken, ErrorInvalidServerVersion, ErrorInvalidSid, ErrorInvalidSmtpAddress, ErrorInvalidSubfilterType, ErrorInvalidSubfilterTypeNotAttendeeType, ErrorInvalidSubfilterTypeNotRecipientType, ErrorInvalidSubscription, ErrorInvalidSubscriptionRequest, ErrorInvalidSyncStateData, ErrorInvalidTimeInterval, ErrorInvalidUserOofSettings, ErrorInvalidUserPrincipalName, ErrorInvalidUserSid, ErrorInvalidUserSidMissingUPN, ErrorInvalidValueForProperty, ErrorInvalidWatermark, ErrorIrresolvableConflict, ErrorItemCorrupt, ErrorItemNotFound, ErrorItemPropertyRequestFailed, ErrorItemSave, ErrorItemSavePropertyError, ErrorLegacyMailboxFreeBusyViewTypeNotMerged, ErrorLocalServerObjectNotFound, ErrorLogonAsNetworkServiceFailed, ErrorMailboxConfiguration, ErrorMailboxDataArrayEmpty, ErrorMailboxDataArrayTooBig, ErrorMailboxLogonFailed, ErrorMailboxMoveInProgress, ErrorMailboxStoreUnavailable, ErrorMailRecipientNotFound, ErrorManagedFolderAlreadyExists, ErrorManagedFolderNotFound, ErrorManagedFoldersRootFailure, ErrorMeetingSuggestionGenerationFailed, ErrorMessageDispositionRequired, ErrorMessageSizeExceeded, ErrorMimeContentConversionFailed, ErrorMimeContentInvalid, ErrorMimeContentInvalidBase64String, ErrorMissingArgument, ErrorMissingEmailAddress, ErrorMissingEmailAddressForManagedFolder, ErrorMissingInformationEmailAddress, ErrorMissingInformationReferenceItemId, ErrorMissingItemForCreateItemAttachment, ErrorMissingManagedFolderId, ErrorMissingRecipients, ErrorMissingUserIdInformation, ErrorMoreThanOneAccessModeSpecified, ErrorMoveCopyFailed, ErrorMoveDistinguishedFolder, ErrorNameResolutionMultipleResults, ErrorNameResolutionNoMailbox, ErrorNameResolutionNoResults, ErrorNoApplicableProxyCASServersAvailable, ErrorNoCalendar, ErrorNoDestinationCASDueToKerberosRequirements, ErrorNoDestinationCASDueToSSLRequirements, ErrorNoDestinationCASDueToVersionMismatch, ErrorNoFolderClassOverride, ErrorNoFreeBusyAccess, ErrorNonExistentMailbox, ErrorNonPrimarySmtpAddress, ErrorNoPropertyTagForCustomProperties, ErrorNoPublicFolderReplicaAvailable, ErrorNoRespondingCASInDestinationSite, ErrorNotDelegate, ErrorNotEnoughMemory, ErrorObjectTypeChanged, ErrorOccurrenceCrossingBoundary, ErrorOccurrenceTimeSpanTooBig, ErrorOperationNotAllowedWithPublicFolderRoot, ErrorParentFolderIdRequired, ErrorParentFolderNotFound, ErrorPasswordChangeRequired, ErrorPasswordExpired, ErrorPropertyUpdate, ErrorPropertyValidationFailure, ErrorProxiedSubscriptionCallFailure, ErrorProxyCallFailed, ErrorProxyGroupSidLimitExceeded, ErrorProxyRequestNotAllowed, ErrorProxyRequestProcessingFailed, ErrorProxyServiceDiscoveryFailed, ErrorProxyTokenExpired, ErrorPublicFolderRequestProcessingFailed, ErrorPublicFolderServerNotFound, ErrorQueryFilterTooLong, ErrorQuotaExceeded, ErrorReadEventsFailed, ErrorReadReceiptNotPending, ErrorRecurrenceEndDateTooBig, ErrorRecurrenceHasNoOccurrence, ErrorRemoveDelegatesFailed, ErrorRequestAborted, ErrorRequestStreamTooBig, ErrorRequiredPropertyMissing, ErrorResolveNamesInvalidFolderType, ErrorResolveNamesOnlyOneContactsFolderAllowed, ErrorResponseSchemaValidation, ErrorRestrictionTooLong, ErrorRestrictionTooComplex, ErrorResultSetTooBig, ErrorInvalidExchangeImpersonationHeaderData, ErrorSavedItemFolderNotFound, ErrorSchemaValidation, ErrorSearchFolderNotInitialized, ErrorSendAsDenied, ErrorSendMeetingCancellationsRequired, ErrorSendMeetingInvitationsOrCancellationsRequired, ErrorSendMeetingInvitationsRequired, ErrorSentMeetingRequestUpdate, ErrorSentTaskRequestUpdate, ErrorServerBusy, ErrorServiceDiscoveryFailed, ErrorStaleObject, ErrorSubscriptionAccessDenied, ErrorSubscriptionDelegateAccessNotSupported, ErrorSubscriptionNotFound, ErrorSyncFolderNotFound, ErrorTimeIntervalTooBig, ErrorTimeoutExpired, ErrorTimeZone, ErrorToFolderNotFound, ErrorTokenSerializationDenied, ErrorUpdatePropertyMismatch, ErrorUnableToGetUserOofSettings, ErrorUnsupportedSubFilter, ErrorUnsupportedCulture, ErrorUnsupportedMapiPropertyType, ErrorUnsupportedMimeConversion, ErrorUnsupportedPathForQuery, ErrorUnsupportedPathForSortGroup, ErrorUnsupportedPropertyDefinition, ErrorUnsupportedQueryFilter, ErrorUnsupportedRecurrence, ErrorUnsupportedTypeForConversion, ErrorUpdateDelegatesFailed, ErrorVoiceMailNotImplemented, ErrorVirusDetected, ErrorVirusMessageDeleted, ErrorWebRequestInInvalidState, ErrorWin32InteropError, ErrorWorkingHoursSaveFailed, ErrorWorkingHoursXmlMalformed };
-
-public:
-    TNS__ResponseCodeType( const Type &type );
-    void setType( Type type );
-    TNS__ResponseCodeType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    TNS__ResponseCodeType();
-    ~TNS__ResponseCodeType();
+    T__ResponseClassType();
+    ~T__ResponseClassType();
 
 private:
     Type mType;
@@ -1003,24 +1003,339 @@ private:
 
 /**
     This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__MailboxTypeType you can also
+    Whenever you have to pass an object of type T__OofState you can also pass
+    the enum directly. Example:
+    someMethod(T__OofState::Disabled).
+ */
+class T__OofState
+{
+public:
+    enum Type { Disabled, Enabled, Scheduled };
+
+public:
+    T__OofState( const Type &type );
+    void setType( Type type );
+    T__OofState::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__OofState();
+    ~T__OofState();
+
+private:
+    Type mType;
+};
+
+/**
+    This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__ContactSourceType you can
+    also pass the enum directly.
+    Example:
+    someMethod(T__ContactSourceType::ActiveDirectory).
+ */
+class T__ContactSourceType
+{
+public:
+    enum Type { ActiveDirectory, Store };
+
+public:
+    T__ContactSourceType( const Type &type );
+    void setType( Type type );
+    T__ContactSourceType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__ContactSourceType();
+    ~T__ContactSourceType();
+
+private:
+    Type mType;
+};
+
+/**
+    Includes all of the extended property types that we support. Note that
+    Error, Null, Object and Object array can not be used in restrictions, or
+    for setting/getting values. They are only there for error reporting
+    purposes.
+ */
+class T__MapiPropertyTypeType
+{
+public:
+    enum Type { ApplicationTime, ApplicationTimeArray, Binary, BinaryArray, Boolean, CLSID, CLSIDArray, Currency, CurrencyArray, Double, DoubleArray, Error, Float, FloatArray, Integer, IntegerArray, Long, LongArray, Null, Object, ObjectArray, Short, ShortArray, SystemTime, SystemTimeArray, String, StringArray };
+
+public:
+    T__MapiPropertyTypeType( const Type &type );
+    void setType( Type type );
+    T__MapiPropertyTypeType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__MapiPropertyTypeType();
+    ~T__MapiPropertyTypeType();
+
+private:
+    Type mType;
+};
+
+/**
+    This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__FileAsMappingType you can
+    also pass the enum directly.
+    Example:
+    someMethod(T__FileAsMappingType::None).
+ */
+class T__FileAsMappingType
+{
+public:
+    enum Type { None, LastCommaFirst, FirstSpaceLast, Company, LastCommaFirstCompany, CompanyLastFirst, LastFirst, LastFirstCompany, CompanyLastCommaFirst, LastFirstSuffix, LastSpaceFirstCompany, CompanyLastSpaceFirst, LastSpaceFirst };
+
+public:
+    T__FileAsMappingType( const Type &type );
+    void setType( Type type );
+    T__FileAsMappingType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__FileAsMappingType();
+    ~T__FileAsMappingType();
+
+private:
+    Type mType;
+};
+
+/**
+    Defines the well known property set ids for extended properties.
+ */
+class T__DistinguishedPropertySetType
+{
+public:
+    enum Type { Meeting, Appointment, Common, PublicStrings, Address, InternetHeaders, CalendarAssistant, UnifiedMessaging, Task };
+
+public:
+    T__DistinguishedPropertySetType( const Type &type );
+    void setType( Type type );
+    T__DistinguishedPropertySetType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__DistinguishedPropertySetType();
+    ~T__DistinguishedPropertySetType();
+
+private:
+    Type mType;
+};
+
+/**
+    This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__MeetingRequestTypeType you
+    can also pass the enum directly.
+    Example:
+    someMethod(T__MeetingRequestTypeType::None).
+ */
+class T__MeetingRequestTypeType
+{
+public:
+    enum Type { None, FullUpdate, InformationalUpdate, NewMeetingRequest, Outdated, SilentUpdate, PrincipalWantsCopy };
+
+public:
+    T__MeetingRequestTypeType( const Type &type );
+    void setType( Type type );
+    T__MeetingRequestTypeType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__MeetingRequestTypeType();
+    ~T__MeetingRequestTypeType();
+
+private:
+    Type mType;
+};
+
+/**
+    This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__TaskDelegateStateType you
+    can also pass the enum directly.
+    Example:
+    someMethod(T__TaskDelegateStateType::NoMatch).
+ */
+class T__TaskDelegateStateType
+{
+public:
+    enum Type { NoMatch, OwnNew, Owned, Accepted, Declined, Max };
+
+public:
+    T__TaskDelegateStateType( const Type &type );
+    void setType( Type type );
+    T__TaskDelegateStateType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__TaskDelegateStateType();
+    ~T__TaskDelegateStateType();
+
+private:
+    Type mType;
+};
+
+/**
+    This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__PhysicalAddressIndexType you
+    can also pass the enum directly.
+    Example:
+    someMethod(T__PhysicalAddressIndexType::None).
+ */
+class T__PhysicalAddressIndexType
+{
+public:
+    enum Type { None, Business, Home, Other };
+
+public:
+    T__PhysicalAddressIndexType( const Type &type );
+    void setType( Type type );
+    T__PhysicalAddressIndexType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__PhysicalAddressIndexType();
+    ~T__PhysicalAddressIndexType();
+
+private:
+    Type mType;
+};
+
+/**
+    This type represents the property tag (MINUS the type part). There are two
+    options for representation: 1. Hex ==> 0x3fa4 2. Decimal ==> 0-65535
+ */
+class T__PropertyTagType
+{
+public:
+    void setValue( const QVariant& val );
+    QVariant value() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__PropertyTagType();
+    ~T__PropertyTagType();
+
+private:
+    QVariant mValue;
+};
+
+/**
+    URIs for the distinguished folders accessible from a mailbox
+ */
+class T__DistinguishedFolderIdNameType
+{
+public:
+    enum Type { Calendar, Contacts, Deleteditems, Drafts, Inbox, Journal, Notes, Outbox, Sentitems, Tasks, Msgfolderroot, Publicfoldersroot, Root, Junkemail, Searchfolders, Voicemail };
+
+public:
+    T__DistinguishedFolderIdNameType( const Type &type );
+    void setType( Type type );
+    T__DistinguishedFolderIdNameType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__DistinguishedFolderIdNameType();
+    ~T__DistinguishedFolderIdNameType();
+
+private:
+    Type mType;
+};
+
+/**
+    This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__FreeBusyViewTypeListItem you
+    can also pass the enum directly.
+    Example:
+    someMethod(T__FreeBusyViewTypeListItem::None).
+ */
+class T__FreeBusyViewTypeListItem
+{
+public:
+    enum Type { None, MergedOnly, FreeBusy, FreeBusyMerged, Detailed, DetailedMerged };
+
+public:
+    T__FreeBusyViewTypeListItem( const Type &type );
+    void setType( Type type );
+    T__FreeBusyViewTypeListItem::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__FreeBusyViewTypeListItem();
+    ~T__FreeBusyViewTypeListItem();
+
+private:
+    Type mType;
+};
+
+/**
+    This class encapsulates a simple type.
+    Whenever you have to pass an object of type T__ItemClassType you can also
+    pass the value directly as a QString.
+ */
+class T__ItemClassType
+{
+public:
+    void setValue( const QString& value );
+    QString value() const;
+    T__ItemClassType( const QString& value );
+    operator QString() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__ItemClassType();
+    ~T__ItemClassType();
+
+private:
+    QString mValue;
+};
+
+/**
+    This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__LegacyFreeBusyType you can
+    also pass the enum directly.
+    Example:
+    someMethod(T__LegacyFreeBusyType::Free).
+ */
+class T__LegacyFreeBusyType
+{
+public:
+    enum Type { Free, Tentative, Busy, OOF, NoData };
+
+public:
+    T__LegacyFreeBusyType( const Type &type );
+    void setType( Type type );
+    T__LegacyFreeBusyType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__LegacyFreeBusyType();
+    ~T__LegacyFreeBusyType();
+
+private:
+    Type mType;
+};
+
+/**
+    This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__TaskStatusType you can also
     pass the enum directly. Example:
-    someMethod(T__MailboxTypeType::Mailbox).
+    someMethod(T__TaskStatusType::NotStarted).
  */
-class T__MailboxTypeType
+class T__TaskStatusType
 {
 public:
-    enum Type { Mailbox, PublicDL, PrivateDL, Contact, PublicFolder };
+    enum Type { NotStarted, InProgress, Completed, WaitingOnOthers, Deferred };
 
 public:
-    T__MailboxTypeType( const Type &type );
+    T__TaskStatusType( const Type &type );
     void setType( Type type );
-    T__MailboxTypeType::Type type() const;
+    T__TaskStatusType::Type type() const;
     operator Type() const;
     QVariant serialize() const;
     void deserialize( const QVariant& value );
-    T__MailboxTypeType();
-    ~T__MailboxTypeType();
+    T__TaskStatusType();
+    ~T__TaskStatusType();
 
 private:
     Type mType;
@@ -1028,25 +1343,91 @@ private:
 
 /**
     This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__ResponseTypeType you can
-    also pass the enum directly.
+    Whenever you have to pass an object of type T__ImportanceChoicesType you
+    can also pass the enum directly.
     Example:
-    someMethod(T__ResponseTypeType::Unknown).
+    someMethod(T__ImportanceChoicesType::Low).
  */
-class T__ResponseTypeType
+class T__ImportanceChoicesType
 {
 public:
-    enum Type { Unknown, Organizer, Tentative, Accept, Decline, NoResponseReceived };
+    enum Type { Low, Normal, High };
 
 public:
-    T__ResponseTypeType( const Type &type );
+    T__ImportanceChoicesType( const Type &type );
     void setType( Type type );
-    T__ResponseTypeType::Type type() const;
+    T__ImportanceChoicesType::Type type() const;
     operator Type() const;
     QVariant serialize() const;
     void deserialize( const QVariant& value );
-    T__ResponseTypeType();
-    ~T__ResponseTypeType();
+    T__ImportanceChoicesType();
+    ~T__ImportanceChoicesType();
+
+private:
+    Type mType;
+};
+
+/**
+    The regular expression captures the standard representation of a GUID
+ */
+class T__GuidType
+{
+public:
+    void setValue( const QString& value );
+    QString value() const;
+    T__GuidType( const QString& value );
+    operator QString() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__GuidType();
+    ~T__GuidType();
+
+private:
+    QString mValue;
+};
+
+/**
+    This class encapsulates a simple type.
+    Whenever you have to pass an object of type T__DerivedItemIdType you can
+    also pass the value directly as a QString.
+ */
+class T__DerivedItemIdType
+{
+public:
+    void setValue( const QString& value );
+    QString value() const;
+    T__DerivedItemIdType( const QString& value );
+    operator QString() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__DerivedItemIdType();
+    ~T__DerivedItemIdType();
+
+private:
+    QString mValue;
+};
+
+/**
+    This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__DictionaryURIType you can
+    also pass the enum directly.
+    Example:
+    someMethod(T__DictionaryURIType::Item_InternetMessageHeader).
+ */
+class T__DictionaryURIType
+{
+public:
+    enum Type { Item_InternetMessageHeader, Contacts_ImAddress, Contacts_PhysicalAddress_Street, Contacts_PhysicalAddress_City, Contacts_PhysicalAddress_State, Contacts_PhysicalAddress_CountryOrRegion, Contacts_PhysicalAddress_PostalCode, Contacts_PhoneNumber, Contacts_EmailAddress };
+
+public:
+    T__DictionaryURIType( const Type &type );
+    void setType( Type type );
+    T__DictionaryURIType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__DictionaryURIType();
+    ~T__DictionaryURIType();
 
 private:
     Type mType;
@@ -1103,137 +1484,29 @@ private:
 };
 
 /**
-    This class encapsulates a simple type.
-    Whenever you have to pass an object of type T__DerivedItemIdType you can
-    also pass the value directly as a QString.
- */
-class T__DerivedItemIdType
-{
-public:
-    void setValue( const QString& value );
-    QString value() const;
-    T__DerivedItemIdType( const QString& value );
-    operator QString() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__DerivedItemIdType();
-    ~T__DerivedItemIdType();
-
-private:
-    QString mValue;
-};
-
-/**
     This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__DayOfWeekType you can also
-    pass the enum directly. Example:
-    someMethod(T__DayOfWeekType::Sunday).
- */
-class T__DayOfWeekType
-{
-public:
-    enum Type { Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Day, Weekday, WeekendDay };
-
-public:
-    T__DayOfWeekType( const Type &type );
-    void setType( Type type );
-    T__DayOfWeekType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__DayOfWeekType();
-    ~T__DayOfWeekType();
-
-private:
-    Type mType;
-};
-
-/**
-    This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__CalendarItemTypeType you can
+    Whenever you have to pass an object of type T__MeetingAttendeeType you can
     also pass the enum directly.
     Example:
-    someMethod(T__CalendarItemTypeType::Single).
+    someMethod(T__MeetingAttendeeType::Organizer).
  */
-class T__CalendarItemTypeType
+class T__MeetingAttendeeType
 {
 public:
-    enum Type { Single, Occurrence, Exception, RecurringMaster };
+    enum Type { Organizer, Required, Optional, Room, Resource };
 
 public:
-    T__CalendarItemTypeType( const Type &type );
+    T__MeetingAttendeeType( const Type &type );
     void setType( Type type );
-    T__CalendarItemTypeType::Type type() const;
+    T__MeetingAttendeeType::Type type() const;
     operator Type() const;
     QVariant serialize() const;
     void deserialize( const QVariant& value );
-    T__CalendarItemTypeType();
-    ~T__CalendarItemTypeType();
+    T__MeetingAttendeeType();
+    ~T__MeetingAttendeeType();
 
 private:
     Type mType;
-};
-
-/**
-    This class encapsulates a union type.
- */
-class T__ReminderMinutesBeforeStartType
-{
-public:
-    void setValue( const QVariant& val );
-    QVariant value() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__ReminderMinutesBeforeStartType();
-    ~T__ReminderMinutesBeforeStartType();
-
-private:
-    QVariant mValue;
-};
-
-/**
-    This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__PhysicalAddressIndexType you
-    can also pass the enum directly.
-    Example:
-    someMethod(T__PhysicalAddressIndexType::None).
- */
-class T__PhysicalAddressIndexType
-{
-public:
-    enum Type { None, Business, Home, Other };
-
-public:
-    T__PhysicalAddressIndexType( const Type &type );
-    void setType( Type type );
-    T__PhysicalAddressIndexType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__PhysicalAddressIndexType();
-    ~T__PhysicalAddressIndexType();
-
-private:
-    Type mType;
-};
-
-/**
-    The regular expression captures the standard representation of a GUID
- */
-class T__GuidType
-{
-public:
-    void setValue( const QString& value );
-    QString value() const;
-    T__GuidType( const QString& value );
-    operator QString() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__GuidType();
-    ~T__GuidType();
-
-private:
-    QString mValue;
 };
 
 /**
@@ -1263,213 +1536,25 @@ private:
 };
 
 /**
-    This class encapsulates a simple type.
-    Whenever you have to pass an object of type T__ItemClassType you can also
-    pass the value directly as a QString.
- */
-class T__ItemClassType
-{
-public:
-    void setValue( const QString& value );
-    QString value() const;
-    T__ItemClassType( const QString& value );
-    operator QString() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__ItemClassType();
-    ~T__ItemClassType();
-
-private:
-    QString mValue;
-};
-
-/**
     This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__LegacyFreeBusyType you can
-    also pass the enum directly.
-    Example:
-    someMethod(T__LegacyFreeBusyType::Free).
+    Whenever you have to pass an object of type T__DayOfWeekType you can also
+    pass the enum directly. Example:
+    someMethod(T__DayOfWeekType::Sunday).
  */
-class T__LegacyFreeBusyType
+class T__DayOfWeekType
 {
 public:
-    enum Type { Free, Tentative, Busy, OOF, NoData };
+    enum Type { Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Day, Weekday, WeekendDay };
 
 public:
-    T__LegacyFreeBusyType( const Type &type );
+    T__DayOfWeekType( const Type &type );
     void setType( Type type );
-    T__LegacyFreeBusyType::Type type() const;
+    T__DayOfWeekType::Type type() const;
     operator Type() const;
     QVariant serialize() const;
     void deserialize( const QVariant& value );
-    T__LegacyFreeBusyType();
-    ~T__LegacyFreeBusyType();
-
-private:
-    Type mType;
-};
-
-/**
-    This type represents the property tag (MINUS the type part). There are two
-    options for representation: 1. Hex ==> 0x3fa4 2. Decimal ==> 0-65535
- */
-class T__PropertyTagType
-{
-public:
-    void setValue( const QVariant& val );
-    QVariant value() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__PropertyTagType();
-    ~T__PropertyTagType();
-
-private:
-    QVariant mValue;
-};
-
-/**
-    This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__ContactSourceType you can
-    also pass the enum directly.
-    Example:
-    someMethod(T__ContactSourceType::ActiveDirectory).
- */
-class T__ContactSourceType
-{
-public:
-    enum Type { ActiveDirectory, Store };
-
-public:
-    T__ContactSourceType( const Type &type );
-    void setType( Type type );
-    T__ContactSourceType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__ContactSourceType();
-    ~T__ContactSourceType();
-
-private:
-    Type mType;
-};
-
-/**
-    This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__FreeBusyViewTypeListItem you
-    can also pass the enum directly.
-    Example:
-    someMethod(T__FreeBusyViewTypeListItem::None).
- */
-class T__FreeBusyViewTypeListItem
-{
-public:
-    enum Type { None, MergedOnly, FreeBusy, FreeBusyMerged, Detailed, DetailedMerged };
-
-public:
-    T__FreeBusyViewTypeListItem( const Type &type );
-    void setType( Type type );
-    T__FreeBusyViewTypeListItem::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__FreeBusyViewTypeListItem();
-    ~T__FreeBusyViewTypeListItem();
-
-private:
-    Type mType;
-};
-
-/**
-    URIs for the distinguished folders accessible from a mailbox
- */
-class T__DistinguishedFolderIdNameType
-{
-public:
-    enum Type { Calendar, Contacts, Deleteditems, Drafts, Inbox, Journal, Notes, Outbox, Sentitems, Tasks, Msgfolderroot, Publicfoldersroot, Root, Junkemail, Searchfolders, Voicemail };
-
-public:
-    T__DistinguishedFolderIdNameType( const Type &type );
-    void setType( Type type );
-    T__DistinguishedFolderIdNameType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__DistinguishedFolderIdNameType();
-    ~T__DistinguishedFolderIdNameType();
-
-private:
-    Type mType;
-};
-
-/**
-    This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__DistinguishedUserType you
-    can also pass the enum directly.
-    Example:
-    someMethod(T__DistinguishedUserType::Default).
- */
-class T__DistinguishedUserType
-{
-public:
-    enum Type { Default, Anonymous };
-
-public:
-    T__DistinguishedUserType( const Type &type );
-    void setType( Type type );
-    T__DistinguishedUserType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__DistinguishedUserType();
-    ~T__DistinguishedUserType();
-
-private:
-    Type mType;
-};
-
-/**
-    Defines the well known property set ids for extended properties.
- */
-class T__DistinguishedPropertySetType
-{
-public:
-    enum Type { Meeting, Appointment, Common, PublicStrings, Address, InternetHeaders, CalendarAssistant, UnifiedMessaging, Task };
-
-public:
-    T__DistinguishedPropertySetType( const Type &type );
-    void setType( Type type );
-    T__DistinguishedPropertySetType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__DistinguishedPropertySetType();
-    ~T__DistinguishedPropertySetType();
-
-private:
-    Type mType;
-};
-
-/**
-    This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__MeetingRequestTypeType you
-    can also pass the enum directly.
-    Example:
-    someMethod(T__MeetingRequestTypeType::None).
- */
-class T__MeetingRequestTypeType
-{
-public:
-    enum Type { None, FullUpdate, InformationalUpdate, NewMeetingRequest, Outdated, SilentUpdate, PrincipalWantsCopy };
-
-public:
-    T__MeetingRequestTypeType( const Type &type );
-    void setType( Type type );
-    T__MeetingRequestTypeType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__MeetingRequestTypeType();
-    ~T__MeetingRequestTypeType();
+    T__DayOfWeekType();
+    ~T__DayOfWeekType();
 
 private:
     Type mType;
@@ -1503,25 +1588,68 @@ private:
 
 /**
     This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__DictionaryURIType you can
+    Whenever you have to pass an object of type T__ResponseTypeType you can
     also pass the enum directly.
     Example:
-    someMethod(T__DictionaryURIType::Item_InternetMessageHeader).
+    someMethod(T__ResponseTypeType::Unknown).
  */
-class T__DictionaryURIType
+class T__ResponseTypeType
 {
 public:
-    enum Type { Item_InternetMessageHeader, Contacts_ImAddress, Contacts_PhysicalAddress_Street, Contacts_PhysicalAddress_City, Contacts_PhysicalAddress_State, Contacts_PhysicalAddress_CountryOrRegion, Contacts_PhysicalAddress_PostalCode, Contacts_PhoneNumber, Contacts_EmailAddress };
+    enum Type { Unknown, Organizer, Tentative, Accept, Decline, NoResponseReceived };
 
 public:
-    T__DictionaryURIType( const Type &type );
+    T__ResponseTypeType( const Type &type );
     void setType( Type type );
-    T__DictionaryURIType::Type type() const;
+    T__ResponseTypeType::Type type() const;
     operator Type() const;
     QVariant serialize() const;
     void deserialize( const QVariant& value );
-    T__DictionaryURIType();
-    ~T__DictionaryURIType();
+    T__ResponseTypeType();
+    ~T__ResponseTypeType();
+
+private:
+    Type mType;
+};
+
+/**
+    This class encapsulates a union type.
+ */
+class T__ReminderMinutesBeforeStartType
+{
+public:
+    void setValue( const QVariant& val );
+    QVariant value() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__ReminderMinutesBeforeStartType();
+    ~T__ReminderMinutesBeforeStartType();
+
+private:
+    QVariant mValue;
+};
+
+/**
+    This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__CalendarItemTypeType you can
+    also pass the enum directly.
+    Example:
+    someMethod(T__CalendarItemTypeType::Single).
+ */
+class T__CalendarItemTypeType
+{
+public:
+    enum Type { Single, Occurrence, Exception, RecurringMaster };
+
+public:
+    T__CalendarItemTypeType( const Type &type );
+    void setType( Type type );
+    T__CalendarItemTypeType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__CalendarItemTypeType();
+    ~T__CalendarItemTypeType();
 
 private:
     Type mType;
@@ -1529,153 +1657,25 @@ private:
 
 /**
     This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__ImportanceChoicesType you
+    Whenever you have to pass an object of type T__DistinguishedUserType you
     can also pass the enum directly.
     Example:
-    someMethod(T__ImportanceChoicesType::Low).
+    someMethod(T__DistinguishedUserType::Default).
  */
-class T__ImportanceChoicesType
+class T__DistinguishedUserType
 {
 public:
-    enum Type { Low, Normal, High };
+    enum Type { Default, Anonymous };
 
 public:
-    T__ImportanceChoicesType( const Type &type );
+    T__DistinguishedUserType( const Type &type );
     void setType( Type type );
-    T__ImportanceChoicesType::Type type() const;
+    T__DistinguishedUserType::Type type() const;
     operator Type() const;
     QVariant serialize() const;
     void deserialize( const QVariant& value );
-    T__ImportanceChoicesType();
-    ~T__ImportanceChoicesType();
-
-private:
-    Type mType;
-};
-
-/**
-    This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__TaskStatusType you can also
-    pass the enum directly. Example:
-    someMethod(T__TaskStatusType::NotStarted).
- */
-class T__TaskStatusType
-{
-public:
-    enum Type { NotStarted, InProgress, Completed, WaitingOnOthers, Deferred };
-
-public:
-    T__TaskStatusType( const Type &type );
-    void setType( Type type );
-    T__TaskStatusType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__TaskStatusType();
-    ~T__TaskStatusType();
-
-private:
-    Type mType;
-};
-
-/**
-    This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__MeetingAttendeeType you can
-    also pass the enum directly.
-    Example:
-    someMethod(T__MeetingAttendeeType::Organizer).
- */
-class T__MeetingAttendeeType
-{
-public:
-    enum Type { Organizer, Required, Optional, Room, Resource };
-
-public:
-    T__MeetingAttendeeType( const Type &type );
-    void setType( Type type );
-    T__MeetingAttendeeType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__MeetingAttendeeType();
-    ~T__MeetingAttendeeType();
-
-private:
-    Type mType;
-};
-
-/**
-    This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__TaskDelegateStateType you
-    can also pass the enum directly.
-    Example:
-    someMethod(T__TaskDelegateStateType::NoMatch).
- */
-class T__TaskDelegateStateType
-{
-public:
-    enum Type { NoMatch, OwnNew, Owned, Accepted, Declined, Max };
-
-public:
-    T__TaskDelegateStateType( const Type &type );
-    void setType( Type type );
-    T__TaskDelegateStateType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__TaskDelegateStateType();
-    ~T__TaskDelegateStateType();
-
-private:
-    Type mType;
-};
-
-/**
-    This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__FileAsMappingType you can
-    also pass the enum directly.
-    Example:
-    someMethod(T__FileAsMappingType::None).
- */
-class T__FileAsMappingType
-{
-public:
-    enum Type { None, LastCommaFirst, FirstSpaceLast, Company, LastCommaFirstCompany, CompanyLastFirst, LastFirst, LastFirstCompany, CompanyLastCommaFirst, LastFirstSuffix, LastSpaceFirstCompany, CompanyLastSpaceFirst, LastSpaceFirst };
-
-public:
-    T__FileAsMappingType( const Type &type );
-    void setType( Type type );
-    T__FileAsMappingType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__FileAsMappingType();
-    ~T__FileAsMappingType();
-
-private:
-    Type mType;
-};
-
-/**
-    Includes all of the extended property types that we support. Note that
-    Error, Null, Object and Object array can not be used in restrictions, or
-    for setting/getting values. They are only there for error reporting
-    purposes.
- */
-class T__MapiPropertyTypeType
-{
-public:
-    enum Type { ApplicationTime, ApplicationTimeArray, Binary, BinaryArray, Boolean, CLSID, CLSIDArray, Currency, CurrencyArray, Double, DoubleArray, Error, Float, FloatArray, Integer, IntegerArray, Long, LongArray, Null, Object, ObjectArray, Short, ShortArray, SystemTime, SystemTimeArray, String, StringArray };
-
-public:
-    T__MapiPropertyTypeType( const Type &type );
-    void setType( Type type );
-    T__MapiPropertyTypeType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__MapiPropertyTypeType();
-    ~T__MapiPropertyTypeType();
+    T__DistinguishedUserType();
+    ~T__DistinguishedUserType();
 
 private:
     Type mType;
@@ -1709,53 +1709,6 @@ private:
 
 /**
     This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__BodyTypeType you can also
-    pass the enum directly. Example:
-    someMethod(T__BodyTypeType::HTML).
- */
-class T__BodyTypeType
-{
-public:
-    enum Type { HTML, Text };
-
-public:
-    T__BodyTypeType( const Type &type );
-    void setType( Type type );
-    T__BodyTypeType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__BodyTypeType();
-    ~T__BodyTypeType();
-
-private:
-    Type mType;
-};
-
-/**
-    Types of sub-tree traversal for deletion and enumeration
- */
-class T__SearchFolderTraversalType
-{
-public:
-    enum Type { Shallow, Deep };
-
-public:
-    T__SearchFolderTraversalType( const Type &type );
-    void setType( Type type );
-    T__SearchFolderTraversalType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__SearchFolderTraversalType();
-    ~T__SearchFolderTraversalType();
-
-private:
-    Type mType;
-};
-
-/**
-    This class is a wrapper for an enumeration.
     Whenever you have to pass an object of type T__ContainmentComparisonType
     you can also pass the enum directly.
     Example:
@@ -1775,6 +1728,31 @@ public:
     void deserialize( const QVariant& value );
     T__ContainmentComparisonType();
     ~T__ContainmentComparisonType();
+
+private:
+    Type mType;
+};
+
+/**
+    This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__BodyTypeType you can also
+    pass the enum directly. Example:
+    someMethod(T__BodyTypeType::HTML).
+ */
+class T__BodyTypeType
+{
+public:
+    enum Type { HTML, Text };
+
+public:
+    T__BodyTypeType( const Type &type );
+    void setType( Type type );
+    T__BodyTypeType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__BodyTypeType();
+    ~T__BodyTypeType();
 
 private:
     Type mType;
@@ -1807,6 +1785,28 @@ private:
 };
 
 /**
+    Types of sub-tree traversal for deletion and enumeration
+ */
+class T__SearchFolderTraversalType
+{
+public:
+    enum Type { Shallow, Deep };
+
+public:
+    T__SearchFolderTraversalType( const Type &type );
+    void setType( Type type );
+    T__SearchFolderTraversalType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__SearchFolderTraversalType();
+    ~T__SearchFolderTraversalType();
+
+private:
+    Type mType;
+};
+
+/**
     This class is a wrapper for an enumeration.
     Whenever you have to pass an object of type
     T__DelegateFolderPermissionLevelType you can also pass the enum directly.
@@ -1827,6 +1827,58 @@ public:
     void deserialize( const QVariant& value );
     T__DelegateFolderPermissionLevelType();
     ~T__DelegateFolderPermissionLevelType();
+
+private:
+    Type mType;
+};
+
+/**
+    This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__PhysicalAddressKeyType you
+    can also pass the enum directly.
+    Example:
+    someMethod(T__PhysicalAddressKeyType::Business).
+ */
+class T__PhysicalAddressKeyType
+{
+public:
+    enum Type { Business, Home, Other };
+
+public:
+    T__PhysicalAddressKeyType( const Type &type );
+    void setType( Type type );
+    T__PhysicalAddressKeyType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__PhysicalAddressKeyType();
+    ~T__PhysicalAddressKeyType();
+
+private:
+    Type mType;
+};
+
+/**
+    This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__ExceptionPropertyURIType you
+    can also pass the enum directly.
+    Example:
+    someMethod(T__ExceptionPropertyURIType::Attachment_Name).
+ */
+class T__ExceptionPropertyURIType
+{
+public:
+    enum Type { Attachment_Name, Attachment_ContentType, Attachment_Content, Recurrence_Month, Recurrence_DayOfWeekIndex, Recurrence_DaysOfWeek, Recurrence_DayOfMonth, Recurrence_Interval, Recurrence_NumberOfOccurrences, Timezone_Offset };
+
+public:
+    T__ExceptionPropertyURIType( const Type &type );
+    void setType( Type type );
+    T__ExceptionPropertyURIType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__ExceptionPropertyURIType();
+    ~T__ExceptionPropertyURIType();
 
 private:
     Type mType;
@@ -1854,6 +1906,23 @@ private:
 };
 
 /**
+    This class encapsulates a list type.
+ */
+class T__DaysOfWeekType
+{
+public:
+    void setEntries( const QList<T__DayOfWeekType>& entries );
+    QList<T__DayOfWeekType> entries() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__DaysOfWeekType();
+    ~T__DaysOfWeekType();
+
+private:
+    QList<T__DayOfWeekType> mEntries;
+};
+
+/**
     This class is a wrapper for an enumeration.
     Whenever you have to pass an object of type T__MonthNamesType you can also
     pass the enum directly. Example:
@@ -1873,49 +1942,6 @@ public:
     void deserialize( const QVariant& value );
     T__MonthNamesType();
     ~T__MonthNamesType();
-
-private:
-    Type mType;
-};
-
-/**
-    This class encapsulates a list type.
- */
-class T__DaysOfWeekType
-{
-public:
-    void setEntries( const QList<T__DayOfWeekType>& entries );
-    QList<T__DayOfWeekType> entries() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__DaysOfWeekType();
-    ~T__DaysOfWeekType();
-
-private:
-    QList<T__DayOfWeekType> mEntries;
-};
-
-/**
-    This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__ImAddressKeyType you can
-    also pass the enum directly.
-    Example:
-    someMethod(T__ImAddressKeyType::ImAddress1).
- */
-class T__ImAddressKeyType
-{
-public:
-    enum Type { ImAddress1, ImAddress2, ImAddress3 };
-
-public:
-    T__ImAddressKeyType( const Type &type );
-    void setType( Type type );
-    T__ImAddressKeyType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__ImAddressKeyType();
-    ~T__ImAddressKeyType();
 
 private:
     Type mType;
@@ -1975,58 +2001,6 @@ private:
 
 /**
     This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__ExceptionPropertyURIType you
-    can also pass the enum directly.
-    Example:
-    someMethod(T__ExceptionPropertyURIType::Attachment_Name).
- */
-class T__ExceptionPropertyURIType
-{
-public:
-    enum Type { Attachment_Name, Attachment_ContentType, Attachment_Content, Recurrence_Month, Recurrence_DayOfWeekIndex, Recurrence_DaysOfWeek, Recurrence_DayOfMonth, Recurrence_Interval, Recurrence_NumberOfOccurrences, Timezone_Offset };
-
-public:
-    T__ExceptionPropertyURIType( const Type &type );
-    void setType( Type type );
-    T__ExceptionPropertyURIType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__ExceptionPropertyURIType();
-    ~T__ExceptionPropertyURIType();
-
-private:
-    Type mType;
-};
-
-/**
-    This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__PhysicalAddressKeyType you
-    can also pass the enum directly.
-    Example:
-    someMethod(T__PhysicalAddressKeyType::Business).
- */
-class T__PhysicalAddressKeyType
-{
-public:
-    enum Type { Business, Home, Other };
-
-public:
-    T__PhysicalAddressKeyType( const Type &type );
-    void setType( Type type );
-    T__PhysicalAddressKeyType::Type type() const;
-    operator Type() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__PhysicalAddressKeyType();
-    ~T__PhysicalAddressKeyType();
-
-private:
-    Type mType;
-};
-
-/**
-    This class is a wrapper for an enumeration.
     Whenever you have to pass an object of type T__DayOfWeekIndexType you can
     also pass the enum directly.
     Example:
@@ -2053,25 +2027,25 @@ private:
 
 /**
     This class is a wrapper for an enumeration.
-    Whenever you have to pass an object of type T__PermissionLevelType you can
+    Whenever you have to pass an object of type T__ImAddressKeyType you can
     also pass the enum directly.
     Example:
-    someMethod(T__PermissionLevelType::None).
+    someMethod(T__ImAddressKeyType::ImAddress1).
  */
-class T__PermissionLevelType
+class T__ImAddressKeyType
 {
 public:
-    enum Type { None, Owner, PublishingEditor, Editor, PublishingAuthor, Author, NoneditingAuthor, Reviewer, Contributor, Custom };
+    enum Type { ImAddress1, ImAddress2, ImAddress3 };
 
 public:
-    T__PermissionLevelType( const Type &type );
+    T__ImAddressKeyType( const Type &type );
     void setType( Type type );
-    T__PermissionLevelType::Type type() const;
+    T__ImAddressKeyType::Type type() const;
     operator Type() const;
     QVariant serialize() const;
     void deserialize( const QVariant& value );
-    T__PermissionLevelType();
-    ~T__PermissionLevelType();
+    T__ImAddressKeyType();
+    ~T__ImAddressKeyType();
 
 private:
     Type mType;
@@ -2157,6 +2131,32 @@ private:
 
 /**
     This class is a wrapper for an enumeration.
+    Whenever you have to pass an object of type T__PermissionLevelType you can
+    also pass the enum directly.
+    Example:
+    someMethod(T__PermissionLevelType::None).
+ */
+class T__PermissionLevelType
+{
+public:
+    enum Type { None, Owner, PublishingEditor, Editor, PublishingAuthor, Author, NoneditingAuthor, Reviewer, Contributor, Custom };
+
+public:
+    T__PermissionLevelType( const Type &type );
+    void setType( Type type );
+    T__PermissionLevelType::Type type() const;
+    operator Type() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__PermissionLevelType();
+    ~T__PermissionLevelType();
+
+private:
+    Type mType;
+};
+
+/**
+    This class is a wrapper for an enumeration.
     Whenever you have to pass an object of type T__PermissionActionType you can
     also pass the enum directly.
     Example:
@@ -2181,155 +2181,278 @@ private:
     Type mType;
 };
 
-class T__MimeContentType
+class T__ArrayOfRealItemsType
 {
 public:
-    void setValue( const QString& value );
-    QString value() const;
-    T__MimeContentType( const QString& value );
-    operator QString() const;
-    void setCharacterSet( const QString& characterSet );
-    QString characterSet() const;
+    void setItem( const QList<T__ItemType>& item );
+    QList<T__ItemType> item() const;
+    void setMessage( const QList<T__MessageType>& message );
+    QList<T__MessageType> message() const;
+    void setCalendarItem( const QList<T__CalendarItemType>& calendarItem );
+    QList<T__CalendarItemType> calendarItem() const;
+    void setContact( const QList<T__ContactItemType>& contact );
+    QList<T__ContactItemType> contact() const;
+    void setDistributionList( const QList<T__DistributionListType>& distributionList );
+    QList<T__DistributionListType> distributionList() const;
+    void setMeetingMessage( const QList<T__MeetingMessageType>& meetingMessage );
+    QList<T__MeetingMessageType> meetingMessage() const;
+    void setMeetingRequest( const QList<T__MeetingRequestMessageType>& meetingRequest );
+    QList<T__MeetingRequestMessageType> meetingRequest() const;
+    void setMeetingResponse( const QList<T__MeetingResponseMessageType>& meetingResponse );
+    QList<T__MeetingResponseMessageType> meetingResponse() const;
+    void setMeetingCancellation( const QList<T__MeetingCancellationMessageType>& meetingCancellation );
+    QList<T__MeetingCancellationMessageType> meetingCancellation() const;
+    void setTask( const QList<T__TaskType>& task );
+    QList<T__TaskType> task() const;
+    void setPostItem( const QList<T__PostItemType>& postItem );
+    QList<T__PostItemType> postItem() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__MimeContentType();
-    ~T__MimeContentType();
+    T__ArrayOfRealItemsType();
+    ~T__ArrayOfRealItemsType();
 
 public:
-    T__MimeContentType( const T__MimeContentType& );
-    T__MimeContentType &operator=( const T__MimeContentType& );
+    T__ArrayOfRealItemsType( const T__ArrayOfRealItemsType& );
+    T__ArrayOfRealItemsType &operator=( const T__ArrayOfRealItemsType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-/**
-    Utility type which should never appear in user documents
- */
-class T__BaseFolderIdType
+class T__CalendarEventDetails
 {
 public:
+    void setID( const QString& iD );
+    QString iD() const;
+    void setSubject( const QString& subject );
+    QString subject() const;
+    void setLocation( const QString& location );
+    QString location() const;
+    void setIsMeeting( bool isMeeting );
+    bool isMeeting() const;
+    void setIsRecurring( bool isRecurring );
+    bool isRecurring() const;
+    void setIsException( bool isException );
+    bool isException() const;
+    void setIsReminderSet( bool isReminderSet );
+    bool isReminderSet() const;
+    void setIsPrivate( bool isPrivate );
+    bool isPrivate() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__CalendarEventDetails();
+    ~T__CalendarEventDetails();
+
+public:
+    T__CalendarEventDetails( const T__CalendarEventDetails& );
+    T__CalendarEventDetails &operator=( const T__CalendarEventDetails& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__SuggestionDayResult
+{
+public:
+    void setDate( const KDDateTime& date );
+    KDDateTime date() const;
+    void setDayQuality( const T__SuggestionQuality& dayQuality );
+    T__SuggestionQuality dayQuality() const;
+    void setSuggestionArray( const T__ArrayOfSuggestion& suggestionArray );
+    T__ArrayOfSuggestion suggestionArray() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__SuggestionDayResult();
+    ~T__SuggestionDayResult();
+
+public:
+    T__SuggestionDayResult( const T__SuggestionDayResult& );
+    T__SuggestionDayResult &operator=( const T__SuggestionDayResult& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ArrayOfBaseItemIdsType
+{
+public:
+    void setItemId( const QList<T__ItemIdType>& itemId );
+    QList<T__ItemIdType> itemId() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ArrayOfBaseItemIdsType();
+    ~T__ArrayOfBaseItemIdsType();
+
+public:
+    T__ArrayOfBaseItemIdsType( const T__ArrayOfBaseItemIdsType& );
+    T__ArrayOfBaseItemIdsType &operator=( const T__ArrayOfBaseItemIdsType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ArrayOfFoldersType
+{
+public:
+    void setFolder( const QList<T__FolderType>& folder );
+    QList<T__FolderType> folder() const;
+    void setCalendarFolder( const QList<T__CalendarFolderType>& calendarFolder );
+    QList<T__CalendarFolderType> calendarFolder() const;
+    void setContactsFolder( const QList<T__ContactsFolderType>& contactsFolder );
+    QList<T__ContactsFolderType> contactsFolder() const;
+    void setSearchFolder( const QList<T__SearchFolderType>& searchFolder );
+    QList<T__SearchFolderType> searchFolder() const;
+    void setTasksFolder( const QList<T__TasksFolderType>& tasksFolder );
+    QList<T__TasksFolderType> tasksFolder() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ArrayOfFoldersType();
+    ~T__ArrayOfFoldersType();
+
+public:
+    T__ArrayOfFoldersType( const T__ArrayOfFoldersType& );
+    T__ArrayOfFoldersType &operator=( const T__ArrayOfFoldersType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__BaseSubscriptionRequestType
+{
+public:
+    void setFolderIds( const T__NonEmptyArrayOfBaseFolderIdsType& folderIds );
+    T__NonEmptyArrayOfBaseFolderIdsType folderIds() const;
+    void setEventTypes( const T__NonEmptyArrayOfNotificationEventTypesType& eventTypes );
+    T__NonEmptyArrayOfNotificationEventTypesType eventTypes() const;
+    void setWatermark( const T__WatermarkType& watermark );
+    T__WatermarkType watermark() const;
     virtual KDSoapValue serialize( const QString& valueName ) const;
     virtual void deserialize( const KDSoapValue& mainValue );
-    T__BaseFolderIdType();
-    virtual ~T__BaseFolderIdType();
-
-};
-
-class T__ItemChangeType
-{
-public:
-    void setItemId( const T__ItemIdType& itemId );
-    T__ItemIdType itemId() const;
-    void setOccurrenceItemId( const T__OccurrenceItemIdType& occurrenceItemId );
-    T__OccurrenceItemIdType occurrenceItemId() const;
-    void setRecurringMasterItemId( const T__RecurringMasterItemIdType& recurringMasterItemId );
-    T__RecurringMasterItemIdType recurringMasterItemId() const;
-    void setUpdates( const T__NonEmptyArrayOfItemChangeDescriptionsType& updates );
-    T__NonEmptyArrayOfItemChangeDescriptionsType updates() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ItemChangeType();
-    ~T__ItemChangeType();
+    T__BaseSubscriptionRequestType();
+    virtual ~T__BaseSubscriptionRequestType();
 
 public:
-    T__ItemChangeType( const T__ItemChangeType& );
-    T__ItemChangeType &operator=( const T__ItemChangeType& );
+    T__BaseSubscriptionRequestType( const T__BaseSubscriptionRequestType& );
+    T__BaseSubscriptionRequestType &operator=( const T__BaseSubscriptionRequestType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__ConnectingSIDType
+class T__CompleteNameType
 {
 public:
-    void setPrincipalName( const QString& principalName );
-    QString principalName() const;
-    void setSID( const QString& sID );
-    QString sID() const;
-    void setPrimarySmtpAddress( const QString& primarySmtpAddress );
-    QString primarySmtpAddress() const;
+    void setTitle( const QString& title );
+    QString title() const;
+    void setFirstName( const QString& firstName );
+    QString firstName() const;
+    void setMiddleName( const QString& middleName );
+    QString middleName() const;
+    void setLastName( const QString& lastName );
+    QString lastName() const;
+    void setSuffix( const QString& suffix );
+    QString suffix() const;
+    void setInitials( const QString& initials );
+    QString initials() const;
+    void setFullName( const QString& fullName );
+    QString fullName() const;
+    void setNickname( const QString& nickname );
+    QString nickname() const;
+    void setYomiFirstName( const QString& yomiFirstName );
+    QString yomiFirstName() const;
+    void setYomiLastName( const QString& yomiLastName );
+    QString yomiLastName() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__ConnectingSIDType();
-    ~T__ConnectingSIDType();
+    T__CompleteNameType();
+    ~T__CompleteNameType();
 
 public:
-    T__ConnectingSIDType( const T__ConnectingSIDType& );
-    T__ConnectingSIDType &operator=( const T__ConnectingSIDType& );
+    T__CompleteNameType( const T__CompleteNameType& );
+    T__CompleteNameType &operator=( const T__CompleteNameType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__EmailAddressDictionaryEntryType
+class T__SyncFolderHierarchyCreateOrUpdateType
 {
 public:
-    void setValue( const QString& value );
-    QString value() const;
-    T__EmailAddressDictionaryEntryType( const QString& value );
-    operator QString() const;
-    void setKey( const T__EmailAddressKeyType& key );
-    T__EmailAddressKeyType key() const;
+    void setFolder( const T__FolderType& folder );
+    T__FolderType folder() const;
+    void setCalendarFolder( const T__CalendarFolderType& calendarFolder );
+    T__CalendarFolderType calendarFolder() const;
+    void setContactsFolder( const T__ContactsFolderType& contactsFolder );
+    T__ContactsFolderType contactsFolder() const;
+    void setSearchFolder( const T__SearchFolderType& searchFolder );
+    T__SearchFolderType searchFolder() const;
+    void setTasksFolder( const T__TasksFolderType& tasksFolder );
+    T__TasksFolderType tasksFolder() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__EmailAddressDictionaryEntryType();
-    ~T__EmailAddressDictionaryEntryType();
+    T__SyncFolderHierarchyCreateOrUpdateType();
+    ~T__SyncFolderHierarchyCreateOrUpdateType();
 
 public:
-    T__EmailAddressDictionaryEntryType( const T__EmailAddressDictionaryEntryType& );
-    T__EmailAddressDictionaryEntryType &operator=( const T__EmailAddressDictionaryEntryType& );
+    T__SyncFolderHierarchyCreateOrUpdateType( const T__SyncFolderHierarchyCreateOrUpdateType& );
+    T__SyncFolderHierarchyCreateOrUpdateType &operator=( const T__SyncFolderHierarchyCreateOrUpdateType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__EffectiveRightsType
+class T__MailboxData
 {
 public:
-    void setCreateAssociated( bool createAssociated );
-    bool createAssociated() const;
-    void setCreateContents( bool createContents );
-    bool createContents() const;
-    void setCreateHierarchy( bool createHierarchy );
-    bool createHierarchy() const;
-    void setDelete( bool delete_ );
-    bool delete_() const;
-    void setModify( bool modify );
-    bool modify() const;
-    void setRead( bool read );
-    bool read() const;
+    void setEmail( const T__EmailAddress& email );
+    T__EmailAddress email() const;
+    void setAttendeeType( const T__MeetingAttendeeType& attendeeType );
+    T__MeetingAttendeeType attendeeType() const;
+    void setExcludeConflicts( bool excludeConflicts );
+    bool excludeConflicts() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__EffectiveRightsType();
-    ~T__EffectiveRightsType();
+    T__MailboxData();
+    ~T__MailboxData();
 
 public:
-    T__EffectiveRightsType( const T__EffectiveRightsType& );
-    T__EffectiveRightsType &operator=( const T__EffectiveRightsType& );
+    T__MailboxData( const T__MailboxData& );
+    T__MailboxData &operator=( const T__MailboxData& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__PhysicalAddressDictionaryType
+class T__ServerVersionInfo
 {
 public:
-    void setEntry( const QList<T__PhysicalAddressDictionaryEntryType>& entry );
-    QList<T__PhysicalAddressDictionaryEntryType> entry() const;
+    void setMajorVersion( int majorVersion );
+    int majorVersion() const;
+    void setMinorVersion( int minorVersion );
+    int minorVersion() const;
+    void setMajorBuildNumber( int majorBuildNumber );
+    int majorBuildNumber() const;
+    void setMinorBuildNumber( int minorBuildNumber );
+    int minorBuildNumber() const;
+    void setVersion( const QString& version );
+    QString version() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__PhysicalAddressDictionaryType();
-    ~T__PhysicalAddressDictionaryType();
+    T__ServerVersionInfo();
+    ~T__ServerVersionInfo();
 
 public:
-    T__PhysicalAddressDictionaryType( const T__PhysicalAddressDictionaryType& );
-    T__PhysicalAddressDictionaryType &operator=( const T__PhysicalAddressDictionaryType& );
+    T__ServerVersionInfo( const T__ServerVersionInfo& );
+    T__ServerVersionInfo &operator=( const T__ServerVersionInfo& );
 
 private:
     class PrivateDPtr;
@@ -2355,179 +2478,134 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__TaskRecurrenceType
+class T__ArrayOfStringsType
 {
 public:
-    void setRelativeYearlyRecurrence( const T__RelativeYearlyRecurrencePatternType& relativeYearlyRecurrence );
-    T__RelativeYearlyRecurrencePatternType relativeYearlyRecurrence() const;
-    void setAbsoluteYearlyRecurrence( const T__AbsoluteYearlyRecurrencePatternType& absoluteYearlyRecurrence );
-    T__AbsoluteYearlyRecurrencePatternType absoluteYearlyRecurrence() const;
-    void setRelativeMonthlyRecurrence( const T__RelativeMonthlyRecurrencePatternType& relativeMonthlyRecurrence );
-    T__RelativeMonthlyRecurrencePatternType relativeMonthlyRecurrence() const;
-    void setAbsoluteMonthlyRecurrence( const T__AbsoluteMonthlyRecurrencePatternType& absoluteMonthlyRecurrence );
-    T__AbsoluteMonthlyRecurrencePatternType absoluteMonthlyRecurrence() const;
-    void setWeeklyRecurrence( const T__WeeklyRecurrencePatternType& weeklyRecurrence );
-    T__WeeklyRecurrencePatternType weeklyRecurrence() const;
-    void setDailyRecurrence( const T__DailyRecurrencePatternType& dailyRecurrence );
-    T__DailyRecurrencePatternType dailyRecurrence() const;
-    void setDailyRegeneration( const T__DailyRegeneratingPatternType& dailyRegeneration );
-    T__DailyRegeneratingPatternType dailyRegeneration() const;
-    void setWeeklyRegeneration( const T__WeeklyRegeneratingPatternType& weeklyRegeneration );
-    T__WeeklyRegeneratingPatternType weeklyRegeneration() const;
-    void setMonthlyRegeneration( const T__MonthlyRegeneratingPatternType& monthlyRegeneration );
-    T__MonthlyRegeneratingPatternType monthlyRegeneration() const;
-    void setYearlyRegeneration( const T__YearlyRegeneratingPatternType& yearlyRegeneration );
-    T__YearlyRegeneratingPatternType yearlyRegeneration() const;
-    void setNoEndRecurrence( const T__NoEndRecurrenceRangeType& noEndRecurrence );
-    T__NoEndRecurrenceRangeType noEndRecurrence() const;
-    void setEndDateRecurrence( const T__EndDateRecurrenceRangeType& endDateRecurrence );
-    T__EndDateRecurrenceRangeType endDateRecurrence() const;
-    void setNumberedRecurrence( const T__NumberedRecurrenceRangeType& numberedRecurrence );
-    T__NumberedRecurrenceRangeType numberedRecurrence() const;
+    void setString( const QStringList& string );
+    QStringList string() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__TaskRecurrenceType();
-    ~T__TaskRecurrenceType();
+    T__ArrayOfStringsType();
+    ~T__ArrayOfStringsType();
 
 public:
-    T__TaskRecurrenceType( const T__TaskRecurrenceType& );
-    T__TaskRecurrenceType &operator=( const T__TaskRecurrenceType& );
+    T__ArrayOfStringsType( const T__ArrayOfStringsType& );
+    T__ArrayOfStringsType &operator=( const T__ArrayOfStringsType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__SerializedSecurityContextType
+class T__FindItemParentType
 {
 public:
-    void setUserSid( const QString& userSid );
-    QString userSid() const;
-    void setGroupSids( const T__NonEmptyArrayOfGroupIdentifiersType& groupSids );
-    T__NonEmptyArrayOfGroupIdentifiersType groupSids() const;
-    void setRestrictedGroupSids( const T__NonEmptyArrayOfRestrictedGroupIdentifiersType& restrictedGroupSids );
-    T__NonEmptyArrayOfRestrictedGroupIdentifiersType restrictedGroupSids() const;
-    void setPrimarySmtpAddress( const QString& primarySmtpAddress );
-    QString primarySmtpAddress() const;
+    void setItems( const T__ArrayOfRealItemsType& items );
+    T__ArrayOfRealItemsType items() const;
+    void setGroups( const T__ArrayOfGroupedItemsType& groups );
+    T__ArrayOfGroupedItemsType groups() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__SerializedSecurityContextType();
-    ~T__SerializedSecurityContextType();
+    T__FindItemParentType();
+    ~T__FindItemParentType();
 
 public:
-    T__SerializedSecurityContextType( const T__SerializedSecurityContextType& );
-    T__SerializedSecurityContextType &operator=( const T__SerializedSecurityContextType& );
+    T__FindItemParentType( const T__FindItemParentType& );
+    T__FindItemParentType &operator=( const T__FindItemParentType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__ArrayOfCalendarPermissionsType
+class T__NonEmptyArrayOfRequestAttachmentIdsType
 {
 public:
-    void setCalendarPermission( const QList<T__CalendarPermissionType>& calendarPermission );
-    QList<T__CalendarPermissionType> calendarPermission() const;
+    void setAttachmentId( const QList<T__RequestAttachmentIdType>& attachmentId );
+    QList<T__RequestAttachmentIdType> attachmentId() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfCalendarPermissionsType();
-    ~T__ArrayOfCalendarPermissionsType();
+    T__NonEmptyArrayOfRequestAttachmentIdsType();
+    ~T__NonEmptyArrayOfRequestAttachmentIdsType();
 
 public:
-    T__ArrayOfCalendarPermissionsType( const T__ArrayOfCalendarPermissionsType& );
-    T__ArrayOfCalendarPermissionsType &operator=( const T__ArrayOfCalendarPermissionsType& );
+    T__NonEmptyArrayOfRequestAttachmentIdsType( const T__NonEmptyArrayOfRequestAttachmentIdsType& );
+    T__NonEmptyArrayOfRequestAttachmentIdsType &operator=( const T__NonEmptyArrayOfRequestAttachmentIdsType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__NonEmptyArrayOfInternetHeadersType
+class TNS__SuggestionsResponseType
 {
 public:
-    void setInternetMessageHeader( const QList<T__InternetHeaderType>& internetMessageHeader );
-    QList<T__InternetHeaderType> internetMessageHeader() const;
+    void setResponseMessage( const TNS__ResponseMessageType& responseMessage );
+    TNS__ResponseMessageType responseMessage() const;
+    void setSuggestionDayResultArray( const T__ArrayOfSuggestionDayResult& suggestionDayResultArray );
+    T__ArrayOfSuggestionDayResult suggestionDayResultArray() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfInternetHeadersType();
-    ~T__NonEmptyArrayOfInternetHeadersType();
+    TNS__SuggestionsResponseType();
+    ~TNS__SuggestionsResponseType();
 
 public:
-    T__NonEmptyArrayOfInternetHeadersType( const T__NonEmptyArrayOfInternetHeadersType& );
-    T__NonEmptyArrayOfInternetHeadersType &operator=( const T__NonEmptyArrayOfInternetHeadersType& );
+    TNS__SuggestionsResponseType( const TNS__SuggestionsResponseType& );
+    TNS__SuggestionsResponseType &operator=( const TNS__SuggestionsResponseType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__NonEmptyArrayOfAllItemsType
+class T__ReplyBody
 {
 public:
-    void setItem( const QList<T__ItemType>& item );
-    QList<T__ItemType> item() const;
-    void setMessage( const QList<T__MessageType>& message );
-    QList<T__MessageType> message() const;
-    void setCalendarItem( const QList<T__CalendarItemType>& calendarItem );
-    QList<T__CalendarItemType> calendarItem() const;
-    void setContact( const QList<T__ContactItemType>& contact );
-    QList<T__ContactItemType> contact() const;
-    void setDistributionList( const QList<T__DistributionListType>& distributionList );
-    QList<T__DistributionListType> distributionList() const;
-    void setMeetingMessage( const QList<T__MeetingMessageType>& meetingMessage );
-    QList<T__MeetingMessageType> meetingMessage() const;
-    void setMeetingRequest( const QList<T__MeetingRequestMessageType>& meetingRequest );
-    QList<T__MeetingRequestMessageType> meetingRequest() const;
-    void setMeetingResponse( const QList<T__MeetingResponseMessageType>& meetingResponse );
-    QList<T__MeetingResponseMessageType> meetingResponse() const;
-    void setMeetingCancellation( const QList<T__MeetingCancellationMessageType>& meetingCancellation );
-    QList<T__MeetingCancellationMessageType> meetingCancellation() const;
-    void setTask( const QList<T__TaskType>& task );
-    QList<T__TaskType> task() const;
-    void setPostItem( const QList<T__PostItemType>& postItem );
-    QList<T__PostItemType> postItem() const;
-    void setReplyToItem( const QList<T__ReplyToItemType>& replyToItem );
-    QList<T__ReplyToItemType> replyToItem() const;
-    void setForwardItem( const QList<T__ForwardItemType>& forwardItem );
-    QList<T__ForwardItemType> forwardItem() const;
-    void setReplyAllToItem( const QList<T__ReplyAllToItemType>& replyAllToItem );
-    QList<T__ReplyAllToItemType> replyAllToItem() const;
-    void setAcceptItem( const QList<T__AcceptItemType>& acceptItem );
-    QList<T__AcceptItemType> acceptItem() const;
-    void setTentativelyAcceptItem( const QList<T__TentativelyAcceptItemType>& tentativelyAcceptItem );
-    QList<T__TentativelyAcceptItemType> tentativelyAcceptItem() const;
-    void setDeclineItem( const QList<T__DeclineItemType>& declineItem );
-    QList<T__DeclineItemType> declineItem() const;
-    void setCancelCalendarItem( const QList<T__CancelCalendarItemType>& cancelCalendarItem );
-    QList<T__CancelCalendarItemType> cancelCalendarItem() const;
-    void setRemoveItem( const QList<T__RemoveItemType>& removeItem );
-    QList<T__RemoveItemType> removeItem() const;
-    void setSuppressReadReceipt( const QList<T__SuppressReadReceiptType>& suppressReadReceipt );
-    QList<T__SuppressReadReceiptType> suppressReadReceipt() const;
-    void setPostReplyItem( const QList<T__PostReplyItemType>& postReplyItem );
-    QList<T__PostReplyItemType> postReplyItem() const;
+    void setMessage( const QString& message );
+    QString message() const;
+    void setLang( const QString& lang );
+    QString lang() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfAllItemsType();
-    ~T__NonEmptyArrayOfAllItemsType();
+    T__ReplyBody();
+    ~T__ReplyBody();
 
 public:
-    T__NonEmptyArrayOfAllItemsType( const T__NonEmptyArrayOfAllItemsType& );
-    T__NonEmptyArrayOfAllItemsType &operator=( const T__NonEmptyArrayOfAllItemsType& );
+    T__ReplyBody( const T__ReplyBody& );
+    T__ReplyBody &operator=( const T__ReplyBody& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__BaseEmailAddressType
+/**
+    Represents the field of each item to aggregate on and the qualifier to
+    apply to that field in determining which item will represent the group.
+ */
+class T__AggregateOnType
 {
 public:
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__BaseEmailAddressType();
-    virtual ~T__BaseEmailAddressType();
+    void setFieldURI( const T__PathToUnindexedFieldType& fieldURI );
+    T__PathToUnindexedFieldType fieldURI() const;
+    void setIndexedFieldURI( const T__PathToIndexedFieldType& indexedFieldURI );
+    T__PathToIndexedFieldType indexedFieldURI() const;
+    void setExtendedFieldURI( const T__PathToExtendedFieldType& extendedFieldURI );
+    T__PathToExtendedFieldType extendedFieldURI() const;
+    void setAggregate( const T__AggregateType& aggregate );
+    T__AggregateType aggregate() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__AggregateOnType();
+    ~T__AggregateOnType();
 
+public:
+    T__AggregateOnType( const T__AggregateOnType& );
+    T__AggregateOnType &operator=( const T__AggregateOnType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
 class T__NonEmptyArrayOfAttendeesType
@@ -2549,176 +2627,348 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__OccurrenceInfoType
+/**
+    Represents an extended property instance (both its path identifier along
+    with its associated value).
+ */
+class T__ExtendedPropertyType
 {
 public:
-    void setItemId( const T__ItemIdType& itemId );
-    T__ItemIdType itemId() const;
-    void setStart( const KDDateTime& start );
-    KDDateTime start() const;
-    void setEnd( const KDDateTime& end );
-    KDDateTime end() const;
-    void setOriginalStart( const KDDateTime& originalStart );
-    KDDateTime originalStart() const;
+    void setExtendedFieldURI( const T__PathToExtendedFieldType& extendedFieldURI );
+    T__PathToExtendedFieldType extendedFieldURI() const;
+    void setValue( const QString& value );
+    QString value() const;
+    void setValues( const T__NonEmptyArrayOfPropertyValuesType& values );
+    T__NonEmptyArrayOfPropertyValuesType values() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__OccurrenceInfoType();
-    ~T__OccurrenceInfoType();
+    T__ExtendedPropertyType();
+    ~T__ExtendedPropertyType();
 
 public:
-    T__OccurrenceInfoType( const T__OccurrenceInfoType& );
-    T__OccurrenceInfoType &operator=( const T__OccurrenceInfoType& );
+    T__ExtendedPropertyType( const T__ExtendedPropertyType& );
+    T__ExtendedPropertyType &operator=( const T__ExtendedPropertyType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__ConstantValueType
+class T__NonEmptyArrayOfFieldOrdersType
+{
+public:
+    void setFieldOrder( const QList<T__FieldOrderType>& fieldOrder );
+    QList<T__FieldOrderType> fieldOrder() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__NonEmptyArrayOfFieldOrdersType();
+    ~T__NonEmptyArrayOfFieldOrdersType();
+
+public:
+    T__NonEmptyArrayOfFieldOrdersType( const T__NonEmptyArrayOfFieldOrdersType& );
+    T__NonEmptyArrayOfFieldOrdersType &operator=( const T__NonEmptyArrayOfFieldOrdersType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__DelegateUserType
+{
+public:
+    void setUserId( const T__UserIdType& userId );
+    T__UserIdType userId() const;
+    void setDelegatePermissions( const T__DelegatePermissionsType& delegatePermissions );
+    T__DelegatePermissionsType delegatePermissions() const;
+    void setReceiveCopiesOfMeetingMessages( bool receiveCopiesOfMeetingMessages );
+    bool receiveCopiesOfMeetingMessages() const;
+    void setViewPrivateItems( bool viewPrivateItems );
+    bool viewPrivateItems() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__DelegateUserType();
+    ~T__DelegateUserType();
+
+public:
+    T__DelegateUserType( const T__DelegateUserType& );
+    T__DelegateUserType &operator=( const T__DelegateUserType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__BasePathToElementType
+{
+public:
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__BasePathToElementType();
+    virtual ~T__BasePathToElementType();
+
+};
+
+class T__SyncFolderItemsReadFlagType
+{
+public:
+    void setItemId( const T__ItemIdType& itemId );
+    T__ItemIdType itemId() const;
+    void setIsRead( bool isRead );
+    bool isRead() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__SyncFolderItemsReadFlagType();
+    ~T__SyncFolderItemsReadFlagType();
+
+public:
+    T__SyncFolderItemsReadFlagType( const T__SyncFolderItemsReadFlagType& );
+    T__SyncFolderItemsReadFlagType &operator=( const T__SyncFolderItemsReadFlagType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__SearchParametersType
+{
+public:
+    void setRestriction( const T__RestrictionType& restriction );
+    T__RestrictionType restriction() const;
+    void setBaseFolderIds( const T__NonEmptyArrayOfBaseFolderIdsType& baseFolderIds );
+    T__NonEmptyArrayOfBaseFolderIdsType baseFolderIds() const;
+    void setTraversal( const T__SearchFolderTraversalType& traversal );
+    T__SearchFolderTraversalType traversal() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__SearchParametersType();
+    ~T__SearchParametersType();
+
+public:
+    T__SearchParametersType( const T__SearchParametersType& );
+    T__SearchParametersType &operator=( const T__SearchParametersType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__NonEmptyArrayOfPropertyValuesType
 {
 public:
     void setValue( const QString& value );
     QString value() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__ConstantValueType();
-    ~T__ConstantValueType();
+    T__NonEmptyArrayOfPropertyValuesType();
+    ~T__NonEmptyArrayOfPropertyValuesType();
 
 public:
-    T__ConstantValueType( const T__ConstantValueType& );
-    T__ConstantValueType &operator=( const T__ConstantValueType& );
+    T__NonEmptyArrayOfPropertyValuesType( const T__NonEmptyArrayOfPropertyValuesType& );
+    T__NonEmptyArrayOfPropertyValuesType &operator=( const T__NonEmptyArrayOfPropertyValuesType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__RecurrencePatternBaseType
+class TNS__GetUserOofSettingsResponse
 {
 public:
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__RecurrencePatternBaseType();
-    virtual ~T__RecurrencePatternBaseType();
-
-};
-
-class T__NonEmptyArrayOfItemChangeDescriptionsType
-{
-public:
-    void setAppendToItemField( const QList<T__AppendToItemFieldType>& appendToItemField );
-    QList<T__AppendToItemFieldType> appendToItemField() const;
-    void setSetItemField( const QList<T__SetItemFieldType>& setItemField );
-    QList<T__SetItemFieldType> setItemField() const;
-    void setDeleteItemField( const QList<T__DeleteItemFieldType>& deleteItemField );
-    QList<T__DeleteItemFieldType> deleteItemField() const;
+    void setResponseMessage( const TNS__ResponseMessageType& responseMessage );
+    TNS__ResponseMessageType responseMessage() const;
+    void setOofSettings( const T__UserOofSettings& oofSettings );
+    T__UserOofSettings oofSettings() const;
+    void setAllowExternalOof( const T__ExternalAudience& allowExternalOof );
+    T__ExternalAudience allowExternalOof() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfItemChangeDescriptionsType();
-    ~T__NonEmptyArrayOfItemChangeDescriptionsType();
+    TNS__GetUserOofSettingsResponse();
+    ~TNS__GetUserOofSettingsResponse();
 
 public:
-    T__NonEmptyArrayOfItemChangeDescriptionsType( const T__NonEmptyArrayOfItemChangeDescriptionsType& );
-    T__NonEmptyArrayOfItemChangeDescriptionsType &operator=( const T__NonEmptyArrayOfItemChangeDescriptionsType& );
+    TNS__GetUserOofSettingsResponse( const TNS__GetUserOofSettingsResponse& );
+    TNS__GetUserOofSettingsResponse &operator=( const TNS__GetUserOofSettingsResponse& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__AttendeeConflictData
+class T__FolderChangeType
 {
 public:
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__AttendeeConflictData();
-    virtual ~T__AttendeeConflictData();
-
-};
-
-class T__SerializableTimeZoneTime
-{
-public:
-    void setBias( int bias );
-    int bias() const;
-    void setTime( const QString& time );
-    QString time() const;
-    void setDayOrder( int dayOrder );
-    int dayOrder() const;
-    void setMonth( int month );
-    int month() const;
-    void setDayOfWeek( const T__DayOfWeekType& dayOfWeek );
-    T__DayOfWeekType dayOfWeek() const;
-    void setYear( const QString& year );
-    QString year() const;
+    void setFolderId( const T__FolderIdType& folderId );
+    T__FolderIdType folderId() const;
+    void setDistinguishedFolderId( const T__DistinguishedFolderIdType& distinguishedFolderId );
+    T__DistinguishedFolderIdType distinguishedFolderId() const;
+    void setUpdates( const T__NonEmptyArrayOfFolderChangeDescriptionsType& updates );
+    T__NonEmptyArrayOfFolderChangeDescriptionsType updates() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__SerializableTimeZoneTime();
-    ~T__SerializableTimeZoneTime();
+    T__FolderChangeType();
+    ~T__FolderChangeType();
 
 public:
-    T__SerializableTimeZoneTime( const T__SerializableTimeZoneTime& );
-    T__SerializableTimeZoneTime &operator=( const T__SerializableTimeZoneTime& );
+    T__FolderChangeType( const T__FolderChangeType& );
+    T__FolderChangeType &operator=( const T__FolderChangeType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__ChangeDescriptionType
+class T__NonEmptyArrayOfOccurrenceInfoType
 {
 public:
-    void setPath( const T__BasePathToElementType& path );
-    T__BasePathToElementType path() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__ChangeDescriptionType();
-    virtual ~T__ChangeDescriptionType();
-
-public:
-    T__ChangeDescriptionType( const T__ChangeDescriptionType& );
-    T__ChangeDescriptionType &operator=( const T__ChangeDescriptionType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-/**
-    Compound property for Managed Folder related information for Managed
-    Folders.
- */
-class T__ManagedFolderInformationType
-{
-public:
-    void setCanDelete( bool canDelete );
-    bool canDelete() const;
-    void setCanRenameOrMove( bool canRenameOrMove );
-    bool canRenameOrMove() const;
-    void setMustDisplayComment( bool mustDisplayComment );
-    bool mustDisplayComment() const;
-    void setHasQuota( bool hasQuota );
-    bool hasQuota() const;
-    void setIsManagedFoldersRoot( bool isManagedFoldersRoot );
-    bool isManagedFoldersRoot() const;
-    void setManagedFolderId( const QString& managedFolderId );
-    QString managedFolderId() const;
-    void setComment( const QString& comment );
-    QString comment() const;
-    void setStorageQuota( int storageQuota );
-    int storageQuota() const;
-    void setFolderSize( int folderSize );
-    int folderSize() const;
-    void setHomePage( const QString& homePage );
-    QString homePage() const;
+    void setOccurrence( const QList<T__OccurrenceInfoType>& occurrence );
+    QList<T__OccurrenceInfoType> occurrence() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__ManagedFolderInformationType();
-    ~T__ManagedFolderInformationType();
+    T__NonEmptyArrayOfOccurrenceInfoType();
+    ~T__NonEmptyArrayOfOccurrenceInfoType();
 
 public:
-    T__ManagedFolderInformationType( const T__ManagedFolderInformationType& );
-    T__ManagedFolderInformationType &operator=( const T__ManagedFolderInformationType& );
+    T__NonEmptyArrayOfOccurrenceInfoType( const T__NonEmptyArrayOfOccurrenceInfoType& );
+    T__NonEmptyArrayOfOccurrenceInfoType &operator=( const T__NonEmptyArrayOfOccurrenceInfoType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ArrayOfWorkingPeriod
+{
+public:
+    void setWorkingPeriod( const QList<T__WorkingPeriod>& workingPeriod );
+    QList<T__WorkingPeriod> workingPeriod() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ArrayOfWorkingPeriod();
+    ~T__ArrayOfWorkingPeriod();
+
+public:
+    T__ArrayOfWorkingPeriod( const T__ArrayOfWorkingPeriod& );
+    T__ArrayOfWorkingPeriod &operator=( const T__ArrayOfWorkingPeriod& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__NonEmptyArrayOfDeletedOccurrencesType
+{
+public:
+    void setDeletedOccurrence( const QList<T__DeletedOccurrenceInfoType>& deletedOccurrence );
+    QList<T__DeletedOccurrenceInfoType> deletedOccurrence() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__NonEmptyArrayOfDeletedOccurrencesType();
+    ~T__NonEmptyArrayOfDeletedOccurrencesType();
+
+public:
+    T__NonEmptyArrayOfDeletedOccurrencesType( const T__NonEmptyArrayOfDeletedOccurrencesType& );
+    T__NonEmptyArrayOfDeletedOccurrencesType &operator=( const T__NonEmptyArrayOfDeletedOccurrencesType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ArrayOfSuggestion
+{
+public:
+    void setSuggestion( const QList<T__Suggestion>& suggestion );
+    QList<T__Suggestion> suggestion() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ArrayOfSuggestion();
+    ~T__ArrayOfSuggestion();
+
+public:
+    T__ArrayOfSuggestion( const T__ArrayOfSuggestion& );
+    T__ArrayOfSuggestion &operator=( const T__ArrayOfSuggestion& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__SingleRecipientType
+{
+public:
+    void setMailbox( const T__EmailAddressType& mailbox );
+    T__EmailAddressType mailbox() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__SingleRecipientType();
+    ~T__SingleRecipientType();
+
+public:
+    T__SingleRecipientType( const T__SingleRecipientType& );
+    T__SingleRecipientType &operator=( const T__SingleRecipientType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ArrayOfAttendeeConflictData
+{
+public:
+    void setUnknownAttendeeConflictData( const QList<T__UnknownAttendeeConflictData>& unknownAttendeeConflictData );
+    QList<T__UnknownAttendeeConflictData> unknownAttendeeConflictData() const;
+    void setIndividualAttendeeConflictData( const QList<T__IndividualAttendeeConflictData>& individualAttendeeConflictData );
+    QList<T__IndividualAttendeeConflictData> individualAttendeeConflictData() const;
+    void setTooBigGroupAttendeeConflictData( const QList<T__TooBigGroupAttendeeConflictData>& tooBigGroupAttendeeConflictData );
+    QList<T__TooBigGroupAttendeeConflictData> tooBigGroupAttendeeConflictData() const;
+    void setGroupAttendeeConflictData( const QList<T__GroupAttendeeConflictData>& groupAttendeeConflictData );
+    QList<T__GroupAttendeeConflictData> groupAttendeeConflictData() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ArrayOfAttendeeConflictData();
+    ~T__ArrayOfAttendeeConflictData();
+
+public:
+    T__ArrayOfAttendeeConflictData( const T__ArrayOfAttendeeConflictData& );
+    T__ArrayOfAttendeeConflictData &operator=( const T__ArrayOfAttendeeConflictData& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__NonEmptyArrayOfItemChangesType
+{
+public:
+    void setItemChange( const QList<T__ItemChangeType>& itemChange );
+    QList<T__ItemChangeType> itemChange() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__NonEmptyArrayOfItemChangesType();
+    ~T__NonEmptyArrayOfItemChangesType();
+
+public:
+    T__NonEmptyArrayOfItemChangesType( const T__NonEmptyArrayOfItemChangesType& );
+    T__NonEmptyArrayOfItemChangesType &operator=( const T__NonEmptyArrayOfItemChangesType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__NonEmptyArrayOfPathsToElementType
+{
+public:
+    void setPath( const QList<T__BasePathToElementType>& path );
+    QList<T__BasePathToElementType> path() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__NonEmptyArrayOfPathsToElementType();
+    ~T__NonEmptyArrayOfPathsToElementType();
+
+public:
+    T__NonEmptyArrayOfPathsToElementType( const T__NonEmptyArrayOfPathsToElementType& );
+    T__NonEmptyArrayOfPathsToElementType &operator=( const T__NonEmptyArrayOfPathsToElementType& );
 
 private:
     class PrivateDPtr;
@@ -2746,84 +2996,63 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__BaseNotificationEventType
+class T__SyncFolderHierarchyDeleteType
 {
 public:
-    void setWatermark( const T__WatermarkType& watermark );
-    T__WatermarkType watermark() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__BaseNotificationEventType();
-    virtual ~T__BaseNotificationEventType();
+    void setFolderId( const T__FolderIdType& folderId );
+    T__FolderIdType folderId() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__SyncFolderHierarchyDeleteType();
+    ~T__SyncFolderHierarchyDeleteType();
 
 public:
-    T__BaseNotificationEventType( const T__BaseNotificationEventType& );
-    T__BaseNotificationEventType &operator=( const T__BaseNotificationEventType& );
+    T__SyncFolderHierarchyDeleteType( const T__SyncFolderHierarchyDeleteType& );
+    T__SyncFolderHierarchyDeleteType &operator=( const T__SyncFolderHierarchyDeleteType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__BodyType
+class T__ArrayOfCalendarEvent
 {
 public:
-    void setValue( const QString& value );
-    QString value() const;
-    T__BodyType( const QString& value );
-    operator QString() const;
-    void setBodyType( const T__BodyTypeType& bodyType );
-    T__BodyTypeType bodyType() const;
+    void setCalendarEvent( const QList<T__CalendarEvent>& calendarEvent );
+    QList<T__CalendarEvent> calendarEvent() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__BodyType();
-    ~T__BodyType();
+    T__ArrayOfCalendarEvent();
+    ~T__ArrayOfCalendarEvent();
 
 public:
-    T__BodyType( const T__BodyType& );
-    T__BodyType &operator=( const T__BodyType& );
+    T__ArrayOfCalendarEvent( const T__ArrayOfCalendarEvent& );
+    T__ArrayOfCalendarEvent &operator=( const T__ArrayOfCalendarEvent& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__WorkingPeriod
+class T__OccurrenceInfoType
 {
 public:
-    void setDayOfWeek( const T__DaysOfWeekType& dayOfWeek );
-    T__DaysOfWeekType dayOfWeek() const;
-    void setStartTimeInMinutes( int startTimeInMinutes );
-    int startTimeInMinutes() const;
-    void setEndTimeInMinutes( int endTimeInMinutes );
-    int endTimeInMinutes() const;
+    void setItemId( const T__ItemIdType& itemId );
+    T__ItemIdType itemId() const;
+    void setStart( const KDDateTime& start );
+    KDDateTime start() const;
+    void setEnd( const KDDateTime& end );
+    KDDateTime end() const;
+    void setOriginalStart( const KDDateTime& originalStart );
+    KDDateTime originalStart() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__WorkingPeriod();
-    ~T__WorkingPeriod();
+    T__OccurrenceInfoType();
+    ~T__OccurrenceInfoType();
 
 public:
-    T__WorkingPeriod( const T__WorkingPeriod& );
-    T__WorkingPeriod &operator=( const T__WorkingPeriod& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__EmailAddressDictionaryType
-{
-public:
-    void setEntry( const QList<T__EmailAddressDictionaryEntryType>& entry );
-    QList<T__EmailAddressDictionaryEntryType> entry() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__EmailAddressDictionaryType();
-    ~T__EmailAddressDictionaryType();
-
-public:
-    T__EmailAddressDictionaryType( const T__EmailAddressDictionaryType& );
-    T__EmailAddressDictionaryType &operator=( const T__EmailAddressDictionaryType& );
+    T__OccurrenceInfoType( const T__OccurrenceInfoType& );
+    T__OccurrenceInfoType &operator=( const T__OccurrenceInfoType& );
 
 private:
     class PrivateDPtr;
@@ -2903,131 +3132,476 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__SuggestionsResponseType
+class T__ChangeDescriptionType
 {
 public:
-    void setResponseMessage( const TNS__ResponseMessageType& responseMessage );
-    TNS__ResponseMessageType responseMessage() const;
-    void setSuggestionDayResultArray( const T__ArrayOfSuggestionDayResult& suggestionDayResultArray );
-    T__ArrayOfSuggestionDayResult suggestionDayResultArray() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__SuggestionsResponseType();
-    ~TNS__SuggestionsResponseType();
+    void setPath( const T__BasePathToElementType& path );
+    T__BasePathToElementType path() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__ChangeDescriptionType();
+    virtual ~T__ChangeDescriptionType();
 
 public:
-    TNS__SuggestionsResponseType( const TNS__SuggestionsResponseType& );
-    TNS__SuggestionsResponseType &operator=( const TNS__SuggestionsResponseType& );
+    T__ChangeDescriptionType( const T__ChangeDescriptionType& );
+    T__ChangeDescriptionType &operator=( const T__ChangeDescriptionType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__PhysicalAddressDictionaryEntryType
+class T__BasePagingType
 {
 public:
-    void setStreet( const QString& street );
-    QString street() const;
-    void setCity( const QString& city );
-    QString city() const;
-    void setState( const QString& state );
-    QString state() const;
-    void setCountryOrRegion( const QString& countryOrRegion );
-    QString countryOrRegion() const;
-    void setPostalCode( const QString& postalCode );
-    QString postalCode() const;
-    void setKey( const T__PhysicalAddressKeyType& key );
-    T__PhysicalAddressKeyType key() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__PhysicalAddressDictionaryEntryType();
-    ~T__PhysicalAddressDictionaryEntryType();
+    void setMaxEntriesReturned( int maxEntriesReturned );
+    int maxEntriesReturned() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__BasePagingType();
+    virtual ~T__BasePagingType();
 
 public:
-    T__PhysicalAddressDictionaryEntryType( const T__PhysicalAddressDictionaryEntryType& );
-    T__PhysicalAddressDictionaryEntryType &operator=( const T__PhysicalAddressDictionaryEntryType& );
+    T__BasePagingType( const T__BasePagingType& );
+    T__BasePagingType &operator=( const T__BasePagingType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__BaseRequestType
+class T__TimeZoneContextType
+{
+public:
+    void setTimeZoneDefinition( const T__TimeZoneDefinitionType& timeZoneDefinition );
+    T__TimeZoneDefinitionType timeZoneDefinition() const;
+    void setAnyAttribute( const KDSoapValue& anyAttribute );
+    KDSoapValue anyAttribute() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__TimeZoneContextType();
+    ~T__TimeZoneContextType();
+
+public:
+    T__TimeZoneContextType( const T__TimeZoneContextType& );
+    T__TimeZoneContextType &operator=( const T__TimeZoneContextType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+/**
+    Abstract base type for item identifiers. Should never be used in web
+    service calls
+ */
+class T__BaseItemIdType
 {
 public:
     virtual KDSoapValue serialize( const QString& valueName ) const;
     virtual void deserialize( const KDSoapValue& mainValue );
-    TNS__BaseRequestType();
-    virtual ~TNS__BaseRequestType();
+    T__BaseItemIdType();
+    virtual ~T__BaseItemIdType();
 
 };
 
-class T__ArrayOfStringsType
+class T__TimeZoneDefinitionType
 {
 public:
-    void setString( const QStringList& string );
-    QStringList string() const;
+    void setId( const QString& id );
+    QString id() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfStringsType();
-    ~T__ArrayOfStringsType();
+    T__TimeZoneDefinitionType();
+    ~T__TimeZoneDefinitionType();
 
 public:
-    T__ArrayOfStringsType( const T__ArrayOfStringsType& );
-    T__ArrayOfStringsType &operator=( const T__ArrayOfStringsType& );
+    T__TimeZoneDefinitionType( const T__TimeZoneDefinitionType& );
+    T__TimeZoneDefinitionType &operator=( const T__TimeZoneDefinitionType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__NonEmptyArrayOfFieldOrdersType
+class T__ArrayOfUnknownEntriesType
 {
 public:
-    void setFieldOrder( const QList<T__FieldOrderType>& fieldOrder );
-    QList<T__FieldOrderType> fieldOrder() const;
+    void setUnknownEntry( const QStringList& unknownEntry );
+    QStringList unknownEntry() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfFieldOrdersType();
-    ~T__NonEmptyArrayOfFieldOrdersType();
+    T__ArrayOfUnknownEntriesType();
+    ~T__ArrayOfUnknownEntriesType();
 
 public:
-    T__NonEmptyArrayOfFieldOrdersType( const T__NonEmptyArrayOfFieldOrdersType& );
-    T__NonEmptyArrayOfFieldOrdersType &operator=( const T__NonEmptyArrayOfFieldOrdersType& );
+    T__ArrayOfUnknownEntriesType( const T__ArrayOfUnknownEntriesType& );
+    T__ArrayOfUnknownEntriesType &operator=( const T__ArrayOfUnknownEntriesType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__CalendarEventDetails
+class T__SuggestionsViewOptionsType
 {
 public:
-    void setID( const QString& iD );
-    QString iD() const;
-    void setSubject( const QString& subject );
-    QString subject() const;
-    void setLocation( const QString& location );
-    QString location() const;
-    void setIsMeeting( bool isMeeting );
-    bool isMeeting() const;
-    void setIsRecurring( bool isRecurring );
-    bool isRecurring() const;
-    void setIsException( bool isException );
-    bool isException() const;
-    void setIsReminderSet( bool isReminderSet );
-    bool isReminderSet() const;
-    void setIsPrivate( bool isPrivate );
-    bool isPrivate() const;
+    void setGoodThreshold( int goodThreshold );
+    int goodThreshold() const;
+    void setMaximumResultsByDay( int maximumResultsByDay );
+    int maximumResultsByDay() const;
+    void setMaximumNonWorkHourResultsByDay( int maximumNonWorkHourResultsByDay );
+    int maximumNonWorkHourResultsByDay() const;
+    void setMeetingDurationInMinutes( int meetingDurationInMinutes );
+    int meetingDurationInMinutes() const;
+    void setMinimumSuggestionQuality( const T__SuggestionQuality& minimumSuggestionQuality );
+    T__SuggestionQuality minimumSuggestionQuality() const;
+    void setDetailedSuggestionsWindow( const T__Duration& detailedSuggestionsWindow );
+    T__Duration detailedSuggestionsWindow() const;
+    void setCurrentMeetingTime( const KDDateTime& currentMeetingTime );
+    KDDateTime currentMeetingTime() const;
+    void setGlobalObjectId( const QString& globalObjectId );
+    QString globalObjectId() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__CalendarEventDetails();
-    ~T__CalendarEventDetails();
+    T__SuggestionsViewOptionsType();
+    ~T__SuggestionsViewOptionsType();
 
 public:
-    T__CalendarEventDetails( const T__CalendarEventDetails& );
-    T__CalendarEventDetails &operator=( const T__CalendarEventDetails& );
+    T__SuggestionsViewOptionsType( const T__SuggestionsViewOptionsType& );
+    T__SuggestionsViewOptionsType &operator=( const T__SuggestionsViewOptionsType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__RestrictionType
+{
+public:
+    void setSearchExpression( const T__SearchExpressionType& searchExpression );
+    T__SearchExpressionType searchExpression() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__RestrictionType();
+    ~T__RestrictionType();
+
+public:
+    T__RestrictionType( const T__RestrictionType& );
+    T__RestrictionType &operator=( const T__RestrictionType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+/**
+    A permission on a folder
+ */
+class T__BasePermissionType
+{
+public:
+    void setUserId( const T__UserIdType& userId );
+    T__UserIdType userId() const;
+    void setCanCreateItems( bool canCreateItems );
+    bool canCreateItems() const;
+    void setCanCreateSubFolders( bool canCreateSubFolders );
+    bool canCreateSubFolders() const;
+    void setIsFolderOwner( bool isFolderOwner );
+    bool isFolderOwner() const;
+    void setIsFolderVisible( bool isFolderVisible );
+    bool isFolderVisible() const;
+    void setIsFolderContact( bool isFolderContact );
+    bool isFolderContact() const;
+    void setEditItems( const T__PermissionActionType& editItems );
+    T__PermissionActionType editItems() const;
+    void setDeleteItems( const T__PermissionActionType& deleteItems );
+    T__PermissionActionType deleteItems() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__BasePermissionType();
+    virtual ~T__BasePermissionType();
+
+public:
+    T__BasePermissionType( const T__BasePermissionType& );
+    T__BasePermissionType &operator=( const T__BasePermissionType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__BodyType
+{
+public:
+    void setValue( const QString& value );
+    QString value() const;
+    T__BodyType( const QString& value );
+    operator QString() const;
+    void setBodyType( const T__BodyTypeType& bodyType );
+    T__BodyTypeType bodyType() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__BodyType();
+    ~T__BodyType();
+
+public:
+    T__BodyType( const T__BodyType& );
+    T__BodyType &operator=( const T__BodyType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__NonEmptyArrayOfRestrictedGroupIdentifiersType
+{
+public:
+    void setRestrictedGroupIdentifier( const QList<T__SidAndAttributesType>& restrictedGroupIdentifier );
+    QList<T__SidAndAttributesType> restrictedGroupIdentifier() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__NonEmptyArrayOfRestrictedGroupIdentifiersType();
+    ~T__NonEmptyArrayOfRestrictedGroupIdentifiersType();
+
+public:
+    T__NonEmptyArrayOfRestrictedGroupIdentifiersType( const T__NonEmptyArrayOfRestrictedGroupIdentifiersType& );
+    T__NonEmptyArrayOfRestrictedGroupIdentifiersType &operator=( const T__NonEmptyArrayOfRestrictedGroupIdentifiersType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__CalendarEvent
+{
+public:
+    void setStartTime( const KDDateTime& startTime );
+    KDDateTime startTime() const;
+    void setEndTime( const KDDateTime& endTime );
+    KDDateTime endTime() const;
+    void setBusyType( const T__LegacyFreeBusyType& busyType );
+    T__LegacyFreeBusyType busyType() const;
+    void setCalendarEventDetails( const T__CalendarEventDetails& calendarEventDetails );
+    T__CalendarEventDetails calendarEventDetails() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__CalendarEvent();
+    ~T__CalendarEvent();
+
+public:
+    T__CalendarEvent( const T__CalendarEvent& );
+    T__CalendarEvent &operator=( const T__CalendarEvent& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__SearchExpressionType
+{
+public:
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__SearchExpressionType();
+    virtual ~T__SearchExpressionType();
+
+};
+
+class T__AttendeeConflictData
+{
+public:
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__AttendeeConflictData();
+    virtual ~T__AttendeeConflictData();
+
+};
+
+class T__FindFolderParentType
+{
+public:
+    void setFolders( const T__ArrayOfFoldersType& folders );
+    T__ArrayOfFoldersType folders() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__FindFolderParentType();
+    ~T__FindFolderParentType();
+
+public:
+    T__FindFolderParentType( const T__FindFolderParentType& );
+    T__FindFolderParentType &operator=( const T__FindFolderParentType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__TaskRecurrenceType
+{
+public:
+    void setRelativeYearlyRecurrence( const T__RelativeYearlyRecurrencePatternType& relativeYearlyRecurrence );
+    T__RelativeYearlyRecurrencePatternType relativeYearlyRecurrence() const;
+    void setAbsoluteYearlyRecurrence( const T__AbsoluteYearlyRecurrencePatternType& absoluteYearlyRecurrence );
+    T__AbsoluteYearlyRecurrencePatternType absoluteYearlyRecurrence() const;
+    void setRelativeMonthlyRecurrence( const T__RelativeMonthlyRecurrencePatternType& relativeMonthlyRecurrence );
+    T__RelativeMonthlyRecurrencePatternType relativeMonthlyRecurrence() const;
+    void setAbsoluteMonthlyRecurrence( const T__AbsoluteMonthlyRecurrencePatternType& absoluteMonthlyRecurrence );
+    T__AbsoluteMonthlyRecurrencePatternType absoluteMonthlyRecurrence() const;
+    void setWeeklyRecurrence( const T__WeeklyRecurrencePatternType& weeklyRecurrence );
+    T__WeeklyRecurrencePatternType weeklyRecurrence() const;
+    void setDailyRecurrence( const T__DailyRecurrencePatternType& dailyRecurrence );
+    T__DailyRecurrencePatternType dailyRecurrence() const;
+    void setDailyRegeneration( const T__DailyRegeneratingPatternType& dailyRegeneration );
+    T__DailyRegeneratingPatternType dailyRegeneration() const;
+    void setWeeklyRegeneration( const T__WeeklyRegeneratingPatternType& weeklyRegeneration );
+    T__WeeklyRegeneratingPatternType weeklyRegeneration() const;
+    void setMonthlyRegeneration( const T__MonthlyRegeneratingPatternType& monthlyRegeneration );
+    T__MonthlyRegeneratingPatternType monthlyRegeneration() const;
+    void setYearlyRegeneration( const T__YearlyRegeneratingPatternType& yearlyRegeneration );
+    T__YearlyRegeneratingPatternType yearlyRegeneration() const;
+    void setNoEndRecurrence( const T__NoEndRecurrenceRangeType& noEndRecurrence );
+    T__NoEndRecurrenceRangeType noEndRecurrence() const;
+    void setEndDateRecurrence( const T__EndDateRecurrenceRangeType& endDateRecurrence );
+    T__EndDateRecurrenceRangeType endDateRecurrence() const;
+    void setNumberedRecurrence( const T__NumberedRecurrenceRangeType& numberedRecurrence );
+    T__NumberedRecurrenceRangeType numberedRecurrence() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__TaskRecurrenceType();
+    ~T__TaskRecurrenceType();
+
+public:
+    T__TaskRecurrenceType( const T__TaskRecurrenceType& );
+    T__TaskRecurrenceType &operator=( const T__TaskRecurrenceType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ItemChangeType
+{
+public:
+    void setItemId( const T__ItemIdType& itemId );
+    T__ItemIdType itemId() const;
+    void setOccurrenceItemId( const T__OccurrenceItemIdType& occurrenceItemId );
+    T__OccurrenceItemIdType occurrenceItemId() const;
+    void setRecurringMasterItemId( const T__RecurringMasterItemIdType& recurringMasterItemId );
+    T__RecurringMasterItemIdType recurringMasterItemId() const;
+    void setUpdates( const T__NonEmptyArrayOfItemChangeDescriptionsType& updates );
+    T__NonEmptyArrayOfItemChangeDescriptionsType updates() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ItemChangeType();
+    ~T__ItemChangeType();
+
+public:
+    T__ItemChangeType( const T__ItemChangeType& );
+    T__ItemChangeType &operator=( const T__ItemChangeType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ArrayOfPermissionsType
+{
+public:
+    void setPermission( const QList<T__PermissionType>& permission );
+    QList<T__PermissionType> permission() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ArrayOfPermissionsType();
+    ~T__ArrayOfPermissionsType();
+
+public:
+    T__ArrayOfPermissionsType( const T__ArrayOfPermissionsType& );
+    T__ArrayOfPermissionsType &operator=( const T__ArrayOfPermissionsType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__NonEmptyArrayOfFolderChangeDescriptionsType
+{
+public:
+    void setAppendToFolderField( const QList<T__AppendToFolderFieldType>& appendToFolderField );
+    QList<T__AppendToFolderFieldType> appendToFolderField() const;
+    void setSetFolderField( const QList<T__SetFolderFieldType>& setFolderField );
+    QList<T__SetFolderFieldType> setFolderField() const;
+    void setDeleteFolderField( const QList<T__DeleteFolderFieldType>& deleteFolderField );
+    QList<T__DeleteFolderFieldType> deleteFolderField() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__NonEmptyArrayOfFolderChangeDescriptionsType();
+    ~T__NonEmptyArrayOfFolderChangeDescriptionsType();
+
+public:
+    T__NonEmptyArrayOfFolderChangeDescriptionsType( const T__NonEmptyArrayOfFolderChangeDescriptionsType& );
+    T__NonEmptyArrayOfFolderChangeDescriptionsType &operator=( const T__NonEmptyArrayOfFolderChangeDescriptionsType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__NonEmptyArrayOfFolderChangesType
+{
+public:
+    void setFolderChange( const QList<T__FolderChangeType>& folderChange );
+    QList<T__FolderChangeType> folderChange() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__NonEmptyArrayOfFolderChangesType();
+    ~T__NonEmptyArrayOfFolderChangesType();
+
+public:
+    T__NonEmptyArrayOfFolderChangesType( const T__NonEmptyArrayOfFolderChangesType& );
+    T__NonEmptyArrayOfFolderChangesType &operator=( const T__NonEmptyArrayOfFolderChangesType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__PhoneNumberDictionaryType
+{
+public:
+    void setEntry( const QList<T__PhoneNumberDictionaryEntryType>& entry );
+    QList<T__PhoneNumberDictionaryEntryType> entry() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__PhoneNumberDictionaryType();
+    ~T__PhoneNumberDictionaryType();
+
+public:
+    T__PhoneNumberDictionaryType( const T__PhoneNumberDictionaryType& );
+    T__PhoneNumberDictionaryType &operator=( const T__PhoneNumberDictionaryType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__NonEmptyArrayOfBaseItemIdsType
+{
+public:
+    void setItemId( const QList<T__ItemIdType>& itemId );
+    QList<T__ItemIdType> itemId() const;
+    void setOccurrenceItemId( const QList<T__OccurrenceItemIdType>& occurrenceItemId );
+    QList<T__OccurrenceItemIdType> occurrenceItemId() const;
+    void setRecurringMasterItemId( const QList<T__RecurringMasterItemIdType>& recurringMasterItemId );
+    QList<T__RecurringMasterItemIdType> recurringMasterItemId() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__NonEmptyArrayOfBaseItemIdsType();
+    ~T__NonEmptyArrayOfBaseItemIdsType();
+
+public:
+    T__NonEmptyArrayOfBaseItemIdsType( const T__NonEmptyArrayOfBaseItemIdsType& );
+    T__NonEmptyArrayOfBaseItemIdsType &operator=( const T__NonEmptyArrayOfBaseItemIdsType& );
 
 private:
     class PrivateDPtr;
@@ -3057,593 +3631,49 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__ArrayOfPermissionsType
+class T__RequestServerVersion
 {
 public:
-    void setPermission( const QList<T__PermissionType>& permission );
-    QList<T__PermissionType> permission() const;
+    void setVersion( const T__ExchangeVersionType& version );
+    T__ExchangeVersionType version() const;
+    void setAnyAttribute( const KDSoapValue& anyAttribute );
+    KDSoapValue anyAttribute() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfPermissionsType();
-    ~T__ArrayOfPermissionsType();
+    T__RequestServerVersion();
+    ~T__RequestServerVersion();
 
 public:
-    T__ArrayOfPermissionsType( const T__ArrayOfPermissionsType& );
-    T__ArrayOfPermissionsType &operator=( const T__ArrayOfPermissionsType& );
+    T__RequestServerVersion( const T__RequestServerVersion& );
+    T__RequestServerVersion &operator=( const T__RequestServerVersion& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__ServerVersionInfo
+class TNS__ArrayOfDelegateUserResponseMessageType
 {
 public:
-    void setMajorVersion( int majorVersion );
-    int majorVersion() const;
-    void setMinorVersion( int minorVersion );
-    int minorVersion() const;
-    void setMajorBuildNumber( int majorBuildNumber );
-    int majorBuildNumber() const;
-    void setMinorBuildNumber( int minorBuildNumber );
-    int minorBuildNumber() const;
-    void setVersion( const QString& version );
-    QString version() const;
+    void setDelegateUserResponseMessageType( const QList<TNS__DelegateUserResponseMessageType>& delegateUserResponseMessageType );
+    QList<TNS__DelegateUserResponseMessageType> delegateUserResponseMessageType() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__ServerVersionInfo();
-    ~T__ServerVersionInfo();
+    TNS__ArrayOfDelegateUserResponseMessageType();
+    ~TNS__ArrayOfDelegateUserResponseMessageType();
 
 public:
-    T__ServerVersionInfo( const T__ServerVersionInfo& );
-    T__ServerVersionInfo &operator=( const T__ServerVersionInfo& );
+    TNS__ArrayOfDelegateUserResponseMessageType( const TNS__ArrayOfDelegateUserResponseMessageType& );
+    TNS__ArrayOfDelegateUserResponseMessageType &operator=( const TNS__ArrayOfDelegateUserResponseMessageType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-/**
-    A non-empty array of alternate Ids.
- */
-class T__NonEmptyArrayOfAlternateIdsType
+class T__AttachmentResponseShapeType
 {
 public:
-    void setAlternateId( const QList<T__AlternateIdType>& alternateId );
-    QList<T__AlternateIdType> alternateId() const;
-    void setAlternatePublicFolderId( const QList<T__AlternatePublicFolderIdType>& alternatePublicFolderId );
-    QList<T__AlternatePublicFolderIdType> alternatePublicFolderId() const;
-    void setAlternatePublicFolderItemId( const QList<T__AlternatePublicFolderItemIdType>& alternatePublicFolderItemId );
-    QList<T__AlternatePublicFolderItemIdType> alternatePublicFolderItemId() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfAlternateIdsType();
-    ~T__NonEmptyArrayOfAlternateIdsType();
-
-public:
-    T__NonEmptyArrayOfAlternateIdsType( const T__NonEmptyArrayOfAlternateIdsType& );
-    T__NonEmptyArrayOfAlternateIdsType &operator=( const T__NonEmptyArrayOfAlternateIdsType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__AttachmentType
-{
-public:
-    void setAttachmentId( const T__AttachmentIdType& attachmentId );
-    T__AttachmentIdType attachmentId() const;
-    void setName( const QString& name );
-    QString name() const;
-    void setContentType( const QString& contentType );
-    QString contentType() const;
-    void setContentId( const QString& contentId );
-    QString contentId() const;
-    void setContentLocation( const QString& contentLocation );
-    QString contentLocation() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__AttachmentType();
-    virtual ~T__AttachmentType();
-
-public:
-    T__AttachmentType( const T__AttachmentType& );
-    T__AttachmentType &operator=( const T__AttachmentType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ArrayOfSuggestion
-{
-public:
-    void setSuggestion( const QList<T__Suggestion>& suggestion );
-    QList<T__Suggestion> suggestion() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfSuggestion();
-    ~T__ArrayOfSuggestion();
-
-public:
-    T__ArrayOfSuggestion( const T__ArrayOfSuggestion& );
-    T__ArrayOfSuggestion &operator=( const T__ArrayOfSuggestion& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ArrayOfResolutionType
-{
-public:
-    void setResolution( const QList<T__ResolutionType>& resolution );
-    QList<T__ResolutionType> resolution() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfResolutionType();
-    ~T__ArrayOfResolutionType();
-
-public:
-    T__ArrayOfResolutionType( const T__ArrayOfResolutionType& );
-    T__ArrayOfResolutionType &operator=( const T__ArrayOfResolutionType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ArrayOfGroupedItemsType
-{
-public:
-    void setGroupedItems( const T__GroupedItemsType& groupedItems );
-    T__GroupedItemsType groupedItems() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfGroupedItemsType();
-    ~T__ArrayOfGroupedItemsType();
-
-public:
-    T__ArrayOfGroupedItemsType( const T__ArrayOfGroupedItemsType& );
-    T__ArrayOfGroupedItemsType &operator=( const T__ArrayOfGroupedItemsType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__SyncFolderItemsCreateOrUpdateType
-{
-public:
-    void setItem( const T__ItemType& item );
-    T__ItemType item() const;
-    void setMessage( const T__MessageType& message );
-    T__MessageType message() const;
-    void setCalendarItem( const T__CalendarItemType& calendarItem );
-    T__CalendarItemType calendarItem() const;
-    void setContact( const T__ContactItemType& contact );
-    T__ContactItemType contact() const;
-    void setDistributionList( const T__DistributionListType& distributionList );
-    T__DistributionListType distributionList() const;
-    void setMeetingMessage( const T__MeetingMessageType& meetingMessage );
-    T__MeetingMessageType meetingMessage() const;
-    void setMeetingRequest( const T__MeetingRequestMessageType& meetingRequest );
-    T__MeetingRequestMessageType meetingRequest() const;
-    void setMeetingResponse( const T__MeetingResponseMessageType& meetingResponse );
-    T__MeetingResponseMessageType meetingResponse() const;
-    void setMeetingCancellation( const T__MeetingCancellationMessageType& meetingCancellation );
-    T__MeetingCancellationMessageType meetingCancellation() const;
-    void setTask( const T__TaskType& task );
-    T__TaskType task() const;
-    void setPostItem( const T__PostItemType& postItem );
-    T__PostItemType postItem() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__SyncFolderItemsCreateOrUpdateType();
-    ~T__SyncFolderItemsCreateOrUpdateType();
-
-public:
-    T__SyncFolderItemsCreateOrUpdateType( const T__SyncFolderItemsCreateOrUpdateType& );
-    T__SyncFolderItemsCreateOrUpdateType &operator=( const T__SyncFolderItemsCreateOrUpdateType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-/**
-    Represents an extended property instance (both its path identifier along
-    with its associated value).
- */
-class T__ExtendedPropertyType
-{
-public:
-    void setExtendedFieldURI( const T__PathToExtendedFieldType& extendedFieldURI );
-    T__PathToExtendedFieldType extendedFieldURI() const;
-    void setValue( const QString& value );
-    QString value() const;
-    void setValues( const T__NonEmptyArrayOfPropertyValuesType& values );
-    T__NonEmptyArrayOfPropertyValuesType values() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ExtendedPropertyType();
-    ~T__ExtendedPropertyType();
-
-public:
-    T__ExtendedPropertyType( const T__ExtendedPropertyType& );
-    T__ExtendedPropertyType &operator=( const T__ExtendedPropertyType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ArrayOfMailboxData
-{
-public:
-    void setMailboxData( const QList<T__MailboxData>& mailboxData );
-    QList<T__MailboxData> mailboxData() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfMailboxData();
-    ~T__ArrayOfMailboxData();
-
-public:
-    T__ArrayOfMailboxData( const T__ArrayOfMailboxData& );
-    T__ArrayOfMailboxData &operator=( const T__ArrayOfMailboxData& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__FreeBusyView
-{
-public:
-    void setFreeBusyViewType( const T__FreeBusyViewType& freeBusyViewType );
-    T__FreeBusyViewType freeBusyViewType() const;
-    void setMergedFreeBusy( const QString& mergedFreeBusy );
-    QString mergedFreeBusy() const;
-    void setCalendarEventArray( const T__ArrayOfCalendarEvent& calendarEventArray );
-    T__ArrayOfCalendarEvent calendarEventArray() const;
-    void setWorkingHours( const T__WorkingHours& workingHours );
-    T__WorkingHours workingHours() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__FreeBusyView();
-    ~T__FreeBusyView();
-
-public:
-    T__FreeBusyView( const T__FreeBusyView& );
-    T__FreeBusyView &operator=( const T__FreeBusyView& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__ResponseMessageType
-{
-public:
-    void setMessageText( const QString& messageText );
-    QString messageText() const;
-    void setResponseCode( const TNS__ResponseCodeType& responseCode );
-    TNS__ResponseCodeType responseCode() const;
-    void setDescriptiveLinkKey( int descriptiveLinkKey );
-    int descriptiveLinkKey() const;
-    void setMessageXml( const TNS__MessageXml& messageXml );
-    TNS__MessageXml messageXml() const;
-    void setResponseClass( const T__ResponseClassType& responseClass );
-    T__ResponseClassType responseClass() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    TNS__ResponseMessageType();
-    virtual ~TNS__ResponseMessageType();
-
-public:
-    TNS__ResponseMessageType( const TNS__ResponseMessageType& );
-    TNS__ResponseMessageType &operator=( const TNS__ResponseMessageType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__NonEmptyArrayOfGroupIdentifiersType
-{
-public:
-    void setGroupIdentifier( const QList<T__SidAndAttributesType>& groupIdentifier );
-    QList<T__SidAndAttributesType> groupIdentifier() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfGroupIdentifiersType();
-    ~T__NonEmptyArrayOfGroupIdentifiersType();
-
-public:
-    T__NonEmptyArrayOfGroupIdentifiersType( const T__NonEmptyArrayOfGroupIdentifiersType& );
-    T__NonEmptyArrayOfGroupIdentifiersType &operator=( const T__NonEmptyArrayOfGroupIdentifiersType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__NonEmptyArrayOfResponseObjectsType
-{
-public:
-    void setAcceptItem( const QList<T__AcceptItemType>& acceptItem );
-    QList<T__AcceptItemType> acceptItem() const;
-    void setTentativelyAcceptItem( const QList<T__TentativelyAcceptItemType>& tentativelyAcceptItem );
-    QList<T__TentativelyAcceptItemType> tentativelyAcceptItem() const;
-    void setDeclineItem( const QList<T__DeclineItemType>& declineItem );
-    QList<T__DeclineItemType> declineItem() const;
-    void setReplyToItem( const QList<T__ReplyToItemType>& replyToItem );
-    QList<T__ReplyToItemType> replyToItem() const;
-    void setForwardItem( const QList<T__ForwardItemType>& forwardItem );
-    QList<T__ForwardItemType> forwardItem() const;
-    void setReplyAllToItem( const QList<T__ReplyAllToItemType>& replyAllToItem );
-    QList<T__ReplyAllToItemType> replyAllToItem() const;
-    void setCancelCalendarItem( const QList<T__CancelCalendarItemType>& cancelCalendarItem );
-    QList<T__CancelCalendarItemType> cancelCalendarItem() const;
-    void setRemoveItem( const QList<T__RemoveItemType>& removeItem );
-    QList<T__RemoveItemType> removeItem() const;
-    void setSuppressReadReceipt( const QList<T__SuppressReadReceiptType>& suppressReadReceipt );
-    QList<T__SuppressReadReceiptType> suppressReadReceipt() const;
-    void setPostReplyItem( const QList<T__PostReplyItemType>& postReplyItem );
-    QList<T__PostReplyItemType> postReplyItem() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfResponseObjectsType();
-    ~T__NonEmptyArrayOfResponseObjectsType();
-
-public:
-    T__NonEmptyArrayOfResponseObjectsType( const T__NonEmptyArrayOfResponseObjectsType& );
-    T__NonEmptyArrayOfResponseObjectsType &operator=( const T__NonEmptyArrayOfResponseObjectsType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__FolderChangeType
-{
-public:
-    void setFolderId( const T__FolderIdType& folderId );
-    T__FolderIdType folderId() const;
-    void setDistinguishedFolderId( const T__DistinguishedFolderIdType& distinguishedFolderId );
-    T__DistinguishedFolderIdType distinguishedFolderId() const;
-    void setUpdates( const T__NonEmptyArrayOfFolderChangeDescriptionsType& updates );
-    T__NonEmptyArrayOfFolderChangeDescriptionsType updates() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__FolderChangeType();
-    ~T__FolderChangeType();
-
-public:
-    T__FolderChangeType( const T__FolderChangeType& );
-    T__FolderChangeType &operator=( const T__FolderChangeType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__TimeChangeType
-{
-public:
-    void setOffset( const QString& offset );
-    QString offset() const;
-    void setTime( const QTime& time );
-    QTime time() const;
-    void setRelativeYearlyRecurrence( const T__RelativeYearlyRecurrencePatternType& relativeYearlyRecurrence );
-    T__RelativeYearlyRecurrencePatternType relativeYearlyRecurrence() const;
-    void setAbsoluteDate( const QDate& absoluteDate );
-    QDate absoluteDate() const;
-    void setTimeZoneName( const QString& timeZoneName );
-    QString timeZoneName() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__TimeChangeType();
-    ~T__TimeChangeType();
-
-public:
-    T__TimeChangeType( const T__TimeChangeType& );
-    T__TimeChangeType &operator=( const T__TimeChangeType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__AttendeeType
-{
-public:
-    void setMailbox( const T__EmailAddressType& mailbox );
-    T__EmailAddressType mailbox() const;
-    void setResponseType( const T__ResponseTypeType& responseType );
-    T__ResponseTypeType responseType() const;
-    void setLastResponseTime( const KDDateTime& lastResponseTime );
-    KDDateTime lastResponseTime() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__AttendeeType();
-    ~T__AttendeeType();
-
-public:
-    T__AttendeeType( const T__AttendeeType& );
-    T__AttendeeType &operator=( const T__AttendeeType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__SuggestionDayResult
-{
-public:
-    void setDate( const KDDateTime& date );
-    KDDateTime date() const;
-    void setDayQuality( const T__SuggestionQuality& dayQuality );
-    T__SuggestionQuality dayQuality() const;
-    void setSuggestionArray( const T__ArrayOfSuggestion& suggestionArray );
-    T__ArrayOfSuggestion suggestionArray() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__SuggestionDayResult();
-    ~T__SuggestionDayResult();
-
-public:
-    T__SuggestionDayResult( const T__SuggestionDayResult& );
-    T__SuggestionDayResult &operator=( const T__SuggestionDayResult& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ArrayOfWorkingPeriod
-{
-public:
-    void setWorkingPeriod( const QList<T__WorkingPeriod>& workingPeriod );
-    QList<T__WorkingPeriod> workingPeriod() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfWorkingPeriod();
-    ~T__ArrayOfWorkingPeriod();
-
-public:
-    T__ArrayOfWorkingPeriod( const T__ArrayOfWorkingPeriod& );
-    T__ArrayOfWorkingPeriod &operator=( const T__ArrayOfWorkingPeriod& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__NonEmptyArrayOfAttachmentsType
-{
-public:
-    void setItemAttachment( const QList<T__ItemAttachmentType>& itemAttachment );
-    QList<T__ItemAttachmentType> itemAttachment() const;
-    void setFileAttachment( const QList<T__FileAttachmentType>& fileAttachment );
-    QList<T__FileAttachmentType> fileAttachment() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfAttachmentsType();
-    ~T__NonEmptyArrayOfAttachmentsType();
-
-public:
-    T__NonEmptyArrayOfAttachmentsType( const T__NonEmptyArrayOfAttachmentsType& );
-    T__NonEmptyArrayOfAttachmentsType &operator=( const T__NonEmptyArrayOfAttachmentsType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__NonEmptyArrayOfRestrictedGroupIdentifiersType
-{
-public:
-    void setRestrictedGroupIdentifier( const QList<T__SidAndAttributesType>& restrictedGroupIdentifier );
-    QList<T__SidAndAttributesType> restrictedGroupIdentifier() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfRestrictedGroupIdentifiersType();
-    ~T__NonEmptyArrayOfRestrictedGroupIdentifiersType();
-
-public:
-    T__NonEmptyArrayOfRestrictedGroupIdentifiersType( const T__NonEmptyArrayOfRestrictedGroupIdentifiersType& );
-    T__NonEmptyArrayOfRestrictedGroupIdentifiersType &operator=( const T__NonEmptyArrayOfRestrictedGroupIdentifiersType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__NonEmptyArrayOfFolderNamesType
-{
-public:
-    void setFolderName( const QStringList& folderName );
-    QStringList folderName() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfFolderNamesType();
-    ~T__NonEmptyArrayOfFolderNamesType();
-
-public:
-    T__NonEmptyArrayOfFolderNamesType( const T__NonEmptyArrayOfFolderNamesType& );
-    T__NonEmptyArrayOfFolderNamesType &operator=( const T__NonEmptyArrayOfFolderNamesType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__SyncFolderHierarchyDeleteType
-{
-public:
-    void setFolderId( const T__FolderIdType& folderId );
-    T__FolderIdType folderId() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__SyncFolderHierarchyDeleteType();
-    ~T__SyncFolderHierarchyDeleteType();
-
-public:
-    T__SyncFolderHierarchyDeleteType( const T__SyncFolderHierarchyDeleteType& );
-    T__SyncFolderHierarchyDeleteType &operator=( const T__SyncFolderHierarchyDeleteType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__FolderResponseShapeType
-{
-public:
-    void setBaseShape( const T__DefaultShapeNamesType& baseShape );
-    T__DefaultShapeNamesType baseShape() const;
-    void setAdditionalProperties( const T__NonEmptyArrayOfPathsToElementType& additionalProperties );
-    T__NonEmptyArrayOfPathsToElementType additionalProperties() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__FolderResponseShapeType();
-    ~T__FolderResponseShapeType();
-
-public:
-    T__FolderResponseShapeType( const T__FolderResponseShapeType& );
-    T__FolderResponseShapeType &operator=( const T__FolderResponseShapeType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ArrayOfSuggestionDayResult
-{
-public:
-    void setSuggestionDayResult( const QList<T__SuggestionDayResult>& suggestionDayResult );
-    QList<T__SuggestionDayResult> suggestionDayResult() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfSuggestionDayResult();
-    ~T__ArrayOfSuggestionDayResult();
-
-public:
-    T__ArrayOfSuggestionDayResult( const T__ArrayOfSuggestionDayResult& );
-    T__ArrayOfSuggestionDayResult &operator=( const T__ArrayOfSuggestionDayResult& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ItemResponseShapeType
-{
-public:
-    void setBaseShape( const T__DefaultShapeNamesType& baseShape );
-    T__DefaultShapeNamesType baseShape() const;
     void setIncludeMimeContent( bool includeMimeContent );
     bool includeMimeContent() const;
     void setBodyType( const T__BodyTypeResponseType& bodyType );
@@ -3652,65 +3682,12 @@ public:
     T__NonEmptyArrayOfPathsToElementType additionalProperties() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__ItemResponseShapeType();
-    ~T__ItemResponseShapeType();
+    T__AttachmentResponseShapeType();
+    ~T__AttachmentResponseShapeType();
 
 public:
-    T__ItemResponseShapeType( const T__ItemResponseShapeType& );
-    T__ItemResponseShapeType &operator=( const T__ItemResponseShapeType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-/**
-    Represents the field of each item to aggregate on and the qualifier to
-    apply to that field in determining which item will represent the group.
- */
-class T__AggregateOnType
-{
-public:
-    void setFieldURI( const T__PathToUnindexedFieldType& fieldURI );
-    T__PathToUnindexedFieldType fieldURI() const;
-    void setIndexedFieldURI( const T__PathToIndexedFieldType& indexedFieldURI );
-    T__PathToIndexedFieldType indexedFieldURI() const;
-    void setExtendedFieldURI( const T__PathToExtendedFieldType& extendedFieldURI );
-    T__PathToExtendedFieldType extendedFieldURI() const;
-    void setAggregate( const T__AggregateType& aggregate );
-    T__AggregateType aggregate() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__AggregateOnType();
-    ~T__AggregateOnType();
-
-public:
-    T__AggregateOnType( const T__AggregateOnType& );
-    T__AggregateOnType &operator=( const T__AggregateOnType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-/**
-    The set of permissions on a folder
- */
-class T__PermissionSetType
-{
-public:
-    void setPermissions( const T__ArrayOfPermissionsType& permissions );
-    T__ArrayOfPermissionsType permissions() const;
-    void setUnknownEntries( const T__ArrayOfUnknownEntriesType& unknownEntries );
-    T__ArrayOfUnknownEntriesType unknownEntries() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__PermissionSetType();
-    ~T__PermissionSetType();
-
-public:
-    T__PermissionSetType( const T__PermissionSetType& );
-    T__PermissionSetType &operator=( const T__PermissionSetType& );
+    T__AttachmentResponseShapeType( const T__AttachmentResponseShapeType& );
+    T__AttachmentResponseShapeType &operator=( const T__AttachmentResponseShapeType& );
 
 private:
     class PrivateDPtr;
@@ -3736,109 +3713,19 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__PhoneNumberDictionaryEntryType
+class T__DeletedOccurrenceInfoType
 {
 public:
-    void setValue( const QString& value );
-    QString value() const;
-    T__PhoneNumberDictionaryEntryType( const QString& value );
-    operator QString() const;
-    void setKey( const T__PhoneNumberKeyType& key );
-    T__PhoneNumberKeyType key() const;
+    void setStart( const KDDateTime& start );
+    KDDateTime start() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__PhoneNumberDictionaryEntryType();
-    ~T__PhoneNumberDictionaryEntryType();
+    T__DeletedOccurrenceInfoType();
+    ~T__DeletedOccurrenceInfoType();
 
 public:
-    T__PhoneNumberDictionaryEntryType( const T__PhoneNumberDictionaryEntryType& );
-    T__PhoneNumberDictionaryEntryType &operator=( const T__PhoneNumberDictionaryEntryType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__BaseSubscriptionRequestType
-{
-public:
-    void setFolderIds( const T__NonEmptyArrayOfBaseFolderIdsType& folderIds );
-    T__NonEmptyArrayOfBaseFolderIdsType folderIds() const;
-    void setEventTypes( const T__NonEmptyArrayOfNotificationEventTypesType& eventTypes );
-    T__NonEmptyArrayOfNotificationEventTypesType eventTypes() const;
-    void setWatermark( const T__WatermarkType& watermark );
-    T__WatermarkType watermark() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__BaseSubscriptionRequestType();
-    virtual ~T__BaseSubscriptionRequestType();
-
-public:
-    T__BaseSubscriptionRequestType( const T__BaseSubscriptionRequestType& );
-    T__BaseSubscriptionRequestType &operator=( const T__BaseSubscriptionRequestType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ExcludesValueType
-{
-public:
-    void setValue( const T__ExcludesAttributeType& value );
-    T__ExcludesAttributeType value() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ExcludesValueType();
-    ~T__ExcludesValueType();
-
-public:
-    T__ExcludesValueType( const T__ExcludesValueType& );
-    T__ExcludesValueType &operator=( const T__ExcludesValueType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__NonEmptyArrayOfItemChangesType
-{
-public:
-    void setItemChange( const QList<T__ItemChangeType>& itemChange );
-    QList<T__ItemChangeType> itemChange() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfItemChangesType();
-    ~T__NonEmptyArrayOfItemChangesType();
-
-public:
-    T__NonEmptyArrayOfItemChangesType( const T__NonEmptyArrayOfItemChangesType& );
-    T__NonEmptyArrayOfItemChangesType &operator=( const T__NonEmptyArrayOfItemChangesType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__DelegateUserType
-{
-public:
-    void setUserId( const T__UserIdType& userId );
-    T__UserIdType userId() const;
-    void setDelegatePermissions( const T__DelegatePermissionsType& delegatePermissions );
-    T__DelegatePermissionsType delegatePermissions() const;
-    void setReceiveCopiesOfMeetingMessages( bool receiveCopiesOfMeetingMessages );
-    bool receiveCopiesOfMeetingMessages() const;
-    void setViewPrivateItems( bool viewPrivateItems );
-    bool viewPrivateItems() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__DelegateUserType();
-    ~T__DelegateUserType();
-
-public:
-    T__DelegateUserType( const T__DelegateUserType& );
-    T__DelegateUserType &operator=( const T__DelegateUserType& );
+    T__DeletedOccurrenceInfoType( const T__DeletedOccurrenceInfoType& );
+    T__DeletedOccurrenceInfoType &operator=( const T__DeletedOccurrenceInfoType& );
 
 private:
     class PrivateDPtr;
@@ -3872,44 +3759,493 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__SyncFolderItemsChangesType
+class T__NonEmptyArrayOfInternetHeadersType
 {
 public:
-    void setCreate( const QList<T__SyncFolderItemsCreateOrUpdateType>& create );
-    QList<T__SyncFolderItemsCreateOrUpdateType> create() const;
-    void setUpdate( const QList<T__SyncFolderItemsCreateOrUpdateType>& update );
-    QList<T__SyncFolderItemsCreateOrUpdateType> update() const;
-    void setDelete( const QList<T__SyncFolderItemsDeleteType>& delete_ );
-    QList<T__SyncFolderItemsDeleteType> delete_() const;
-    void setReadFlagChange( const QList<T__SyncFolderItemsReadFlagType>& readFlagChange );
-    QList<T__SyncFolderItemsReadFlagType> readFlagChange() const;
+    void setInternetMessageHeader( const QList<T__InternetHeaderType>& internetMessageHeader );
+    QList<T__InternetHeaderType> internetMessageHeader() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__SyncFolderItemsChangesType();
-    ~T__SyncFolderItemsChangesType();
+    T__NonEmptyArrayOfInternetHeadersType();
+    ~T__NonEmptyArrayOfInternetHeadersType();
 
 public:
-    T__SyncFolderItemsChangesType( const T__SyncFolderItemsChangesType& );
-    T__SyncFolderItemsChangesType &operator=( const T__SyncFolderItemsChangesType& );
+    T__NonEmptyArrayOfInternetHeadersType( const T__NonEmptyArrayOfInternetHeadersType& );
+    T__NonEmptyArrayOfInternetHeadersType &operator=( const T__NonEmptyArrayOfInternetHeadersType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__ArrayOfRecipientsType
+class T__ArrayOfCalendarPermissionsType
 {
 public:
-    void setMailbox( const QList<T__EmailAddressType>& mailbox );
-    QList<T__EmailAddressType> mailbox() const;
+    void setCalendarPermission( const QList<T__CalendarPermissionType>& calendarPermission );
+    QList<T__CalendarPermissionType> calendarPermission() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfRecipientsType();
-    ~T__ArrayOfRecipientsType();
+    T__ArrayOfCalendarPermissionsType();
+    ~T__ArrayOfCalendarPermissionsType();
 
 public:
-    T__ArrayOfRecipientsType( const T__ArrayOfRecipientsType& );
-    T__ArrayOfRecipientsType &operator=( const T__ArrayOfRecipientsType& );
+    T__ArrayOfCalendarPermissionsType( const T__ArrayOfCalendarPermissionsType& );
+    T__ArrayOfCalendarPermissionsType &operator=( const T__ArrayOfCalendarPermissionsType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+/**
+    Surfaces alternate representations of an item or folder id. No change key
+    is included.
+ */
+class T__AlternateIdBaseType
+{
+public:
+    void setFormat( const T__IdFormatType& format );
+    T__IdFormatType format() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__AlternateIdBaseType();
+    virtual ~T__AlternateIdBaseType();
+
+public:
+    T__AlternateIdBaseType( const T__AlternateIdBaseType& );
+    T__AlternateIdBaseType &operator=( const T__AlternateIdBaseType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__PhoneNumberDictionaryEntryType
+{
+public:
+    void setValue( const QString& value );
+    QString value() const;
+    T__PhoneNumberDictionaryEntryType( const QString& value );
+    operator QString() const;
+    void setKey( const T__PhoneNumberKeyType& key );
+    T__PhoneNumberKeyType key() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__PhoneNumberDictionaryEntryType();
+    ~T__PhoneNumberDictionaryEntryType();
+
+public:
+    T__PhoneNumberDictionaryEntryType( const T__PhoneNumberDictionaryEntryType& );
+    T__PhoneNumberDictionaryEntryType &operator=( const T__PhoneNumberDictionaryEntryType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ArrayOfMailboxData
+{
+public:
+    void setMailboxData( const QList<T__MailboxData>& mailboxData );
+    QList<T__MailboxData> mailboxData() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ArrayOfMailboxData();
+    ~T__ArrayOfMailboxData();
+
+public:
+    T__ArrayOfMailboxData( const T__ArrayOfMailboxData& );
+    T__ArrayOfMailboxData &operator=( const T__ArrayOfMailboxData& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__EffectiveRightsType
+{
+public:
+    void setCreateAssociated( bool createAssociated );
+    bool createAssociated() const;
+    void setCreateContents( bool createContents );
+    bool createContents() const;
+    void setCreateHierarchy( bool createHierarchy );
+    bool createHierarchy() const;
+    void setDelete( bool delete_ );
+    bool delete_() const;
+    void setModify( bool modify );
+    bool modify() const;
+    void setRead( bool read );
+    bool read() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__EffectiveRightsType();
+    ~T__EffectiveRightsType();
+
+public:
+    T__EffectiveRightsType( const T__EffectiveRightsType& );
+    T__EffectiveRightsType &operator=( const T__EffectiveRightsType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__BaseFolderType
+{
+public:
+    void setFolderId( const T__FolderIdType& folderId );
+    T__FolderIdType folderId() const;
+    void setParentFolderId( const T__FolderIdType& parentFolderId );
+    T__FolderIdType parentFolderId() const;
+    void setFolderClass( const QString& folderClass );
+    QString folderClass() const;
+    void setDisplayName( const QString& displayName );
+    QString displayName() const;
+    void setTotalCount( int totalCount );
+    int totalCount() const;
+    void setChildFolderCount( int childFolderCount );
+    int childFolderCount() const;
+    void setExtendedProperty( const QList<T__ExtendedPropertyType>& extendedProperty );
+    QList<T__ExtendedPropertyType> extendedProperty() const;
+    void setManagedFolderInformation( const T__ManagedFolderInformationType& managedFolderInformation );
+    T__ManagedFolderInformationType managedFolderInformation() const;
+    void setEffectiveRights( const T__EffectiveRightsType& effectiveRights );
+    T__EffectiveRightsType effectiveRights() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__BaseFolderType();
+    virtual ~T__BaseFolderType();
+
+public:
+    T__BaseFolderType( const T__BaseFolderType& );
+    T__BaseFolderType &operator=( const T__BaseFolderType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ResolutionType
+{
+public:
+    void setMailbox( const T__EmailAddressType& mailbox );
+    T__EmailAddressType mailbox() const;
+    void setContact( const T__ContactItemType& contact );
+    T__ContactItemType contact() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ResolutionType();
+    ~T__ResolutionType();
+
+public:
+    T__ResolutionType( const T__ResolutionType& );
+    T__ResolutionType &operator=( const T__ResolutionType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ArrayOfGroupedItemsType
+{
+public:
+    void setGroupedItems( const T__GroupedItemsType& groupedItems );
+    T__GroupedItemsType groupedItems() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ArrayOfGroupedItemsType();
+    ~T__ArrayOfGroupedItemsType();
+
+public:
+    T__ArrayOfGroupedItemsType( const T__ArrayOfGroupedItemsType& );
+    T__ArrayOfGroupedItemsType &operator=( const T__ArrayOfGroupedItemsType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+/**
+    Compound property for Managed Folder related information for Managed
+    Folders.
+ */
+class T__ManagedFolderInformationType
+{
+public:
+    void setCanDelete( bool canDelete );
+    bool canDelete() const;
+    void setCanRenameOrMove( bool canRenameOrMove );
+    bool canRenameOrMove() const;
+    void setMustDisplayComment( bool mustDisplayComment );
+    bool mustDisplayComment() const;
+    void setHasQuota( bool hasQuota );
+    bool hasQuota() const;
+    void setIsManagedFoldersRoot( bool isManagedFoldersRoot );
+    bool isManagedFoldersRoot() const;
+    void setManagedFolderId( const QString& managedFolderId );
+    QString managedFolderId() const;
+    void setComment( const QString& comment );
+    QString comment() const;
+    void setStorageQuota( int storageQuota );
+    int storageQuota() const;
+    void setFolderSize( int folderSize );
+    int folderSize() const;
+    void setHomePage( const QString& homePage );
+    QString homePage() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ManagedFolderInformationType();
+    ~T__ManagedFolderInformationType();
+
+public:
+    T__ManagedFolderInformationType( const T__ManagedFolderInformationType& );
+    T__ManagedFolderInformationType &operator=( const T__ManagedFolderInformationType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ExcludesValueType
+{
+public:
+    void setValue( const T__ExcludesAttributeType& value );
+    T__ExcludesAttributeType value() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ExcludesValueType();
+    ~T__ExcludesValueType();
+
+public:
+    T__ExcludesValueType( const T__ExcludesValueType& );
+    T__ExcludesValueType &operator=( const T__ExcludesValueType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ConflictResultsType
+{
+public:
+    void setCount( int count );
+    int count() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ConflictResultsType();
+    ~T__ConflictResultsType();
+
+public:
+    T__ConflictResultsType( const T__ConflictResultsType& );
+    T__ConflictResultsType &operator=( const T__ConflictResultsType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__BaseNotificationEventType
+{
+public:
+    void setWatermark( const T__WatermarkType& watermark );
+    T__WatermarkType watermark() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__BaseNotificationEventType();
+    virtual ~T__BaseNotificationEventType();
+
+public:
+    T__BaseNotificationEventType( const T__BaseNotificationEventType& );
+    T__BaseNotificationEventType &operator=( const T__BaseNotificationEventType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+/**
+    The set of permissions on a folder
+ */
+class T__PermissionSetType
+{
+public:
+    void setPermissions( const T__ArrayOfPermissionsType& permissions );
+    T__ArrayOfPermissionsType permissions() const;
+    void setUnknownEntries( const T__ArrayOfUnknownEntriesType& unknownEntries );
+    T__ArrayOfUnknownEntriesType unknownEntries() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__PermissionSetType();
+    ~T__PermissionSetType();
+
+public:
+    T__PermissionSetType( const T__PermissionSetType& );
+    T__PermissionSetType &operator=( const T__PermissionSetType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__EmailAddressDictionaryEntryType
+{
+public:
+    void setValue( const QString& value );
+    QString value() const;
+    T__EmailAddressDictionaryEntryType( const QString& value );
+    operator QString() const;
+    void setKey( const T__EmailAddressKeyType& key );
+    T__EmailAddressKeyType key() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__EmailAddressDictionaryEntryType();
+    ~T__EmailAddressDictionaryEntryType();
+
+public:
+    T__EmailAddressDictionaryEntryType( const T__EmailAddressDictionaryEntryType& );
+    T__EmailAddressDictionaryEntryType &operator=( const T__EmailAddressDictionaryEntryType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__NonEmptyArrayOfFolderNamesType
+{
+public:
+    void setFolderName( const QStringList& folderName );
+    QStringList folderName() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__NonEmptyArrayOfFolderNamesType();
+    ~T__NonEmptyArrayOfFolderNamesType();
+
+public:
+    T__NonEmptyArrayOfFolderNamesType( const T__NonEmptyArrayOfFolderNamesType& );
+    T__NonEmptyArrayOfFolderNamesType &operator=( const T__NonEmptyArrayOfFolderNamesType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+/**
+    The set of permissions on a folder
+ */
+class T__CalendarPermissionSetType
+{
+public:
+    void setCalendarPermissions( const T__ArrayOfCalendarPermissionsType& calendarPermissions );
+    T__ArrayOfCalendarPermissionsType calendarPermissions() const;
+    void setUnknownEntries( const T__ArrayOfUnknownEntriesType& unknownEntries );
+    T__ArrayOfUnknownEntriesType unknownEntries() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__CalendarPermissionSetType();
+    ~T__CalendarPermissionSetType();
+
+public:
+    T__CalendarPermissionSetType( const T__CalendarPermissionSetType& );
+    T__CalendarPermissionSetType &operator=( const T__CalendarPermissionSetType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__AttachmentType
+{
+public:
+    void setAttachmentId( const T__AttachmentIdType& attachmentId );
+    T__AttachmentIdType attachmentId() const;
+    void setName( const QString& name );
+    QString name() const;
+    void setContentType( const QString& contentType );
+    QString contentType() const;
+    void setContentId( const QString& contentId );
+    QString contentId() const;
+    void setContentLocation( const QString& contentLocation );
+    QString contentLocation() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__AttachmentType();
+    virtual ~T__AttachmentType();
+
+public:
+    T__AttachmentType( const T__AttachmentType& );
+    T__AttachmentType &operator=( const T__AttachmentType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__InternetHeaderType
+{
+public:
+    void setValue( const QString& value );
+    QString value() const;
+    T__InternetHeaderType( const QString& value );
+    operator QString() const;
+    void setHeaderName( const QString& headerName );
+    QString headerName() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__InternetHeaderType();
+    ~T__InternetHeaderType();
+
+public:
+    T__InternetHeaderType( const T__InternetHeaderType& );
+    T__InternetHeaderType &operator=( const T__InternetHeaderType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__DelegatePermissionsType
+{
+public:
+    void setCalendarFolderPermissionLevel( const T__DelegateFolderPermissionLevelType& calendarFolderPermissionLevel );
+    T__DelegateFolderPermissionLevelType calendarFolderPermissionLevel() const;
+    void setTasksFolderPermissionLevel( const T__DelegateFolderPermissionLevelType& tasksFolderPermissionLevel );
+    T__DelegateFolderPermissionLevelType tasksFolderPermissionLevel() const;
+    void setInboxFolderPermissionLevel( const T__DelegateFolderPermissionLevelType& inboxFolderPermissionLevel );
+    T__DelegateFolderPermissionLevelType inboxFolderPermissionLevel() const;
+    void setContactsFolderPermissionLevel( const T__DelegateFolderPermissionLevelType& contactsFolderPermissionLevel );
+    T__DelegateFolderPermissionLevelType contactsFolderPermissionLevel() const;
+    void setNotesFolderPermissionLevel( const T__DelegateFolderPermissionLevelType& notesFolderPermissionLevel );
+    T__DelegateFolderPermissionLevelType notesFolderPermissionLevel() const;
+    void setJournalFolderPermissionLevel( const T__DelegateFolderPermissionLevelType& journalFolderPermissionLevel );
+    T__DelegateFolderPermissionLevelType journalFolderPermissionLevel() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__DelegatePermissionsType();
+    ~T__DelegatePermissionsType();
+
+public:
+    T__DelegatePermissionsType( const T__DelegatePermissionsType& );
+    T__DelegatePermissionsType &operator=( const T__DelegatePermissionsType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__SyncFolderItemsDeleteType
+{
+public:
+    void setItemId( const T__ItemIdType& itemId );
+    T__ItemIdType itemId() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__SyncFolderItemsDeleteType();
+    ~T__SyncFolderItemsDeleteType();
+
+public:
+    T__SyncFolderItemsDeleteType( const T__SyncFolderItemsDeleteType& );
+    T__SyncFolderItemsDeleteType &operator=( const T__SyncFolderItemsDeleteType& );
 
 private:
     class PrivateDPtr;
@@ -3943,326 +4279,364 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__DeletedOccurrenceInfoType
+class T__NonEmptyArrayOfAllItemsType
 {
 public:
-    void setStart( const KDDateTime& start );
-    KDDateTime start() const;
+    void setItem( const QList<T__ItemType>& item );
+    QList<T__ItemType> item() const;
+    void setMessage( const QList<T__MessageType>& message );
+    QList<T__MessageType> message() const;
+    void setCalendarItem( const QList<T__CalendarItemType>& calendarItem );
+    QList<T__CalendarItemType> calendarItem() const;
+    void setContact( const QList<T__ContactItemType>& contact );
+    QList<T__ContactItemType> contact() const;
+    void setDistributionList( const QList<T__DistributionListType>& distributionList );
+    QList<T__DistributionListType> distributionList() const;
+    void setMeetingMessage( const QList<T__MeetingMessageType>& meetingMessage );
+    QList<T__MeetingMessageType> meetingMessage() const;
+    void setMeetingRequest( const QList<T__MeetingRequestMessageType>& meetingRequest );
+    QList<T__MeetingRequestMessageType> meetingRequest() const;
+    void setMeetingResponse( const QList<T__MeetingResponseMessageType>& meetingResponse );
+    QList<T__MeetingResponseMessageType> meetingResponse() const;
+    void setMeetingCancellation( const QList<T__MeetingCancellationMessageType>& meetingCancellation );
+    QList<T__MeetingCancellationMessageType> meetingCancellation() const;
+    void setTask( const QList<T__TaskType>& task );
+    QList<T__TaskType> task() const;
+    void setPostItem( const QList<T__PostItemType>& postItem );
+    QList<T__PostItemType> postItem() const;
+    void setReplyToItem( const QList<T__ReplyToItemType>& replyToItem );
+    QList<T__ReplyToItemType> replyToItem() const;
+    void setForwardItem( const QList<T__ForwardItemType>& forwardItem );
+    QList<T__ForwardItemType> forwardItem() const;
+    void setReplyAllToItem( const QList<T__ReplyAllToItemType>& replyAllToItem );
+    QList<T__ReplyAllToItemType> replyAllToItem() const;
+    void setAcceptItem( const QList<T__AcceptItemType>& acceptItem );
+    QList<T__AcceptItemType> acceptItem() const;
+    void setTentativelyAcceptItem( const QList<T__TentativelyAcceptItemType>& tentativelyAcceptItem );
+    QList<T__TentativelyAcceptItemType> tentativelyAcceptItem() const;
+    void setDeclineItem( const QList<T__DeclineItemType>& declineItem );
+    QList<T__DeclineItemType> declineItem() const;
+    void setCancelCalendarItem( const QList<T__CancelCalendarItemType>& cancelCalendarItem );
+    QList<T__CancelCalendarItemType> cancelCalendarItem() const;
+    void setRemoveItem( const QList<T__RemoveItemType>& removeItem );
+    QList<T__RemoveItemType> removeItem() const;
+    void setSuppressReadReceipt( const QList<T__SuppressReadReceiptType>& suppressReadReceipt );
+    QList<T__SuppressReadReceiptType> suppressReadReceipt() const;
+    void setPostReplyItem( const QList<T__PostReplyItemType>& postReplyItem );
+    QList<T__PostReplyItemType> postReplyItem() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__DeletedOccurrenceInfoType();
-    ~T__DeletedOccurrenceInfoType();
+    T__NonEmptyArrayOfAllItemsType();
+    ~T__NonEmptyArrayOfAllItemsType();
 
 public:
-    T__DeletedOccurrenceInfoType( const T__DeletedOccurrenceInfoType& );
-    T__DeletedOccurrenceInfoType &operator=( const T__DeletedOccurrenceInfoType& );
+    T__NonEmptyArrayOfAllItemsType( const T__NonEmptyArrayOfAllItemsType& );
+    T__NonEmptyArrayOfAllItemsType &operator=( const T__NonEmptyArrayOfAllItemsType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-/**
-    Abstract base type for item identifiers. Should never be used in web
-    service calls
- */
-class T__BaseItemIdType
+class TNS__BaseRequestType
 {
 public:
     virtual KDSoapValue serialize( const QString& valueName ) const;
     virtual void deserialize( const KDSoapValue& mainValue );
-    T__BaseItemIdType();
-    virtual ~T__BaseItemIdType();
+    TNS__BaseRequestType();
+    virtual ~TNS__BaseRequestType();
 
 };
 
-class T__InternetHeaderType
+class T__ArrayOfSuggestionDayResult
 {
 public:
-    void setValue( const QString& value );
-    QString value() const;
-    T__InternetHeaderType( const QString& value );
-    operator QString() const;
-    void setHeaderName( const QString& headerName );
-    QString headerName() const;
+    void setSuggestionDayResult( const QList<T__SuggestionDayResult>& suggestionDayResult );
+    QList<T__SuggestionDayResult> suggestionDayResult() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__InternetHeaderType();
-    ~T__InternetHeaderType();
+    T__ArrayOfSuggestionDayResult();
+    ~T__ArrayOfSuggestionDayResult();
 
 public:
-    T__InternetHeaderType( const T__InternetHeaderType& );
-    T__InternetHeaderType &operator=( const T__InternetHeaderType& );
+    T__ArrayOfSuggestionDayResult( const T__ArrayOfSuggestionDayResult& );
+    T__ArrayOfSuggestionDayResult &operator=( const T__ArrayOfSuggestionDayResult& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__MailboxData
+class T__GroupedItemsType
 {
 public:
-    void setEmail( const T__EmailAddress& email );
-    T__EmailAddress email() const;
-    void setAttendeeType( const T__MeetingAttendeeType& attendeeType );
-    T__MeetingAttendeeType attendeeType() const;
-    void setExcludeConflicts( bool excludeConflicts );
-    bool excludeConflicts() const;
+    void setGroupIndex( const QString& groupIndex );
+    QString groupIndex() const;
+    void setItems( const T__ArrayOfRealItemsType& items );
+    T__ArrayOfRealItemsType items() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__MailboxData();
-    ~T__MailboxData();
+    T__GroupedItemsType();
+    ~T__GroupedItemsType();
 
 public:
-    T__MailboxData( const T__MailboxData& );
-    T__MailboxData &operator=( const T__MailboxData& );
+    T__GroupedItemsType( const T__GroupedItemsType& );
+    T__GroupedItemsType &operator=( const T__GroupedItemsType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__RequestServerVersion
+class T__EmailAddressDictionaryType
 {
 public:
-    void setVersion( const T__ExchangeVersionType& version );
-    T__ExchangeVersionType version() const;
-    void setAnyAttribute( const KDSoapValue& anyAttribute );
-    KDSoapValue anyAttribute() const;
+    void setEntry( const QList<T__EmailAddressDictionaryEntryType>& entry );
+    QList<T__EmailAddressDictionaryEntryType> entry() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__RequestServerVersion();
-    ~T__RequestServerVersion();
+    T__EmailAddressDictionaryType();
+    ~T__EmailAddressDictionaryType();
 
 public:
-    T__RequestServerVersion( const T__RequestServerVersion& );
-    T__RequestServerVersion &operator=( const T__RequestServerVersion& );
+    T__EmailAddressDictionaryType( const T__EmailAddressDictionaryType& );
+    T__EmailAddressDictionaryType &operator=( const T__EmailAddressDictionaryType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__SetUserOofSettingsResponse
+class T__ArrayOfRecipientsType
 {
 public:
-    void setResponseMessage( const TNS__ResponseMessageType& responseMessage );
-    TNS__ResponseMessageType responseMessage() const;
+    void setMailbox( const QList<T__EmailAddressType>& mailbox );
+    QList<T__EmailAddressType> mailbox() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__SetUserOofSettingsResponse();
-    ~TNS__SetUserOofSettingsResponse();
+    T__ArrayOfRecipientsType();
+    ~T__ArrayOfRecipientsType();
 
 public:
-    TNS__SetUserOofSettingsResponse( const TNS__SetUserOofSettingsResponse& );
-    TNS__SetUserOofSettingsResponse &operator=( const TNS__SetUserOofSettingsResponse& );
+    T__ArrayOfRecipientsType( const T__ArrayOfRecipientsType& );
+    T__ArrayOfRecipientsType &operator=( const T__ArrayOfRecipientsType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__PhoneNumberDictionaryType
+class T__BaseGroupByType
 {
 public:
-    void setEntry( const QList<T__PhoneNumberDictionaryEntryType>& entry );
-    QList<T__PhoneNumberDictionaryEntryType> entry() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__PhoneNumberDictionaryType();
-    ~T__PhoneNumberDictionaryType();
-
-public:
-    T__PhoneNumberDictionaryType( const T__PhoneNumberDictionaryType& );
-    T__PhoneNumberDictionaryType &operator=( const T__PhoneNumberDictionaryType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ArrayOfCalendarEvent
-{
-public:
-    void setCalendarEvent( const QList<T__CalendarEvent>& calendarEvent );
-    QList<T__CalendarEvent> calendarEvent() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfCalendarEvent();
-    ~T__ArrayOfCalendarEvent();
-
-public:
-    T__ArrayOfCalendarEvent( const T__ArrayOfCalendarEvent& );
-    T__ArrayOfCalendarEvent &operator=( const T__ArrayOfCalendarEvent& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ArrayOfBaseItemIdsType
-{
-public:
-    void setItemId( const QList<T__ItemIdType>& itemId );
-    QList<T__ItemIdType> itemId() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfBaseItemIdsType();
-    ~T__ArrayOfBaseItemIdsType();
-
-public:
-    T__ArrayOfBaseItemIdsType( const T__ArrayOfBaseItemIdsType& );
-    T__ArrayOfBaseItemIdsType &operator=( const T__ArrayOfBaseItemIdsType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__CompleteNameType
-{
-public:
-    void setTitle( const QString& title );
-    QString title() const;
-    void setFirstName( const QString& firstName );
-    QString firstName() const;
-    void setMiddleName( const QString& middleName );
-    QString middleName() const;
-    void setLastName( const QString& lastName );
-    QString lastName() const;
-    void setSuffix( const QString& suffix );
-    QString suffix() const;
-    void setInitials( const QString& initials );
-    QString initials() const;
-    void setFullName( const QString& fullName );
-    QString fullName() const;
-    void setNickname( const QString& nickname );
-    QString nickname() const;
-    void setYomiFirstName( const QString& yomiFirstName );
-    QString yomiFirstName() const;
-    void setYomiLastName( const QString& yomiLastName );
-    QString yomiLastName() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__CompleteNameType();
-    ~T__CompleteNameType();
-
-public:
-    T__CompleteNameType( const T__CompleteNameType& );
-    T__CompleteNameType &operator=( const T__CompleteNameType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__TimeZoneDefinitionType
-{
-public:
-    void setId( const QString& id );
-    QString id() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__TimeZoneDefinitionType();
-    ~T__TimeZoneDefinitionType();
-
-public:
-    T__TimeZoneDefinitionType( const T__TimeZoneDefinitionType& );
-    T__TimeZoneDefinitionType &operator=( const T__TimeZoneDefinitionType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__SearchExpressionType
-{
-public:
+    void setOrder( const T__SortDirectionType& order );
+    T__SortDirectionType order() const;
     virtual KDSoapValue serialize( const QString& valueName ) const;
     virtual void deserialize( const KDSoapValue& mainValue );
-    T__SearchExpressionType();
-    virtual ~T__SearchExpressionType();
-
-};
-
-class T__NonEmptyArrayOfFolderChangeDescriptionsType
-{
-public:
-    void setAppendToFolderField( const QList<T__AppendToFolderFieldType>& appendToFolderField );
-    QList<T__AppendToFolderFieldType> appendToFolderField() const;
-    void setSetFolderField( const QList<T__SetFolderFieldType>& setFolderField );
-    QList<T__SetFolderFieldType> setFolderField() const;
-    void setDeleteFolderField( const QList<T__DeleteFolderFieldType>& deleteFolderField );
-    QList<T__DeleteFolderFieldType> deleteFolderField() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfFolderChangeDescriptionsType();
-    ~T__NonEmptyArrayOfFolderChangeDescriptionsType();
+    T__BaseGroupByType();
+    virtual ~T__BaseGroupByType();
 
 public:
-    T__NonEmptyArrayOfFolderChangeDescriptionsType( const T__NonEmptyArrayOfFolderChangeDescriptionsType& );
-    T__NonEmptyArrayOfFolderChangeDescriptionsType &operator=( const T__NonEmptyArrayOfFolderChangeDescriptionsType& );
+    T__BaseGroupByType( const T__BaseGroupByType& );
+    T__BaseGroupByType &operator=( const T__BaseGroupByType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__ImAddressDictionaryEntryType
+class T__MimeContentType
 {
 public:
     void setValue( const QString& value );
     QString value() const;
-    T__ImAddressDictionaryEntryType( const QString& value );
+    T__MimeContentType( const QString& value );
     operator QString() const;
-    void setKey( const T__ImAddressKeyType& key );
-    T__ImAddressKeyType key() const;
+    void setCharacterSet( const QString& characterSet );
+    QString characterSet() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__ImAddressDictionaryEntryType();
-    ~T__ImAddressDictionaryEntryType();
+    T__MimeContentType();
+    ~T__MimeContentType();
 
 public:
-    T__ImAddressDictionaryEntryType( const T__ImAddressDictionaryEntryType& );
-    T__ImAddressDictionaryEntryType &operator=( const T__ImAddressDictionaryEntryType& );
+    T__MimeContentType( const T__MimeContentType& );
+    T__MimeContentType &operator=( const T__MimeContentType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__ArrayOfUnknownEntriesType
+class T__ConnectingSIDType
 {
 public:
-    void setUnknownEntry( const QStringList& unknownEntry );
-    QStringList unknownEntry() const;
+    void setPrincipalName( const QString& principalName );
+    QString principalName() const;
+    void setSID( const QString& sID );
+    QString sID() const;
+    void setPrimarySmtpAddress( const QString& primarySmtpAddress );
+    QString primarySmtpAddress() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfUnknownEntriesType();
-    ~T__ArrayOfUnknownEntriesType();
+    T__ConnectingSIDType();
+    ~T__ConnectingSIDType();
 
 public:
-    T__ArrayOfUnknownEntriesType( const T__ArrayOfUnknownEntriesType& );
-    T__ArrayOfUnknownEntriesType &operator=( const T__ArrayOfUnknownEntriesType& );
+    T__ConnectingSIDType( const T__ConnectingSIDType& );
+    T__ConnectingSIDType &operator=( const T__ConnectingSIDType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__FindFolderParentType
+class T__TimeZoneType
 {
 public:
-    void setFolders( const T__ArrayOfFoldersType& folders );
-    T__ArrayOfFoldersType folders() const;
+    void setBaseOffset( const QString& baseOffset );
+    QString baseOffset() const;
+    void setStandard( const T__TimeChangeType& standard );
+    T__TimeChangeType standard() const;
+    void setDaylight( const T__TimeChangeType& daylight );
+    T__TimeChangeType daylight() const;
+    void setTimeZoneName( const QString& timeZoneName );
+    QString timeZoneName() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__FindFolderParentType();
-    ~T__FindFolderParentType();
+    T__TimeZoneType();
+    ~T__TimeZoneType();
 
 public:
-    T__FindFolderParentType( const T__FindFolderParentType& );
-    T__FindFolderParentType &operator=( const T__FindFolderParentType& );
+    T__TimeZoneType( const T__TimeZoneType& );
+    T__TimeZoneType &operator=( const T__TimeZoneType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__Suggestion
+{
+public:
+    void setMeetingTime( const KDDateTime& meetingTime );
+    KDDateTime meetingTime() const;
+    void setIsWorkTime( bool isWorkTime );
+    bool isWorkTime() const;
+    void setSuggestionQuality( const T__SuggestionQuality& suggestionQuality );
+    T__SuggestionQuality suggestionQuality() const;
+    void setAttendeeConflictDataArray( const T__ArrayOfAttendeeConflictData& attendeeConflictDataArray );
+    T__ArrayOfAttendeeConflictData attendeeConflictDataArray() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__Suggestion();
+    ~T__Suggestion();
+
+public:
+    T__Suggestion( const T__Suggestion& );
+    T__Suggestion &operator=( const T__Suggestion& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__AttendeeType
+{
+public:
+    void setMailbox( const T__EmailAddressType& mailbox );
+    T__EmailAddressType mailbox() const;
+    void setResponseType( const T__ResponseTypeType& responseType );
+    T__ResponseTypeType responseType() const;
+    void setLastResponseTime( const KDDateTime& lastResponseTime );
+    KDDateTime lastResponseTime() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__AttendeeType();
+    ~T__AttendeeType();
+
+public:
+    T__AttendeeType( const T__AttendeeType& );
+    T__AttendeeType &operator=( const T__AttendeeType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__WorkingHours
+{
+public:
+    void setTimeZone( const T__SerializableTimeZone& timeZone );
+    T__SerializableTimeZone timeZone() const;
+    void setWorkingPeriodArray( const T__ArrayOfWorkingPeriod& workingPeriodArray );
+    T__ArrayOfWorkingPeriod workingPeriodArray() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__WorkingHours();
+    ~T__WorkingHours();
+
+public:
+    T__WorkingHours( const T__WorkingHours& );
+    T__WorkingHours &operator=( const T__WorkingHours& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__RecurrenceType
+{
+public:
+    void setRelativeYearlyRecurrence( const T__RelativeYearlyRecurrencePatternType& relativeYearlyRecurrence );
+    T__RelativeYearlyRecurrencePatternType relativeYearlyRecurrence() const;
+    void setAbsoluteYearlyRecurrence( const T__AbsoluteYearlyRecurrencePatternType& absoluteYearlyRecurrence );
+    T__AbsoluteYearlyRecurrencePatternType absoluteYearlyRecurrence() const;
+    void setRelativeMonthlyRecurrence( const T__RelativeMonthlyRecurrencePatternType& relativeMonthlyRecurrence );
+    T__RelativeMonthlyRecurrencePatternType relativeMonthlyRecurrence() const;
+    void setAbsoluteMonthlyRecurrence( const T__AbsoluteMonthlyRecurrencePatternType& absoluteMonthlyRecurrence );
+    T__AbsoluteMonthlyRecurrencePatternType absoluteMonthlyRecurrence() const;
+    void setWeeklyRecurrence( const T__WeeklyRecurrencePatternType& weeklyRecurrence );
+    T__WeeklyRecurrencePatternType weeklyRecurrence() const;
+    void setDailyRecurrence( const T__DailyRecurrencePatternType& dailyRecurrence );
+    T__DailyRecurrencePatternType dailyRecurrence() const;
+    void setNoEndRecurrence( const T__NoEndRecurrenceRangeType& noEndRecurrence );
+    T__NoEndRecurrenceRangeType noEndRecurrence() const;
+    void setEndDateRecurrence( const T__EndDateRecurrenceRangeType& endDateRecurrence );
+    T__EndDateRecurrenceRangeType endDateRecurrence() const;
+    void setNumberedRecurrence( const T__NumberedRecurrenceRangeType& numberedRecurrence );
+    T__NumberedRecurrenceRangeType numberedRecurrence() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__RecurrenceType();
+    ~T__RecurrenceType();
+
+public:
+    T__RecurrenceType( const T__RecurrenceType& );
+    T__RecurrenceType &operator=( const T__RecurrenceType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__EmailAddress
+{
+public:
+    void setName( const QString& name );
+    QString name() const;
+    void setAddress( const QString& address );
+    QString address() const;
+    void setRoutingType( const QString& routingType );
+    QString routingType() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__EmailAddress();
+    ~T__EmailAddress();
+
+public:
+    T__EmailAddress( const T__EmailAddress& );
+    T__EmailAddress &operator=( const T__EmailAddress& );
 
 private:
     class PrivateDPtr;
@@ -4352,103 +4726,581 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-/**
-    The set of permissions on a folder
- */
-class T__CalendarPermissionSetType
+class T__WorkingPeriod
 {
 public:
-    void setCalendarPermissions( const T__ArrayOfCalendarPermissionsType& calendarPermissions );
-    T__ArrayOfCalendarPermissionsType calendarPermissions() const;
-    void setUnknownEntries( const T__ArrayOfUnknownEntriesType& unknownEntries );
-    T__ArrayOfUnknownEntriesType unknownEntries() const;
+    void setDayOfWeek( const T__DaysOfWeekType& dayOfWeek );
+    T__DaysOfWeekType dayOfWeek() const;
+    void setStartTimeInMinutes( int startTimeInMinutes );
+    int startTimeInMinutes() const;
+    void setEndTimeInMinutes( int endTimeInMinutes );
+    int endTimeInMinutes() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__CalendarPermissionSetType();
-    ~T__CalendarPermissionSetType();
+    T__WorkingPeriod();
+    ~T__WorkingPeriod();
 
 public:
-    T__CalendarPermissionSetType( const T__CalendarPermissionSetType& );
-    T__CalendarPermissionSetType &operator=( const T__CalendarPermissionSetType& );
+    T__WorkingPeriod( const T__WorkingPeriod& );
+    T__WorkingPeriod &operator=( const T__WorkingPeriod& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__RecurrenceType
+class T__NonEmptyArrayOfResponseObjectsType
 {
 public:
+    void setAcceptItem( const QList<T__AcceptItemType>& acceptItem );
+    QList<T__AcceptItemType> acceptItem() const;
+    void setTentativelyAcceptItem( const QList<T__TentativelyAcceptItemType>& tentativelyAcceptItem );
+    QList<T__TentativelyAcceptItemType> tentativelyAcceptItem() const;
+    void setDeclineItem( const QList<T__DeclineItemType>& declineItem );
+    QList<T__DeclineItemType> declineItem() const;
+    void setReplyToItem( const QList<T__ReplyToItemType>& replyToItem );
+    QList<T__ReplyToItemType> replyToItem() const;
+    void setForwardItem( const QList<T__ForwardItemType>& forwardItem );
+    QList<T__ForwardItemType> forwardItem() const;
+    void setReplyAllToItem( const QList<T__ReplyAllToItemType>& replyAllToItem );
+    QList<T__ReplyAllToItemType> replyAllToItem() const;
+    void setCancelCalendarItem( const QList<T__CancelCalendarItemType>& cancelCalendarItem );
+    QList<T__CancelCalendarItemType> cancelCalendarItem() const;
+    void setRemoveItem( const QList<T__RemoveItemType>& removeItem );
+    QList<T__RemoveItemType> removeItem() const;
+    void setSuppressReadReceipt( const QList<T__SuppressReadReceiptType>& suppressReadReceipt );
+    QList<T__SuppressReadReceiptType> suppressReadReceipt() const;
+    void setPostReplyItem( const QList<T__PostReplyItemType>& postReplyItem );
+    QList<T__PostReplyItemType> postReplyItem() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__NonEmptyArrayOfResponseObjectsType();
+    ~T__NonEmptyArrayOfResponseObjectsType();
+
+public:
+    T__NonEmptyArrayOfResponseObjectsType( const T__NonEmptyArrayOfResponseObjectsType& );
+    T__NonEmptyArrayOfResponseObjectsType &operator=( const T__NonEmptyArrayOfResponseObjectsType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+/**
+    A non-empty array of alternate Ids.
+ */
+class T__NonEmptyArrayOfAlternateIdsType
+{
+public:
+    void setAlternateId( const QList<T__AlternateIdType>& alternateId );
+    QList<T__AlternateIdType> alternateId() const;
+    void setAlternatePublicFolderId( const QList<T__AlternatePublicFolderIdType>& alternatePublicFolderId );
+    QList<T__AlternatePublicFolderIdType> alternatePublicFolderId() const;
+    void setAlternatePublicFolderItemId( const QList<T__AlternatePublicFolderItemIdType>& alternatePublicFolderItemId );
+    QList<T__AlternatePublicFolderItemIdType> alternatePublicFolderItemId() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__NonEmptyArrayOfAlternateIdsType();
+    ~T__NonEmptyArrayOfAlternateIdsType();
+
+public:
+    T__NonEmptyArrayOfAlternateIdsType( const T__NonEmptyArrayOfAlternateIdsType& );
+    T__NonEmptyArrayOfAlternateIdsType &operator=( const T__NonEmptyArrayOfAlternateIdsType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__PhysicalAddressDictionaryEntryType
+{
+public:
+    void setStreet( const QString& street );
+    QString street() const;
+    void setCity( const QString& city );
+    QString city() const;
+    void setState( const QString& state );
+    QString state() const;
+    void setCountryOrRegion( const QString& countryOrRegion );
+    QString countryOrRegion() const;
+    void setPostalCode( const QString& postalCode );
+    QString postalCode() const;
+    void setKey( const T__PhysicalAddressKeyType& key );
+    T__PhysicalAddressKeyType key() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__PhysicalAddressDictionaryEntryType();
+    ~T__PhysicalAddressDictionaryEntryType();
+
+public:
+    T__PhysicalAddressDictionaryEntryType( const T__PhysicalAddressDictionaryEntryType& );
+    T__PhysicalAddressDictionaryEntryType &operator=( const T__PhysicalAddressDictionaryEntryType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__FreeBusyViewOptionsType
+{
+public:
+    void setTimeWindow( const T__Duration& timeWindow );
+    T__Duration timeWindow() const;
+    void setMergedFreeBusyIntervalInMinutes( int mergedFreeBusyIntervalInMinutes );
+    int mergedFreeBusyIntervalInMinutes() const;
+    void setRequestedView( const T__FreeBusyViewType& requestedView );
+    T__FreeBusyViewType requestedView() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__FreeBusyViewOptionsType();
+    ~T__FreeBusyViewOptionsType();
+
+public:
+    T__FreeBusyViewOptionsType( const T__FreeBusyViewOptionsType& );
+    T__FreeBusyViewOptionsType &operator=( const T__FreeBusyViewOptionsType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__TimeChangeType
+{
+public:
+    void setOffset( const QString& offset );
+    QString offset() const;
+    void setTime( const QTime& time );
+    QTime time() const;
     void setRelativeYearlyRecurrence( const T__RelativeYearlyRecurrencePatternType& relativeYearlyRecurrence );
     T__RelativeYearlyRecurrencePatternType relativeYearlyRecurrence() const;
-    void setAbsoluteYearlyRecurrence( const T__AbsoluteYearlyRecurrencePatternType& absoluteYearlyRecurrence );
-    T__AbsoluteYearlyRecurrencePatternType absoluteYearlyRecurrence() const;
-    void setRelativeMonthlyRecurrence( const T__RelativeMonthlyRecurrencePatternType& relativeMonthlyRecurrence );
-    T__RelativeMonthlyRecurrencePatternType relativeMonthlyRecurrence() const;
-    void setAbsoluteMonthlyRecurrence( const T__AbsoluteMonthlyRecurrencePatternType& absoluteMonthlyRecurrence );
-    T__AbsoluteMonthlyRecurrencePatternType absoluteMonthlyRecurrence() const;
-    void setWeeklyRecurrence( const T__WeeklyRecurrencePatternType& weeklyRecurrence );
-    T__WeeklyRecurrencePatternType weeklyRecurrence() const;
-    void setDailyRecurrence( const T__DailyRecurrencePatternType& dailyRecurrence );
-    T__DailyRecurrencePatternType dailyRecurrence() const;
-    void setNoEndRecurrence( const T__NoEndRecurrenceRangeType& noEndRecurrence );
-    T__NoEndRecurrenceRangeType noEndRecurrence() const;
-    void setEndDateRecurrence( const T__EndDateRecurrenceRangeType& endDateRecurrence );
-    T__EndDateRecurrenceRangeType endDateRecurrence() const;
-    void setNumberedRecurrence( const T__NumberedRecurrenceRangeType& numberedRecurrence );
-    T__NumberedRecurrenceRangeType numberedRecurrence() const;
+    void setAbsoluteDate( const QDate& absoluteDate );
+    QDate absoluteDate() const;
+    void setTimeZoneName( const QString& timeZoneName );
+    QString timeZoneName() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__RecurrenceType();
-    ~T__RecurrenceType();
+    T__TimeChangeType();
+    ~T__TimeChangeType();
 
 public:
-    T__RecurrenceType( const T__RecurrenceType& );
-    T__RecurrenceType &operator=( const T__RecurrenceType& );
+    T__TimeChangeType( const T__TimeChangeType& );
+    T__TimeChangeType &operator=( const T__TimeChangeType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__EmailAddress
+/**
+    Utility type which should never appear in user documents
+ */
+class T__BaseFolderIdType
 {
 public:
-    void setName( const QString& name );
-    QString name() const;
-    void setAddress( const QString& address );
-    QString address() const;
-    void setRoutingType( const QString& routingType );
-    QString routingType() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__BaseFolderIdType();
+    virtual ~T__BaseFolderIdType();
+
+};
+
+class T__BaseEmailAddressType
+{
+public:
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__BaseEmailAddressType();
+    virtual ~T__BaseEmailAddressType();
+
+};
+
+class T__SyncFolderHierarchyChangesType
+{
+public:
+    void setCreate( const QList<T__SyncFolderHierarchyCreateOrUpdateType>& create );
+    QList<T__SyncFolderHierarchyCreateOrUpdateType> create() const;
+    void setUpdate( const QList<T__SyncFolderHierarchyCreateOrUpdateType>& update );
+    QList<T__SyncFolderHierarchyCreateOrUpdateType> update() const;
+    void setDelete( const QList<T__SyncFolderHierarchyDeleteType>& delete_ );
+    QList<T__SyncFolderHierarchyDeleteType> delete_() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__EmailAddress();
-    ~T__EmailAddress();
+    T__SyncFolderHierarchyChangesType();
+    ~T__SyncFolderHierarchyChangesType();
 
 public:
-    T__EmailAddress( const T__EmailAddress& );
-    T__EmailAddress &operator=( const T__EmailAddress& );
+    T__SyncFolderHierarchyChangesType( const T__SyncFolderHierarchyChangesType& );
+    T__SyncFolderHierarchyChangesType &operator=( const T__SyncFolderHierarchyChangesType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__SidAndAttributesType
+class T__NonEmptyArrayOfNotificationEventTypesType
 {
 public:
-    void setSecurityIdentifier( const QString& securityIdentifier );
-    QString securityIdentifier() const;
-    void setAttributes( unsigned int attributes );
-    unsigned int attributes() const;
+    void setEventType( const QList<T__NotificationEventTypeType>& eventType );
+    QList<T__NotificationEventTypeType> eventType() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__SidAndAttributesType();
-    ~T__SidAndAttributesType();
+    T__NonEmptyArrayOfNotificationEventTypesType();
+    ~T__NonEmptyArrayOfNotificationEventTypesType();
 
 public:
-    T__SidAndAttributesType( const T__SidAndAttributesType& );
-    T__SidAndAttributesType &operator=( const T__SidAndAttributesType& );
+    T__NonEmptyArrayOfNotificationEventTypesType( const T__NonEmptyArrayOfNotificationEventTypesType& );
+    T__NonEmptyArrayOfNotificationEventTypesType &operator=( const T__NonEmptyArrayOfNotificationEventTypesType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__SerializedSecurityContextType
+{
+public:
+    void setUserSid( const QString& userSid );
+    QString userSid() const;
+    void setGroupSids( const T__NonEmptyArrayOfGroupIdentifiersType& groupSids );
+    T__NonEmptyArrayOfGroupIdentifiersType groupSids() const;
+    void setRestrictedGroupSids( const T__NonEmptyArrayOfRestrictedGroupIdentifiersType& restrictedGroupSids );
+    T__NonEmptyArrayOfRestrictedGroupIdentifiersType restrictedGroupSids() const;
+    void setPrimarySmtpAddress( const QString& primarySmtpAddress );
+    QString primarySmtpAddress() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__SerializedSecurityContextType();
+    ~T__SerializedSecurityContextType();
+
+public:
+    T__SerializedSecurityContextType( const T__SerializedSecurityContextType& );
+    T__SerializedSecurityContextType &operator=( const T__SerializedSecurityContextType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__SerializableTimeZoneTime
+{
+public:
+    void setBias( int bias );
+    int bias() const;
+    void setTime( const QString& time );
+    QString time() const;
+    void setDayOrder( int dayOrder );
+    int dayOrder() const;
+    void setMonth( int month );
+    int month() const;
+    void setDayOfWeek( const T__DayOfWeekType& dayOfWeek );
+    T__DayOfWeekType dayOfWeek() const;
+    void setYear( const QString& year );
+    QString year() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__SerializableTimeZoneTime();
+    ~T__SerializableTimeZoneTime();
+
+public:
+    T__SerializableTimeZoneTime( const T__SerializableTimeZoneTime& );
+    T__SerializableTimeZoneTime &operator=( const T__SerializableTimeZoneTime& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ExchangeImpersonationType
+{
+public:
+    void setConnectingSID( const T__ConnectingSIDType& connectingSID );
+    T__ConnectingSIDType connectingSID() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ExchangeImpersonationType();
+    ~T__ExchangeImpersonationType();
+
+public:
+    T__ExchangeImpersonationType( const T__ExchangeImpersonationType& );
+    T__ExchangeImpersonationType &operator=( const T__ExchangeImpersonationType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ConstantValueType
+{
+public:
+    void setValue( const QString& value );
+    QString value() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ConstantValueType();
+    ~T__ConstantValueType();
+
+public:
+    T__ConstantValueType( const T__ConstantValueType& );
+    T__ConstantValueType &operator=( const T__ConstantValueType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__FolderResponseShapeType
+{
+public:
+    void setBaseShape( const T__DefaultShapeNamesType& baseShape );
+    T__DefaultShapeNamesType baseShape() const;
+    void setAdditionalProperties( const T__NonEmptyArrayOfPathsToElementType& additionalProperties );
+    T__NonEmptyArrayOfPathsToElementType additionalProperties() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__FolderResponseShapeType();
+    ~T__FolderResponseShapeType();
+
+public:
+    T__FolderResponseShapeType( const T__FolderResponseShapeType& );
+    T__FolderResponseShapeType &operator=( const T__FolderResponseShapeType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__NonEmptyArrayOfItemChangeDescriptionsType
+{
+public:
+    void setAppendToItemField( const QList<T__AppendToItemFieldType>& appendToItemField );
+    QList<T__AppendToItemFieldType> appendToItemField() const;
+    void setSetItemField( const QList<T__SetItemFieldType>& setItemField );
+    QList<T__SetItemFieldType> setItemField() const;
+    void setDeleteItemField( const QList<T__DeleteItemFieldType>& deleteItemField );
+    QList<T__DeleteItemFieldType> deleteItemField() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__NonEmptyArrayOfItemChangeDescriptionsType();
+    ~T__NonEmptyArrayOfItemChangeDescriptionsType();
+
+public:
+    T__NonEmptyArrayOfItemChangeDescriptionsType( const T__NonEmptyArrayOfItemChangeDescriptionsType& );
+    T__NonEmptyArrayOfItemChangeDescriptionsType &operator=( const T__NonEmptyArrayOfItemChangeDescriptionsType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__MessageXml
+{
+public:
+    void setAny( const QList<KDSoapValue>& any );
+    QList<KDSoapValue> any() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__MessageXml();
+    ~TNS__MessageXml();
+
+public:
+    TNS__MessageXml( const TNS__MessageXml& );
+    TNS__MessageXml &operator=( const TNS__MessageXml& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__FreeBusyView
+{
+public:
+    void setFreeBusyViewType( const T__FreeBusyViewType& freeBusyViewType );
+    T__FreeBusyViewType freeBusyViewType() const;
+    void setMergedFreeBusy( const QString& mergedFreeBusy );
+    QString mergedFreeBusy() const;
+    void setCalendarEventArray( const T__ArrayOfCalendarEvent& calendarEventArray );
+    T__ArrayOfCalendarEvent calendarEventArray() const;
+    void setWorkingHours( const T__WorkingHours& workingHours );
+    T__WorkingHours workingHours() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__FreeBusyView();
+    ~T__FreeBusyView();
+
+public:
+    T__FreeBusyView( const T__FreeBusyView& );
+    T__FreeBusyView &operator=( const T__FreeBusyView& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__SyncFolderItemsCreateOrUpdateType
+{
+public:
+    void setItem( const T__ItemType& item );
+    T__ItemType item() const;
+    void setMessage( const T__MessageType& message );
+    T__MessageType message() const;
+    void setCalendarItem( const T__CalendarItemType& calendarItem );
+    T__CalendarItemType calendarItem() const;
+    void setContact( const T__ContactItemType& contact );
+    T__ContactItemType contact() const;
+    void setDistributionList( const T__DistributionListType& distributionList );
+    T__DistributionListType distributionList() const;
+    void setMeetingMessage( const T__MeetingMessageType& meetingMessage );
+    T__MeetingMessageType meetingMessage() const;
+    void setMeetingRequest( const T__MeetingRequestMessageType& meetingRequest );
+    T__MeetingRequestMessageType meetingRequest() const;
+    void setMeetingResponse( const T__MeetingResponseMessageType& meetingResponse );
+    T__MeetingResponseMessageType meetingResponse() const;
+    void setMeetingCancellation( const T__MeetingCancellationMessageType& meetingCancellation );
+    T__MeetingCancellationMessageType meetingCancellation() const;
+    void setTask( const T__TaskType& task );
+    T__TaskType task() const;
+    void setPostItem( const T__PostItemType& postItem );
+    T__PostItemType postItem() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__SyncFolderItemsCreateOrUpdateType();
+    ~T__SyncFolderItemsCreateOrUpdateType();
+
+public:
+    T__SyncFolderItemsCreateOrUpdateType( const T__SyncFolderItemsCreateOrUpdateType& );
+    T__SyncFolderItemsCreateOrUpdateType &operator=( const T__SyncFolderItemsCreateOrUpdateType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__NonEmptyArrayOfBaseFolderIdsType
+{
+public:
+    void setFolderId( const QList<T__FolderIdType>& folderId );
+    QList<T__FolderIdType> folderId() const;
+    void setDistinguishedFolderId( const QList<T__DistinguishedFolderIdType>& distinguishedFolderId );
+    QList<T__DistinguishedFolderIdType> distinguishedFolderId() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__NonEmptyArrayOfBaseFolderIdsType();
+    ~T__NonEmptyArrayOfBaseFolderIdsType();
+
+public:
+    T__NonEmptyArrayOfBaseFolderIdsType( const T__NonEmptyArrayOfBaseFolderIdsType& );
+    T__NonEmptyArrayOfBaseFolderIdsType &operator=( const T__NonEmptyArrayOfBaseFolderIdsType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__FieldURIOrConstantType
+{
+public:
+    void setPath( const T__BasePathToElementType& path );
+    T__BasePathToElementType path() const;
+    void setConstant( const T__ConstantValueType& constant );
+    T__ConstantValueType constant() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__FieldURIOrConstantType();
+    ~T__FieldURIOrConstantType();
+
+public:
+    T__FieldURIOrConstantType( const T__FieldURIOrConstantType& );
+    T__FieldURIOrConstantType &operator=( const T__FieldURIOrConstantType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ItemResponseShapeType
+{
+public:
+    void setBaseShape( const T__DefaultShapeNamesType& baseShape );
+    T__DefaultShapeNamesType baseShape() const;
+    void setIncludeMimeContent( bool includeMimeContent );
+    bool includeMimeContent() const;
+    void setBodyType( const T__BodyTypeResponseType& bodyType );
+    T__BodyTypeResponseType bodyType() const;
+    void setAdditionalProperties( const T__NonEmptyArrayOfPathsToElementType& additionalProperties );
+    T__NonEmptyArrayOfPathsToElementType additionalProperties() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ItemResponseShapeType();
+    ~T__ItemResponseShapeType();
+
+public:
+    T__ItemResponseShapeType( const T__ItemResponseShapeType& );
+    T__ItemResponseShapeType &operator=( const T__ItemResponseShapeType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ImAddressDictionaryType
+{
+public:
+    void setEntry( const QList<T__ImAddressDictionaryEntryType>& entry );
+    QList<T__ImAddressDictionaryEntryType> entry() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ImAddressDictionaryType();
+    ~T__ImAddressDictionaryType();
+
+public:
+    T__ImAddressDictionaryType( const T__ImAddressDictionaryType& );
+    T__ImAddressDictionaryType &operator=( const T__ImAddressDictionaryType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ArrayOfAttachmentsType
+{
+public:
+    void setItemAttachment( const QList<T__ItemAttachmentType>& itemAttachment );
+    QList<T__ItemAttachmentType> itemAttachment() const;
+    void setFileAttachment( const QList<T__FileAttachmentType>& fileAttachment );
+    QList<T__FileAttachmentType> fileAttachment() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ArrayOfAttachmentsType();
+    ~T__ArrayOfAttachmentsType();
+
+public:
+    T__ArrayOfAttachmentsType( const T__ArrayOfAttachmentsType& );
+    T__ArrayOfAttachmentsType &operator=( const T__ArrayOfAttachmentsType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__SyncFolderItemsChangesType
+{
+public:
+    void setCreate( const QList<T__SyncFolderItemsCreateOrUpdateType>& create );
+    QList<T__SyncFolderItemsCreateOrUpdateType> create() const;
+    void setUpdate( const QList<T__SyncFolderItemsCreateOrUpdateType>& update );
+    QList<T__SyncFolderItemsCreateOrUpdateType> update() const;
+    void setDelete( const QList<T__SyncFolderItemsDeleteType>& delete_ );
+    QList<T__SyncFolderItemsDeleteType> delete_() const;
+    void setReadFlagChange( const QList<T__SyncFolderItemsReadFlagType>& readFlagChange );
+    QList<T__SyncFolderItemsReadFlagType> readFlagChange() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__SyncFolderItemsChangesType();
+    ~T__SyncFolderItemsChangesType();
+
+public:
+    T__SyncFolderItemsChangesType( const T__SyncFolderItemsChangesType& );
+    T__SyncFolderItemsChangesType &operator=( const T__SyncFolderItemsChangesType& );
 
 private:
     class PrivateDPtr;
@@ -4474,108 +5326,87 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__BasePagingType
+class T__RecurrencePatternBaseType
 {
 public:
-    void setMaxEntriesReturned( int maxEntriesReturned );
-    int maxEntriesReturned() const;
     virtual KDSoapValue serialize( const QString& valueName ) const;
     virtual void deserialize( const KDSoapValue& mainValue );
-    T__BasePagingType();
-    virtual ~T__BasePagingType();
+    T__RecurrencePatternBaseType();
+    virtual ~T__RecurrencePatternBaseType();
+
+};
+
+class T__NotificationType
+{
+public:
+    void setSubscriptionId( const T__SubscriptionIdType& subscriptionId );
+    T__SubscriptionIdType subscriptionId() const;
+    void setPreviousWatermark( const T__WatermarkType& previousWatermark );
+    T__WatermarkType previousWatermark() const;
+    void setMoreEvents( bool moreEvents );
+    bool moreEvents() const;
+    void setCopiedEvent( const QList<T__MovedCopiedEventType>& copiedEvent );
+    QList<T__MovedCopiedEventType> copiedEvent() const;
+    void setCreatedEvent( const QList<T__BaseObjectChangedEventType>& createdEvent );
+    QList<T__BaseObjectChangedEventType> createdEvent() const;
+    void setDeletedEvent( const QList<T__BaseObjectChangedEventType>& deletedEvent );
+    QList<T__BaseObjectChangedEventType> deletedEvent() const;
+    void setModifiedEvent( const QList<T__ModifiedEventType>& modifiedEvent );
+    QList<T__ModifiedEventType> modifiedEvent() const;
+    void setMovedEvent( const QList<T__MovedCopiedEventType>& movedEvent );
+    QList<T__MovedCopiedEventType> movedEvent() const;
+    void setNewMailEvent( const QList<T__BaseObjectChangedEventType>& newMailEvent );
+    QList<T__BaseObjectChangedEventType> newMailEvent() const;
+    void setStatusEvent( const QList<T__BaseNotificationEventType>& statusEvent );
+    QList<T__BaseNotificationEventType> statusEvent() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__NotificationType();
+    ~T__NotificationType();
 
 public:
-    T__BasePagingType( const T__BasePagingType& );
-    T__BasePagingType &operator=( const T__BasePagingType& );
+    T__NotificationType( const T__NotificationType& );
+    T__NotificationType &operator=( const T__NotificationType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__GetUserAvailabilityResponseType
+class T__NonEmptyArrayOfAttachmentsType
 {
 public:
-    void setFreeBusyResponseArray( const TNS__ArrayOfFreeBusyResponse& freeBusyResponseArray );
-    TNS__ArrayOfFreeBusyResponse freeBusyResponseArray() const;
-    void setSuggestionsResponse( const TNS__SuggestionsResponseType& suggestionsResponse );
-    TNS__SuggestionsResponseType suggestionsResponse() const;
+    void setItemAttachment( const QList<T__ItemAttachmentType>& itemAttachment );
+    QList<T__ItemAttachmentType> itemAttachment() const;
+    void setFileAttachment( const QList<T__FileAttachmentType>& fileAttachment );
+    QList<T__FileAttachmentType> fileAttachment() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__GetUserAvailabilityResponseType();
-    ~TNS__GetUserAvailabilityResponseType();
+    T__NonEmptyArrayOfAttachmentsType();
+    ~T__NonEmptyArrayOfAttachmentsType();
 
 public:
-    TNS__GetUserAvailabilityResponseType( const TNS__GetUserAvailabilityResponseType& );
-    TNS__GetUserAvailabilityResponseType &operator=( const TNS__GetUserAvailabilityResponseType& );
+    T__NonEmptyArrayOfAttachmentsType( const T__NonEmptyArrayOfAttachmentsType& );
+    T__NonEmptyArrayOfAttachmentsType &operator=( const T__NonEmptyArrayOfAttachmentsType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__DelegatePermissionsType
+class T__ArrayOfUserIdType
 {
 public:
-    void setCalendarFolderPermissionLevel( const T__DelegateFolderPermissionLevelType& calendarFolderPermissionLevel );
-    T__DelegateFolderPermissionLevelType calendarFolderPermissionLevel() const;
-    void setTasksFolderPermissionLevel( const T__DelegateFolderPermissionLevelType& tasksFolderPermissionLevel );
-    T__DelegateFolderPermissionLevelType tasksFolderPermissionLevel() const;
-    void setInboxFolderPermissionLevel( const T__DelegateFolderPermissionLevelType& inboxFolderPermissionLevel );
-    T__DelegateFolderPermissionLevelType inboxFolderPermissionLevel() const;
-    void setContactsFolderPermissionLevel( const T__DelegateFolderPermissionLevelType& contactsFolderPermissionLevel );
-    T__DelegateFolderPermissionLevelType contactsFolderPermissionLevel() const;
-    void setNotesFolderPermissionLevel( const T__DelegateFolderPermissionLevelType& notesFolderPermissionLevel );
-    T__DelegateFolderPermissionLevelType notesFolderPermissionLevel() const;
-    void setJournalFolderPermissionLevel( const T__DelegateFolderPermissionLevelType& journalFolderPermissionLevel );
-    T__DelegateFolderPermissionLevelType journalFolderPermissionLevel() const;
+    void setUserId( const QList<T__UserIdType>& userId );
+    QList<T__UserIdType> userId() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__DelegatePermissionsType();
-    ~T__DelegatePermissionsType();
+    T__ArrayOfUserIdType();
+    ~T__ArrayOfUserIdType();
 
 public:
-    T__DelegatePermissionsType( const T__DelegatePermissionsType& );
-    T__DelegatePermissionsType &operator=( const T__DelegatePermissionsType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ArrayOfRealItemsType
-{
-public:
-    void setItem( const QList<T__ItemType>& item );
-    QList<T__ItemType> item() const;
-    void setMessage( const QList<T__MessageType>& message );
-    QList<T__MessageType> message() const;
-    void setCalendarItem( const QList<T__CalendarItemType>& calendarItem );
-    QList<T__CalendarItemType> calendarItem() const;
-    void setContact( const QList<T__ContactItemType>& contact );
-    QList<T__ContactItemType> contact() const;
-    void setDistributionList( const QList<T__DistributionListType>& distributionList );
-    QList<T__DistributionListType> distributionList() const;
-    void setMeetingMessage( const QList<T__MeetingMessageType>& meetingMessage );
-    QList<T__MeetingMessageType> meetingMessage() const;
-    void setMeetingRequest( const QList<T__MeetingRequestMessageType>& meetingRequest );
-    QList<T__MeetingRequestMessageType> meetingRequest() const;
-    void setMeetingResponse( const QList<T__MeetingResponseMessageType>& meetingResponse );
-    QList<T__MeetingResponseMessageType> meetingResponse() const;
-    void setMeetingCancellation( const QList<T__MeetingCancellationMessageType>& meetingCancellation );
-    QList<T__MeetingCancellationMessageType> meetingCancellation() const;
-    void setTask( const QList<T__TaskType>& task );
-    QList<T__TaskType> task() const;
-    void setPostItem( const QList<T__PostItemType>& postItem );
-    QList<T__PostItemType> postItem() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfRealItemsType();
-    ~T__ArrayOfRealItemsType();
-
-public:
-    T__ArrayOfRealItemsType( const T__ArrayOfRealItemsType& );
-    T__ArrayOfRealItemsType &operator=( const T__ArrayOfRealItemsType& );
+    T__ArrayOfUserIdType( const T__ArrayOfUserIdType& );
+    T__ArrayOfUserIdType &operator=( const T__ArrayOfUserIdType& );
 
 private:
     class PrivateDPtr;
@@ -4607,330 +5438,44 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__NonEmptyArrayOfOccurrenceInfoType
+class TNS__GetUserAvailabilityResponseType
 {
 public:
-    void setOccurrence( const QList<T__OccurrenceInfoType>& occurrence );
-    QList<T__OccurrenceInfoType> occurrence() const;
+    void setFreeBusyResponseArray( const TNS__ArrayOfFreeBusyResponse& freeBusyResponseArray );
+    TNS__ArrayOfFreeBusyResponse freeBusyResponseArray() const;
+    void setSuggestionsResponse( const TNS__SuggestionsResponseType& suggestionsResponse );
+    TNS__SuggestionsResponseType suggestionsResponse() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfOccurrenceInfoType();
-    ~T__NonEmptyArrayOfOccurrenceInfoType();
+    TNS__GetUserAvailabilityResponseType();
+    ~TNS__GetUserAvailabilityResponseType();
 
 public:
-    T__NonEmptyArrayOfOccurrenceInfoType( const T__NonEmptyArrayOfOccurrenceInfoType& );
-    T__NonEmptyArrayOfOccurrenceInfoType &operator=( const T__NonEmptyArrayOfOccurrenceInfoType& );
+    TNS__GetUserAvailabilityResponseType( const TNS__GetUserAvailabilityResponseType& );
+    TNS__GetUserAvailabilityResponseType &operator=( const TNS__GetUserAvailabilityResponseType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__SyncFolderHierarchyChangesType
+class T__ImAddressDictionaryEntryType
 {
 public:
-    void setCreate( const QList<T__SyncFolderHierarchyCreateOrUpdateType>& create );
-    QList<T__SyncFolderHierarchyCreateOrUpdateType> create() const;
-    void setUpdate( const QList<T__SyncFolderHierarchyCreateOrUpdateType>& update );
-    QList<T__SyncFolderHierarchyCreateOrUpdateType> update() const;
-    void setDelete( const QList<T__SyncFolderHierarchyDeleteType>& delete_ );
-    QList<T__SyncFolderHierarchyDeleteType> delete_() const;
+    void setValue( const QString& value );
+    QString value() const;
+    T__ImAddressDictionaryEntryType( const QString& value );
+    operator QString() const;
+    void setKey( const T__ImAddressKeyType& key );
+    T__ImAddressKeyType key() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__SyncFolderHierarchyChangesType();
-    ~T__SyncFolderHierarchyChangesType();
+    T__ImAddressDictionaryEntryType();
+    ~T__ImAddressDictionaryEntryType();
 
 public:
-    T__SyncFolderHierarchyChangesType( const T__SyncFolderHierarchyChangesType& );
-    T__SyncFolderHierarchyChangesType &operator=( const T__SyncFolderHierarchyChangesType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__GetUserOofSettingsResponse
-{
-public:
-    void setResponseMessage( const TNS__ResponseMessageType& responseMessage );
-    TNS__ResponseMessageType responseMessage() const;
-    void setOofSettings( const T__UserOofSettings& oofSettings );
-    T__UserOofSettings oofSettings() const;
-    void setAllowExternalOof( const T__ExternalAudience& allowExternalOof );
-    T__ExternalAudience allowExternalOof() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__GetUserOofSettingsResponse();
-    ~TNS__GetUserOofSettingsResponse();
-
-public:
-    TNS__GetUserOofSettingsResponse( const TNS__GetUserOofSettingsResponse& );
-    TNS__GetUserOofSettingsResponse &operator=( const TNS__GetUserOofSettingsResponse& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__NonEmptyArrayOfFolderChangesType
-{
-public:
-    void setFolderChange( const QList<T__FolderChangeType>& folderChange );
-    QList<T__FolderChangeType> folderChange() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfFolderChangesType();
-    ~T__NonEmptyArrayOfFolderChangesType();
-
-public:
-    T__NonEmptyArrayOfFolderChangesType( const T__NonEmptyArrayOfFolderChangesType& );
-    T__NonEmptyArrayOfFolderChangesType &operator=( const T__NonEmptyArrayOfFolderChangesType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ResolutionType
-{
-public:
-    void setMailbox( const T__EmailAddressType& mailbox );
-    T__EmailAddressType mailbox() const;
-    void setContact( const T__ContactItemType& contact );
-    T__ContactItemType contact() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ResolutionType();
-    ~T__ResolutionType();
-
-public:
-    T__ResolutionType( const T__ResolutionType& );
-    T__ResolutionType &operator=( const T__ResolutionType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__NonEmptyArrayOfPathsToElementType
-{
-public:
-    void setPath( const QList<T__BasePathToElementType>& path );
-    QList<T__BasePathToElementType> path() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfPathsToElementType();
-    ~T__NonEmptyArrayOfPathsToElementType();
-
-public:
-    T__NonEmptyArrayOfPathsToElementType( const T__NonEmptyArrayOfPathsToElementType& );
-    T__NonEmptyArrayOfPathsToElementType &operator=( const T__NonEmptyArrayOfPathsToElementType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ExchangeImpersonationType
-{
-public:
-    void setConnectingSID( const T__ConnectingSIDType& connectingSID );
-    T__ConnectingSIDType connectingSID() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ExchangeImpersonationType();
-    ~T__ExchangeImpersonationType();
-
-public:
-    T__ExchangeImpersonationType( const T__ExchangeImpersonationType& );
-    T__ExchangeImpersonationType &operator=( const T__ExchangeImpersonationType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__ArrayOfFreeBusyResponse
-{
-public:
-    void setFreeBusyResponse( const QList<TNS__FreeBusyResponseType>& freeBusyResponse );
-    QList<TNS__FreeBusyResponseType> freeBusyResponse() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__ArrayOfFreeBusyResponse();
-    ~TNS__ArrayOfFreeBusyResponse();
-
-public:
-    TNS__ArrayOfFreeBusyResponse( const TNS__ArrayOfFreeBusyResponse& );
-    TNS__ArrayOfFreeBusyResponse &operator=( const TNS__ArrayOfFreeBusyResponse& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ArrayOfAttendeeConflictData
-{
-public:
-    void setUnknownAttendeeConflictData( const QList<T__UnknownAttendeeConflictData>& unknownAttendeeConflictData );
-    QList<T__UnknownAttendeeConflictData> unknownAttendeeConflictData() const;
-    void setIndividualAttendeeConflictData( const QList<T__IndividualAttendeeConflictData>& individualAttendeeConflictData );
-    QList<T__IndividualAttendeeConflictData> individualAttendeeConflictData() const;
-    void setTooBigGroupAttendeeConflictData( const QList<T__TooBigGroupAttendeeConflictData>& tooBigGroupAttendeeConflictData );
-    QList<T__TooBigGroupAttendeeConflictData> tooBigGroupAttendeeConflictData() const;
-    void setGroupAttendeeConflictData( const QList<T__GroupAttendeeConflictData>& groupAttendeeConflictData );
-    QList<T__GroupAttendeeConflictData> groupAttendeeConflictData() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfAttendeeConflictData();
-    ~T__ArrayOfAttendeeConflictData();
-
-public:
-    T__ArrayOfAttendeeConflictData( const T__ArrayOfAttendeeConflictData& );
-    T__ArrayOfAttendeeConflictData &operator=( const T__ArrayOfAttendeeConflictData& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ArrayOfUserIdType
-{
-public:
-    void setUserId( const QList<T__UserIdType>& userId );
-    QList<T__UserIdType> userId() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfUserIdType();
-    ~T__ArrayOfUserIdType();
-
-public:
-    T__ArrayOfUserIdType( const T__ArrayOfUserIdType& );
-    T__ArrayOfUserIdType &operator=( const T__ArrayOfUserIdType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__NonEmptyArrayOfRequestAttachmentIdsType
-{
-public:
-    void setAttachmentId( const QList<T__RequestAttachmentIdType>& attachmentId );
-    QList<T__RequestAttachmentIdType> attachmentId() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfRequestAttachmentIdsType();
-    ~T__NonEmptyArrayOfRequestAttachmentIdsType();
-
-public:
-    T__NonEmptyArrayOfRequestAttachmentIdsType( const T__NonEmptyArrayOfRequestAttachmentIdsType& );
-    T__NonEmptyArrayOfRequestAttachmentIdsType &operator=( const T__NonEmptyArrayOfRequestAttachmentIdsType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__AttachmentResponseShapeType
-{
-public:
-    void setIncludeMimeContent( bool includeMimeContent );
-    bool includeMimeContent() const;
-    void setBodyType( const T__BodyTypeResponseType& bodyType );
-    T__BodyTypeResponseType bodyType() const;
-    void setAdditionalProperties( const T__NonEmptyArrayOfPathsToElementType& additionalProperties );
-    T__NonEmptyArrayOfPathsToElementType additionalProperties() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__AttachmentResponseShapeType();
-    ~T__AttachmentResponseShapeType();
-
-public:
-    T__AttachmentResponseShapeType( const T__AttachmentResponseShapeType& );
-    T__AttachmentResponseShapeType &operator=( const T__AttachmentResponseShapeType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__SyncFolderItemsReadFlagType
-{
-public:
-    void setItemId( const T__ItemIdType& itemId );
-    T__ItemIdType itemId() const;
-    void setIsRead( bool isRead );
-    bool isRead() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__SyncFolderItemsReadFlagType();
-    ~T__SyncFolderItemsReadFlagType();
-
-public:
-    T__SyncFolderItemsReadFlagType( const T__SyncFolderItemsReadFlagType& );
-    T__SyncFolderItemsReadFlagType &operator=( const T__SyncFolderItemsReadFlagType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ImAddressDictionaryType
-{
-public:
-    void setEntry( const QList<T__ImAddressDictionaryEntryType>& entry );
-    QList<T__ImAddressDictionaryEntryType> entry() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ImAddressDictionaryType();
-    ~T__ImAddressDictionaryType();
-
-public:
-    T__ImAddressDictionaryType( const T__ImAddressDictionaryType& );
-    T__ImAddressDictionaryType &operator=( const T__ImAddressDictionaryType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__FindItemParentType
-{
-public:
-    void setItems( const T__ArrayOfRealItemsType& items );
-    T__ArrayOfRealItemsType items() const;
-    void setGroups( const T__ArrayOfGroupedItemsType& groups );
-    T__ArrayOfGroupedItemsType groups() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__FindItemParentType();
-    ~T__FindItemParentType();
-
-public:
-    T__FindItemParentType( const T__FindItemParentType& );
-    T__FindItemParentType &operator=( const T__FindItemParentType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ArrayOfAttachmentsType
-{
-public:
-    void setItemAttachment( const QList<T__ItemAttachmentType>& itemAttachment );
-    QList<T__ItemAttachmentType> itemAttachment() const;
-    void setFileAttachment( const QList<T__FileAttachmentType>& fileAttachment );
-    QList<T__FileAttachmentType> fileAttachment() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfAttachmentsType();
-    ~T__ArrayOfAttachmentsType();
-
-public:
-    T__ArrayOfAttachmentsType( const T__ArrayOfAttachmentsType& );
-    T__ArrayOfAttachmentsType &operator=( const T__ArrayOfAttachmentsType& );
+    T__ImAddressDictionaryEntryType( const T__ImAddressDictionaryEntryType& );
+    T__ImAddressDictionaryEntryType &operator=( const T__ImAddressDictionaryEntryType& );
 
 private:
     class PrivateDPtr;
@@ -4958,77 +5503,84 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__FreeBusyViewOptionsType
+class TNS__SetUserOofSettingsResponse
 {
 public:
-    void setTimeWindow( const T__Duration& timeWindow );
-    T__Duration timeWindow() const;
-    void setMergedFreeBusyIntervalInMinutes( int mergedFreeBusyIntervalInMinutes );
-    int mergedFreeBusyIntervalInMinutes() const;
-    void setRequestedView( const T__FreeBusyViewType& requestedView );
-    T__FreeBusyViewType requestedView() const;
+    void setResponseMessage( const TNS__ResponseMessageType& responseMessage );
+    TNS__ResponseMessageType responseMessage() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__FreeBusyViewOptionsType();
-    ~T__FreeBusyViewOptionsType();
+    TNS__SetUserOofSettingsResponse();
+    ~TNS__SetUserOofSettingsResponse();
 
 public:
-    T__FreeBusyViewOptionsType( const T__FreeBusyViewOptionsType& );
-    T__FreeBusyViewOptionsType &operator=( const T__FreeBusyViewOptionsType& );
+    TNS__SetUserOofSettingsResponse( const TNS__SetUserOofSettingsResponse& );
+    TNS__SetUserOofSettingsResponse &operator=( const TNS__SetUserOofSettingsResponse& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__BasePathToElementType
+class T__PhysicalAddressDictionaryType
 {
 public:
+    void setEntry( const QList<T__PhysicalAddressDictionaryEntryType>& entry );
+    QList<T__PhysicalAddressDictionaryEntryType> entry() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__PhysicalAddressDictionaryType();
+    ~T__PhysicalAddressDictionaryType();
+
+public:
+    T__PhysicalAddressDictionaryType( const T__PhysicalAddressDictionaryType& );
+    T__PhysicalAddressDictionaryType &operator=( const T__PhysicalAddressDictionaryType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__ResponseMessageType
+{
+public:
+    void setMessageText( const QString& messageText );
+    QString messageText() const;
+    void setResponseCode( const TNS__ResponseCodeType& responseCode );
+    TNS__ResponseCodeType responseCode() const;
+    void setDescriptiveLinkKey( int descriptiveLinkKey );
+    int descriptiveLinkKey() const;
+    void setMessageXml( const TNS__MessageXml& messageXml );
+    TNS__MessageXml messageXml() const;
+    void setResponseClass( const T__ResponseClassType& responseClass );
+    T__ResponseClassType responseClass() const;
     virtual KDSoapValue serialize( const QString& valueName ) const;
     virtual void deserialize( const KDSoapValue& mainValue );
-    T__BasePathToElementType();
-    virtual ~T__BasePathToElementType();
-
-};
-
-class T__ReplyBody
-{
-public:
-    void setMessage( const QString& message );
-    QString message() const;
-    void setLang( const QString& lang );
-    QString lang() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ReplyBody();
-    ~T__ReplyBody();
+    TNS__ResponseMessageType();
+    virtual ~TNS__ResponseMessageType();
 
 public:
-    T__ReplyBody( const T__ReplyBody& );
-    T__ReplyBody &operator=( const T__ReplyBody& );
+    TNS__ResponseMessageType( const TNS__ResponseMessageType& );
+    TNS__ResponseMessageType &operator=( const TNS__ResponseMessageType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__NonEmptyArrayOfBaseItemIdsType
+class TNS__ArrayOfFreeBusyResponse
 {
 public:
-    void setItemId( const QList<T__ItemIdType>& itemId );
-    QList<T__ItemIdType> itemId() const;
-    void setOccurrenceItemId( const QList<T__OccurrenceItemIdType>& occurrenceItemId );
-    QList<T__OccurrenceItemIdType> occurrenceItemId() const;
-    void setRecurringMasterItemId( const QList<T__RecurringMasterItemIdType>& recurringMasterItemId );
-    QList<T__RecurringMasterItemIdType> recurringMasterItemId() const;
+    void setFreeBusyResponse( const QList<TNS__FreeBusyResponseType>& freeBusyResponse );
+    QList<TNS__FreeBusyResponseType> freeBusyResponse() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfBaseItemIdsType();
-    ~T__NonEmptyArrayOfBaseItemIdsType();
+    TNS__ArrayOfFreeBusyResponse();
+    ~TNS__ArrayOfFreeBusyResponse();
 
 public:
-    T__NonEmptyArrayOfBaseItemIdsType( const T__NonEmptyArrayOfBaseItemIdsType& );
-    T__NonEmptyArrayOfBaseItemIdsType &operator=( const T__NonEmptyArrayOfBaseItemIdsType& );
+    TNS__ArrayOfFreeBusyResponse( const TNS__ArrayOfFreeBusyResponse& );
+    TNS__ArrayOfFreeBusyResponse &operator=( const TNS__ArrayOfFreeBusyResponse& );
 
 private:
     class PrivateDPtr;
@@ -5056,78 +5608,19 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__NonEmptyArrayOfNotificationEventTypesType
+class T__ArrayOfResolutionType
 {
 public:
-    void setEventType( const QList<T__NotificationEventTypeType>& eventType );
-    QList<T__NotificationEventTypeType> eventType() const;
+    void setResolution( const QList<T__ResolutionType>& resolution );
+    QList<T__ResolutionType> resolution() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfNotificationEventTypesType();
-    ~T__NonEmptyArrayOfNotificationEventTypesType();
+    T__ArrayOfResolutionType();
+    ~T__ArrayOfResolutionType();
 
 public:
-    T__NonEmptyArrayOfNotificationEventTypesType( const T__NonEmptyArrayOfNotificationEventTypesType& );
-    T__NonEmptyArrayOfNotificationEventTypesType &operator=( const T__NonEmptyArrayOfNotificationEventTypesType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__RestrictionType
-{
-public:
-    void setSearchExpression( const T__SearchExpressionType& searchExpression );
-    T__SearchExpressionType searchExpression() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__RestrictionType();
-    ~T__RestrictionType();
-
-public:
-    T__RestrictionType( const T__RestrictionType& );
-    T__RestrictionType &operator=( const T__RestrictionType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__SingleRecipientType
-{
-public:
-    void setMailbox( const T__EmailAddressType& mailbox );
-    T__EmailAddressType mailbox() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__SingleRecipientType();
-    ~T__SingleRecipientType();
-
-public:
-    T__SingleRecipientType( const T__SingleRecipientType& );
-    T__SingleRecipientType &operator=( const T__SingleRecipientType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__NonEmptyArrayOfBaseFolderIdsType
-{
-public:
-    void setFolderId( const QList<T__FolderIdType>& folderId );
-    QList<T__FolderIdType> folderId() const;
-    void setDistinguishedFolderId( const QList<T__DistinguishedFolderIdType>& distinguishedFolderId );
-    QList<T__DistinguishedFolderIdType> distinguishedFolderId() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfBaseFolderIdsType();
-    ~T__NonEmptyArrayOfBaseFolderIdsType();
-
-public:
-    T__NonEmptyArrayOfBaseFolderIdsType( const T__NonEmptyArrayOfBaseFolderIdsType& );
-    T__NonEmptyArrayOfBaseFolderIdsType &operator=( const T__NonEmptyArrayOfBaseFolderIdsType& );
+    T__ArrayOfResolutionType( const T__ArrayOfResolutionType& );
+    T__ArrayOfResolutionType &operator=( const T__ArrayOfResolutionType& );
 
 private:
     class PrivateDPtr;
@@ -5174,559 +5667,44 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__CalendarEvent
+class T__NonEmptyArrayOfGroupIdentifiersType
 {
 public:
-    void setStartTime( const KDDateTime& startTime );
-    KDDateTime startTime() const;
-    void setEndTime( const KDDateTime& endTime );
-    KDDateTime endTime() const;
-    void setBusyType( const T__LegacyFreeBusyType& busyType );
-    T__LegacyFreeBusyType busyType() const;
-    void setCalendarEventDetails( const T__CalendarEventDetails& calendarEventDetails );
-    T__CalendarEventDetails calendarEventDetails() const;
+    void setGroupIdentifier( const QList<T__SidAndAttributesType>& groupIdentifier );
+    QList<T__SidAndAttributesType> groupIdentifier() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__CalendarEvent();
-    ~T__CalendarEvent();
+    T__NonEmptyArrayOfGroupIdentifiersType();
+    ~T__NonEmptyArrayOfGroupIdentifiersType();
 
 public:
-    T__CalendarEvent( const T__CalendarEvent& );
-    T__CalendarEvent &operator=( const T__CalendarEvent& );
+    T__NonEmptyArrayOfGroupIdentifiersType( const T__NonEmptyArrayOfGroupIdentifiersType& );
+    T__NonEmptyArrayOfGroupIdentifiersType &operator=( const T__NonEmptyArrayOfGroupIdentifiersType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__SearchParametersType
+class T__SidAndAttributesType
 {
 public:
-    void setRestriction( const T__RestrictionType& restriction );
-    T__RestrictionType restriction() const;
-    void setBaseFolderIds( const T__NonEmptyArrayOfBaseFolderIdsType& baseFolderIds );
-    T__NonEmptyArrayOfBaseFolderIdsType baseFolderIds() const;
-    void setTraversal( const T__SearchFolderTraversalType& traversal );
-    T__SearchFolderTraversalType traversal() const;
+    void setSecurityIdentifier( const QString& securityIdentifier );
+    QString securityIdentifier() const;
+    void setAttributes( unsigned int attributes );
+    unsigned int attributes() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__SearchParametersType();
-    ~T__SearchParametersType();
+    T__SidAndAttributesType();
+    ~T__SidAndAttributesType();
 
 public:
-    T__SearchParametersType( const T__SearchParametersType& );
-    T__SearchParametersType &operator=( const T__SearchParametersType& );
+    T__SidAndAttributesType( const T__SidAndAttributesType& );
+    T__SidAndAttributesType &operator=( const T__SidAndAttributesType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__NonEmptyArrayOfDeletedOccurrencesType
-{
-public:
-    void setDeletedOccurrence( const QList<T__DeletedOccurrenceInfoType>& deletedOccurrence );
-    QList<T__DeletedOccurrenceInfoType> deletedOccurrence() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfDeletedOccurrencesType();
-    ~T__NonEmptyArrayOfDeletedOccurrencesType();
-
-public:
-    T__NonEmptyArrayOfDeletedOccurrencesType( const T__NonEmptyArrayOfDeletedOccurrencesType& );
-    T__NonEmptyArrayOfDeletedOccurrencesType &operator=( const T__NonEmptyArrayOfDeletedOccurrencesType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__Suggestion
-{
-public:
-    void setMeetingTime( const KDDateTime& meetingTime );
-    KDDateTime meetingTime() const;
-    void setIsWorkTime( bool isWorkTime );
-    bool isWorkTime() const;
-    void setSuggestionQuality( const T__SuggestionQuality& suggestionQuality );
-    T__SuggestionQuality suggestionQuality() const;
-    void setAttendeeConflictDataArray( const T__ArrayOfAttendeeConflictData& attendeeConflictDataArray );
-    T__ArrayOfAttendeeConflictData attendeeConflictDataArray() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__Suggestion();
-    ~T__Suggestion();
-
-public:
-    T__Suggestion( const T__Suggestion& );
-    T__Suggestion &operator=( const T__Suggestion& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__NotificationType
-{
-public:
-    void setSubscriptionId( const T__SubscriptionIdType& subscriptionId );
-    T__SubscriptionIdType subscriptionId() const;
-    void setPreviousWatermark( const T__WatermarkType& previousWatermark );
-    T__WatermarkType previousWatermark() const;
-    void setMoreEvents( bool moreEvents );
-    bool moreEvents() const;
-    void setCopiedEvent( const QList<T__MovedCopiedEventType>& copiedEvent );
-    QList<T__MovedCopiedEventType> copiedEvent() const;
-    void setCreatedEvent( const QList<T__BaseObjectChangedEventType>& createdEvent );
-    QList<T__BaseObjectChangedEventType> createdEvent() const;
-    void setDeletedEvent( const QList<T__BaseObjectChangedEventType>& deletedEvent );
-    QList<T__BaseObjectChangedEventType> deletedEvent() const;
-    void setModifiedEvent( const QList<T__ModifiedEventType>& modifiedEvent );
-    QList<T__ModifiedEventType> modifiedEvent() const;
-    void setMovedEvent( const QList<T__MovedCopiedEventType>& movedEvent );
-    QList<T__MovedCopiedEventType> movedEvent() const;
-    void setNewMailEvent( const QList<T__BaseObjectChangedEventType>& newMailEvent );
-    QList<T__BaseObjectChangedEventType> newMailEvent() const;
-    void setStatusEvent( const QList<T__BaseNotificationEventType>& statusEvent );
-    QList<T__BaseNotificationEventType> statusEvent() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NotificationType();
-    ~T__NotificationType();
-
-public:
-    T__NotificationType( const T__NotificationType& );
-    T__NotificationType &operator=( const T__NotificationType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__SyncFolderItemsDeleteType
-{
-public:
-    void setItemId( const T__ItemIdType& itemId );
-    T__ItemIdType itemId() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__SyncFolderItemsDeleteType();
-    ~T__SyncFolderItemsDeleteType();
-
-public:
-    T__SyncFolderItemsDeleteType( const T__SyncFolderItemsDeleteType& );
-    T__SyncFolderItemsDeleteType &operator=( const T__SyncFolderItemsDeleteType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__FieldURIOrConstantType
-{
-public:
-    void setPath( const T__BasePathToElementType& path );
-    T__BasePathToElementType path() const;
-    void setConstant( const T__ConstantValueType& constant );
-    T__ConstantValueType constant() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__FieldURIOrConstantType();
-    ~T__FieldURIOrConstantType();
-
-public:
-    T__FieldURIOrConstantType( const T__FieldURIOrConstantType& );
-    T__FieldURIOrConstantType &operator=( const T__FieldURIOrConstantType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-/**
-    A permission on a folder
- */
-class T__BasePermissionType
-{
-public:
-    void setUserId( const T__UserIdType& userId );
-    T__UserIdType userId() const;
-    void setCanCreateItems( bool canCreateItems );
-    bool canCreateItems() const;
-    void setCanCreateSubFolders( bool canCreateSubFolders );
-    bool canCreateSubFolders() const;
-    void setIsFolderOwner( bool isFolderOwner );
-    bool isFolderOwner() const;
-    void setIsFolderVisible( bool isFolderVisible );
-    bool isFolderVisible() const;
-    void setIsFolderContact( bool isFolderContact );
-    bool isFolderContact() const;
-    void setEditItems( const T__PermissionActionType& editItems );
-    T__PermissionActionType editItems() const;
-    void setDeleteItems( const T__PermissionActionType& deleteItems );
-    T__PermissionActionType deleteItems() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__BasePermissionType();
-    virtual ~T__BasePermissionType();
-
-public:
-    T__BasePermissionType( const T__BasePermissionType& );
-    T__BasePermissionType &operator=( const T__BasePermissionType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-/**
-    Surfaces alternate representations of an item or folder id. No change key
-    is included.
- */
-class T__AlternateIdBaseType
-{
-public:
-    void setFormat( const T__IdFormatType& format );
-    T__IdFormatType format() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__AlternateIdBaseType();
-    virtual ~T__AlternateIdBaseType();
-
-public:
-    T__AlternateIdBaseType( const T__AlternateIdBaseType& );
-    T__AlternateIdBaseType &operator=( const T__AlternateIdBaseType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ConflictResultsType
-{
-public:
-    void setCount( int count );
-    int count() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ConflictResultsType();
-    ~T__ConflictResultsType();
-
-public:
-    T__ConflictResultsType( const T__ConflictResultsType& );
-    T__ConflictResultsType &operator=( const T__ConflictResultsType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__TimeZoneContextType
-{
-public:
-    void setTimeZoneDefinition( const T__TimeZoneDefinitionType& timeZoneDefinition );
-    T__TimeZoneDefinitionType timeZoneDefinition() const;
-    void setAnyAttribute( const KDSoapValue& anyAttribute );
-    KDSoapValue anyAttribute() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__TimeZoneContextType();
-    ~T__TimeZoneContextType();
-
-public:
-    T__TimeZoneContextType( const T__TimeZoneContextType& );
-    T__TimeZoneContextType &operator=( const T__TimeZoneContextType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__SyncFolderHierarchyCreateOrUpdateType
-{
-public:
-    void setFolder( const T__FolderType& folder );
-    T__FolderType folder() const;
-    void setCalendarFolder( const T__CalendarFolderType& calendarFolder );
-    T__CalendarFolderType calendarFolder() const;
-    void setContactsFolder( const T__ContactsFolderType& contactsFolder );
-    T__ContactsFolderType contactsFolder() const;
-    void setSearchFolder( const T__SearchFolderType& searchFolder );
-    T__SearchFolderType searchFolder() const;
-    void setTasksFolder( const T__TasksFolderType& tasksFolder );
-    T__TasksFolderType tasksFolder() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__SyncFolderHierarchyCreateOrUpdateType();
-    ~T__SyncFolderHierarchyCreateOrUpdateType();
-
-public:
-    T__SyncFolderHierarchyCreateOrUpdateType( const T__SyncFolderHierarchyCreateOrUpdateType& );
-    T__SyncFolderHierarchyCreateOrUpdateType &operator=( const T__SyncFolderHierarchyCreateOrUpdateType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__NonEmptyArrayOfPropertyValuesType
-{
-public:
-    void setValue( const QString& value );
-    QString value() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NonEmptyArrayOfPropertyValuesType();
-    ~T__NonEmptyArrayOfPropertyValuesType();
-
-public:
-    T__NonEmptyArrayOfPropertyValuesType( const T__NonEmptyArrayOfPropertyValuesType& );
-    T__NonEmptyArrayOfPropertyValuesType &operator=( const T__NonEmptyArrayOfPropertyValuesType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__BaseGroupByType
-{
-public:
-    void setOrder( const T__SortDirectionType& order );
-    T__SortDirectionType order() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__BaseGroupByType();
-    virtual ~T__BaseGroupByType();
-
-public:
-    T__BaseGroupByType( const T__BaseGroupByType& );
-    T__BaseGroupByType &operator=( const T__BaseGroupByType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__WorkingHours
-{
-public:
-    void setTimeZone( const T__SerializableTimeZone& timeZone );
-    T__SerializableTimeZone timeZone() const;
-    void setWorkingPeriodArray( const T__ArrayOfWorkingPeriod& workingPeriodArray );
-    T__ArrayOfWorkingPeriod workingPeriodArray() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__WorkingHours();
-    ~T__WorkingHours();
-
-public:
-    T__WorkingHours( const T__WorkingHours& );
-    T__WorkingHours &operator=( const T__WorkingHours& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__BaseFolderType
-{
-public:
-    void setFolderId( const T__FolderIdType& folderId );
-    T__FolderIdType folderId() const;
-    void setParentFolderId( const T__FolderIdType& parentFolderId );
-    T__FolderIdType parentFolderId() const;
-    void setFolderClass( const QString& folderClass );
-    QString folderClass() const;
-    void setDisplayName( const QString& displayName );
-    QString displayName() const;
-    void setTotalCount( int totalCount );
-    int totalCount() const;
-    void setChildFolderCount( int childFolderCount );
-    int childFolderCount() const;
-    void setExtendedProperty( const QList<T__ExtendedPropertyType>& extendedProperty );
-    QList<T__ExtendedPropertyType> extendedProperty() const;
-    void setManagedFolderInformation( const T__ManagedFolderInformationType& managedFolderInformation );
-    T__ManagedFolderInformationType managedFolderInformation() const;
-    void setEffectiveRights( const T__EffectiveRightsType& effectiveRights );
-    T__EffectiveRightsType effectiveRights() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__BaseFolderType();
-    virtual ~T__BaseFolderType();
-
-public:
-    T__BaseFolderType( const T__BaseFolderType& );
-    T__BaseFolderType &operator=( const T__BaseFolderType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__ArrayOfDelegateUserResponseMessageType
-{
-public:
-    void setDelegateUserResponseMessageType( const QList<TNS__DelegateUserResponseMessageType>& delegateUserResponseMessageType );
-    QList<TNS__DelegateUserResponseMessageType> delegateUserResponseMessageType() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__ArrayOfDelegateUserResponseMessageType();
-    ~TNS__ArrayOfDelegateUserResponseMessageType();
-
-public:
-    TNS__ArrayOfDelegateUserResponseMessageType( const TNS__ArrayOfDelegateUserResponseMessageType& );
-    TNS__ArrayOfDelegateUserResponseMessageType &operator=( const TNS__ArrayOfDelegateUserResponseMessageType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__TimeZoneType
-{
-public:
-    void setBaseOffset( const QString& baseOffset );
-    QString baseOffset() const;
-    void setStandard( const T__TimeChangeType& standard );
-    T__TimeChangeType standard() const;
-    void setDaylight( const T__TimeChangeType& daylight );
-    T__TimeChangeType daylight() const;
-    void setTimeZoneName( const QString& timeZoneName );
-    QString timeZoneName() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__TimeZoneType();
-    ~T__TimeZoneType();
-
-public:
-    T__TimeZoneType( const T__TimeZoneType& );
-    T__TimeZoneType &operator=( const T__TimeZoneType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__SuggestionsViewOptionsType
-{
-public:
-    void setGoodThreshold( int goodThreshold );
-    int goodThreshold() const;
-    void setMaximumResultsByDay( int maximumResultsByDay );
-    int maximumResultsByDay() const;
-    void setMaximumNonWorkHourResultsByDay( int maximumNonWorkHourResultsByDay );
-    int maximumNonWorkHourResultsByDay() const;
-    void setMeetingDurationInMinutes( int meetingDurationInMinutes );
-    int meetingDurationInMinutes() const;
-    void setMinimumSuggestionQuality( const T__SuggestionQuality& minimumSuggestionQuality );
-    T__SuggestionQuality minimumSuggestionQuality() const;
-    void setDetailedSuggestionsWindow( const T__Duration& detailedSuggestionsWindow );
-    T__Duration detailedSuggestionsWindow() const;
-    void setCurrentMeetingTime( const KDDateTime& currentMeetingTime );
-    KDDateTime currentMeetingTime() const;
-    void setGlobalObjectId( const QString& globalObjectId );
-    QString globalObjectId() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__SuggestionsViewOptionsType();
-    ~T__SuggestionsViewOptionsType();
-
-public:
-    T__SuggestionsViewOptionsType( const T__SuggestionsViewOptionsType& );
-    T__SuggestionsViewOptionsType &operator=( const T__SuggestionsViewOptionsType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__MessageXml
-{
-public:
-    void setAny( const QList<KDSoapValue>& any );
-    QList<KDSoapValue> any() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__MessageXml();
-    ~TNS__MessageXml();
-
-public:
-    TNS__MessageXml( const TNS__MessageXml& );
-    TNS__MessageXml &operator=( const TNS__MessageXml& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ArrayOfFoldersType
-{
-public:
-    void setFolder( const QList<T__FolderType>& folder );
-    QList<T__FolderType> folder() const;
-    void setCalendarFolder( const QList<T__CalendarFolderType>& calendarFolder );
-    QList<T__CalendarFolderType> calendarFolder() const;
-    void setContactsFolder( const QList<T__ContactsFolderType>& contactsFolder );
-    QList<T__ContactsFolderType> contactsFolder() const;
-    void setSearchFolder( const QList<T__SearchFolderType>& searchFolder );
-    QList<T__SearchFolderType> searchFolder() const;
-    void setTasksFolder( const QList<T__TasksFolderType>& tasksFolder );
-    QList<T__TasksFolderType> tasksFolder() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ArrayOfFoldersType();
-    ~T__ArrayOfFoldersType();
-
-public:
-    T__ArrayOfFoldersType( const T__ArrayOfFoldersType& );
-    T__ArrayOfFoldersType &operator=( const T__ArrayOfFoldersType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__GroupedItemsType
-{
-public:
-    void setGroupIndex( const QString& groupIndex );
-    QString groupIndex() const;
-    void setItems( const T__ArrayOfRealItemsType& items );
-    T__ArrayOfRealItemsType items() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__GroupedItemsType();
-    ~T__GroupedItemsType();
-
-public:
-    T__GroupedItemsType( const T__GroupedItemsType& );
-    T__GroupedItemsType &operator=( const T__GroupedItemsType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-/**
-    This class encapsulates a simple type.
-    Whenever you have to pass an object of type T__SubscriptionIdType you can
-    also pass the value directly as a QString.
- */
-class T__SubscriptionIdType
-{
-public:
-    void setValue( const T__NonEmptyStringType& value );
-    T__NonEmptyStringType value() const;
-    T__SubscriptionIdType( const T__NonEmptyStringType& value );
-    T__SubscriptionIdType( const QString& value );
-    operator T__NonEmptyStringType() const;
-    QVariant serialize() const;
-    void deserialize( const QVariant& value );
-    T__SubscriptionIdType();
-    ~T__SubscriptionIdType();
-
-private:
-    T__NonEmptyStringType mValue;
 };
 
 /**
@@ -5751,139 +5729,368 @@ private:
     T__NonEmptyStringType mValue;
 };
 
-class TNS__SyncFolderItemsResponseMessageType : public TNS__ResponseMessageType
+/**
+    This class encapsulates a simple type.
+    Whenever you have to pass an object of type T__SubscriptionIdType you can
+    also pass the value directly as a QString.
+ */
+class T__SubscriptionIdType
 {
 public:
-    void setSyncState( const QString& syncState );
-    QString syncState() const;
-    void setIncludesLastItemInRange( bool includesLastItemInRange );
-    bool includesLastItemInRange() const;
-    void setChanges( const T__SyncFolderItemsChangesType& changes );
-    T__SyncFolderItemsChangesType changes() const;
+    void setValue( const T__NonEmptyStringType& value );
+    T__NonEmptyStringType value() const;
+    T__SubscriptionIdType( const T__NonEmptyStringType& value );
+    T__SubscriptionIdType( const QString& value );
+    operator T__NonEmptyStringType() const;
+    QVariant serialize() const;
+    void deserialize( const QVariant& value );
+    T__SubscriptionIdType();
+    ~T__SubscriptionIdType();
+
+private:
+    T__NonEmptyStringType mValue;
+};
+
+class T__NumberedRecurrenceRangeType : public T__RecurrenceRangeBaseType
+{
+public:
+    void setNumberOfOccurrences( int numberOfOccurrences );
+    int numberOfOccurrences() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__SyncFolderItemsResponseMessageType();
-    ~TNS__SyncFolderItemsResponseMessageType();
+    T__NumberedRecurrenceRangeType();
+    ~T__NumberedRecurrenceRangeType();
 
 public:
-    TNS__SyncFolderItemsResponseMessageType( const TNS__SyncFolderItemsResponseMessageType& );
-    TNS__SyncFolderItemsResponseMessageType &operator=( const TNS__SyncFolderItemsResponseMessageType& );
+    T__NumberedRecurrenceRangeType( const T__NumberedRecurrenceRangeType& );
+    T__NumberedRecurrenceRangeType &operator=( const T__NumberedRecurrenceRangeType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__SendNotificationResponseMessageType : public TNS__ResponseMessageType
+class TNS__GetItemResponseType : public TNS__BaseResponseMessageType
 {
 public:
-    void setNotification( const T__NotificationType& notification );
-    T__NotificationType notification() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__SendNotificationResponseMessageType();
-    ~TNS__SendNotificationResponseMessageType();
+    TNS__GetItemResponseType();
+    ~TNS__GetItemResponseType();
 
-public:
-    TNS__SendNotificationResponseMessageType( const TNS__SendNotificationResponseMessageType& );
-    TNS__SendNotificationResponseMessageType &operator=( const TNS__SendNotificationResponseMessageType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__BaseMoveCopyItemType : public TNS__BaseRequestType
+class TNS__UnsubscribeResponseType : public TNS__BaseResponseMessageType
 {
 public:
-    void setToFolderId( const T__TargetFolderIdType& toFolderId );
-    T__TargetFolderIdType toFolderId() const;
-    void setItemIds( const T__NonEmptyArrayOfBaseItemIdsType& itemIds );
-    T__NonEmptyArrayOfBaseItemIdsType itemIds() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__UnsubscribeResponseType();
+    ~TNS__UnsubscribeResponseType();
+
+};
+
+class TNS__SendNotificationResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__SendNotificationResponseType();
+    ~TNS__SendNotificationResponseType();
+
+};
+
+class T__FolderType : public T__BaseFolderType
+{
+public:
+    void setPermissionSet( const T__PermissionSetType& permissionSet );
+    T__PermissionSetType permissionSet() const;
+    void setUnreadCount( int unreadCount );
+    int unreadCount() const;
     virtual KDSoapValue serialize( const QString& valueName ) const;
     virtual void deserialize( const KDSoapValue& mainValue );
-    TNS__BaseMoveCopyItemType();
-    virtual ~TNS__BaseMoveCopyItemType();
+    T__FolderType();
+    virtual ~T__FolderType();
 
 public:
-    TNS__BaseMoveCopyItemType( const TNS__BaseMoveCopyItemType& );
-    TNS__BaseMoveCopyItemType &operator=( const TNS__BaseMoveCopyItemType& );
+    T__FolderType( const T__FolderType& );
+    T__FolderType &operator=( const T__FolderType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__SyncFolderItemsResponseType : public TNS__BaseResponseMessageType
+class T__MultipleOperandBooleanExpressionType : public T__SearchExpressionType
+{
+public:
+    void setSearchExpression( const QList<T__SearchExpressionType>& searchExpression );
+    QList<T__SearchExpressionType> searchExpression() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__MultipleOperandBooleanExpressionType();
+    virtual ~T__MultipleOperandBooleanExpressionType();
+
+public:
+    T__MultipleOperandBooleanExpressionType( const T__MultipleOperandBooleanExpressionType& );
+    T__MultipleOperandBooleanExpressionType &operator=( const T__MultipleOperandBooleanExpressionType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__PostItemType : public T__ItemType
+{
+public:
+    void setConversationIndex( const QByteArray& conversationIndex );
+    QByteArray conversationIndex() const;
+    void setConversationTopic( const QString& conversationTopic );
+    QString conversationTopic() const;
+    void setFrom( const T__SingleRecipientType& from );
+    T__SingleRecipientType from() const;
+    void setInternetMessageId( const QString& internetMessageId );
+    QString internetMessageId() const;
+    void setIsRead( bool isRead );
+    bool isRead() const;
+    void setPostedTime( const KDDateTime& postedTime );
+    KDDateTime postedTime() const;
+    void setReferences( const QString& references );
+    QString references() const;
+    void setSender( const T__SingleRecipientType& sender );
+    T__SingleRecipientType sender() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__PostItemType();
+    ~T__PostItemType();
+
+public:
+    T__PostItemType( const T__PostItemType& );
+    T__PostItemType &operator=( const T__PostItemType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__PathToIndexedFieldType : public T__BasePathToElementType
+{
+public:
+    void setFieldURI( const T__DictionaryURIType& fieldURI );
+    T__DictionaryURIType fieldURI() const;
+    void setFieldIndex( const QString& fieldIndex );
+    QString fieldIndex() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__PathToIndexedFieldType();
+    ~T__PathToIndexedFieldType();
+
+public:
+    T__PathToIndexedFieldType( const T__PathToIndexedFieldType& );
+    T__PathToIndexedFieldType &operator=( const T__PathToIndexedFieldType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__NoEndRecurrenceRangeType : public T__RecurrenceRangeBaseType
 {
 public:
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__SyncFolderItemsResponseType();
-    ~TNS__SyncFolderItemsResponseType();
+    T__NoEndRecurrenceRangeType();
+    ~T__NoEndRecurrenceRangeType();
 
 };
 
-class T__TooBigGroupAttendeeConflictData : public T__AttendeeConflictData
+class TNS__CreateManagedFolderResponseType : public TNS__BaseResponseMessageType
 {
 public:
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__TooBigGroupAttendeeConflictData();
-    ~T__TooBigGroupAttendeeConflictData();
+    TNS__CreateManagedFolderResponseType();
+    ~TNS__CreateManagedFolderResponseType();
 
+};
+
+class T__ExistsType : public T__SearchExpressionType
+{
+public:
+    void setPath( const T__BasePathToElementType& path );
+    T__BasePathToElementType path() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ExistsType();
+    ~T__ExistsType();
+
+public:
+    T__ExistsType( const T__ExistsType& );
+    T__ExistsType &operator=( const T__ExistsType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__IndexedPageViewType : public T__BasePagingType
+{
+public:
+    void setOffset( int offset );
+    int offset() const;
+    void setBasePoint( const T__IndexBasePointType& basePoint );
+    T__IndexBasePointType basePoint() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__IndexedPageViewType();
+    ~T__IndexedPageViewType();
+
+public:
+    T__IndexedPageViewType( const T__IndexedPageViewType& );
+    T__IndexedPageViewType &operator=( const T__IndexedPageViewType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__CreateAttachmentType : public TNS__BaseRequestType
+{
+public:
+    void setParentItemId( const T__ItemIdType& parentItemId );
+    T__ItemIdType parentItemId() const;
+    void setAttachments( const T__NonEmptyArrayOfAttachmentsType& attachments );
+    T__NonEmptyArrayOfAttachmentsType attachments() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__CreateAttachmentType();
+    ~TNS__CreateAttachmentType();
+
+public:
+    TNS__CreateAttachmentType( const TNS__CreateAttachmentType& );
+    TNS__CreateAttachmentType &operator=( const TNS__CreateAttachmentType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__FindItemResponseMessageType : public TNS__ResponseMessageType
+{
+public:
+    void setRootFolder( const T__FindItemParentType& rootFolder );
+    T__FindItemParentType rootFolder() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__FindItemResponseMessageType();
+    ~TNS__FindItemResponseMessageType();
+
+public:
+    TNS__FindItemResponseMessageType( const TNS__FindItemResponseMessageType& );
+    TNS__FindItemResponseMessageType &operator=( const TNS__FindItemResponseMessageType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__GetUserAvailabilityRequestType : public TNS__BaseRequestType
+{
+public:
+    void setTimeZone( const T__SerializableTimeZone& timeZone );
+    T__SerializableTimeZone timeZone() const;
+    void setMailboxDataArray( const T__ArrayOfMailboxData& mailboxDataArray );
+    T__ArrayOfMailboxData mailboxDataArray() const;
+    void setFreeBusyViewOptions( const T__FreeBusyViewOptionsType& freeBusyViewOptions );
+    T__FreeBusyViewOptionsType freeBusyViewOptions() const;
+    void setSuggestionsViewOptions( const T__SuggestionsViewOptionsType& suggestionsViewOptions );
+    T__SuggestionsViewOptionsType suggestionsViewOptions() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__GetUserAvailabilityRequestType();
+    ~TNS__GetUserAvailabilityRequestType();
+
+public:
+    TNS__GetUserAvailabilityRequestType( const TNS__GetUserAvailabilityRequestType& );
+    TNS__GetUserAvailabilityRequestType &operator=( const TNS__GetUserAvailabilityRequestType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
 /**
-    Response Message for a single id conversion in the ConvertId web method.
-    Note that the AlternateId element will be missing in the case of an error.
+    Allows consumers to specify arbitrary groupings for FindItem queries.
  */
-class TNS__ConvertIdResponseMessageType : public TNS__ResponseMessageType
+class T__GroupByType : public T__BaseGroupByType
 {
 public:
-    void setAlternateId( const T__AlternateIdBaseType& alternateId );
-    T__AlternateIdBaseType alternateId() const;
+    void setFieldURI( const T__PathToUnindexedFieldType& fieldURI );
+    T__PathToUnindexedFieldType fieldURI() const;
+    void setIndexedFieldURI( const T__PathToIndexedFieldType& indexedFieldURI );
+    T__PathToIndexedFieldType indexedFieldURI() const;
+    void setExtendedFieldURI( const T__PathToExtendedFieldType& extendedFieldURI );
+    T__PathToExtendedFieldType extendedFieldURI() const;
+    void setAggregateOn( const T__AggregateOnType& aggregateOn );
+    T__AggregateOnType aggregateOn() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__ConvertIdResponseMessageType();
-    ~TNS__ConvertIdResponseMessageType();
+    T__GroupByType();
+    ~T__GroupByType();
 
 public:
-    TNS__ConvertIdResponseMessageType( const TNS__ConvertIdResponseMessageType& );
-    TNS__ConvertIdResponseMessageType &operator=( const TNS__ConvertIdResponseMessageType& );
+    T__GroupByType( const T__GroupByType& );
+    T__GroupByType &operator=( const T__GroupByType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__CreateFolderResponseType : public TNS__BaseResponseMessageType
+class T__CalendarPermissionType : public T__BasePermissionType
+{
+public:
+    void setReadItems( const T__CalendarPermissionReadAccessType& readItems );
+    T__CalendarPermissionReadAccessType readItems() const;
+    void setCalendarPermissionLevel( const T__CalendarPermissionLevelType& calendarPermissionLevel );
+    T__CalendarPermissionLevelType calendarPermissionLevel() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__CalendarPermissionType();
+    ~T__CalendarPermissionType();
+
+public:
+    T__CalendarPermissionType( const T__CalendarPermissionType& );
+    T__CalendarPermissionType &operator=( const T__CalendarPermissionType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__DeleteFolderResponseType : public TNS__BaseResponseMessageType
 {
 public:
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__CreateFolderResponseType();
-    ~TNS__CreateFolderResponseType();
+    TNS__DeleteFolderResponseType();
+    ~TNS__DeleteFolderResponseType();
 
 };
 
-class T__DistributionListType : public T__ItemType
+class T__NotType : public T__SearchExpressionType
 {
 public:
-    void setDisplayName( const QString& displayName );
-    QString displayName() const;
-    void setFileAs( const QString& fileAs );
-    QString fileAs() const;
-    void setContactSource( const T__ContactSourceType& contactSource );
-    T__ContactSourceType contactSource() const;
+    void setSearchExpression( const T__SearchExpressionType& searchExpression );
+    T__SearchExpressionType searchExpression() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__DistributionListType();
-    ~T__DistributionListType();
+    T__NotType();
+    ~T__NotType();
 
 public:
-    T__DistributionListType( const T__DistributionListType& );
-    T__DistributionListType &operator=( const T__DistributionListType& );
+    T__NotType( const T__NotType& );
+    T__NotType &operator=( const T__NotType& );
 
 private:
     class PrivateDPtr;
@@ -5909,126 +6116,251 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__IndividualAttendeeConflictData : public T__AttendeeConflictData
+class T__AbsoluteYearlyRecurrencePatternType : public T__RecurrencePatternBaseType
 {
 public:
-    void setBusyType( const T__LegacyFreeBusyType& busyType );
-    T__LegacyFreeBusyType busyType() const;
+    void setDayOfMonth( int dayOfMonth );
+    int dayOfMonth() const;
+    void setMonth( const T__MonthNamesType& month );
+    T__MonthNamesType month() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__IndividualAttendeeConflictData();
-    ~T__IndividualAttendeeConflictData();
+    T__AbsoluteYearlyRecurrencePatternType();
+    ~T__AbsoluteYearlyRecurrencePatternType();
 
 public:
-    T__IndividualAttendeeConflictData( const T__IndividualAttendeeConflictData& );
-    T__IndividualAttendeeConflictData &operator=( const T__IndividualAttendeeConflictData& );
+    T__AbsoluteYearlyRecurrencePatternType( const T__AbsoluteYearlyRecurrencePatternType& );
+    T__AbsoluteYearlyRecurrencePatternType &operator=( const T__AbsoluteYearlyRecurrencePatternType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__GetFolderType : public TNS__BaseRequestType
+class T__FractionalPageViewType : public T__BasePagingType
+{
+public:
+    void setNumerator( int numerator );
+    int numerator() const;
+    void setDenominator( int denominator );
+    int denominator() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__FractionalPageViewType();
+    ~T__FractionalPageViewType();
+
+public:
+    T__FractionalPageViewType( const T__FractionalPageViewType& );
+    T__FractionalPageViewType &operator=( const T__FractionalPageViewType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__FolderChangeDescriptionType : public T__ChangeDescriptionType
+{
+public:
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__FolderChangeDescriptionType();
+    virtual ~T__FolderChangeDescriptionType();
+
+};
+
+/**
+    Allows consumers to access standard groupings for FindItem queries. This is
+    in contrast to the arbitrary (custom) groupings available via the
+    t:GroupByType
+ */
+class T__DistinguishedGroupByType : public T__BaseGroupByType
+{
+public:
+    void setStandardGroupBy( const T__StandardGroupByType& standardGroupBy );
+    T__StandardGroupByType standardGroupBy() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__DistinguishedGroupByType();
+    ~T__DistinguishedGroupByType();
+
+public:
+    T__DistinguishedGroupByType( const T__DistinguishedGroupByType& );
+    T__DistinguishedGroupByType &operator=( const T__DistinguishedGroupByType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__FindFolderType : public TNS__BaseRequestType
 {
 public:
     void setFolderShape( const T__FolderResponseShapeType& folderShape );
     T__FolderResponseShapeType folderShape() const;
-    void setFolderIds( const T__NonEmptyArrayOfBaseFolderIdsType& folderIds );
-    T__NonEmptyArrayOfBaseFolderIdsType folderIds() const;
+    void setIndexedPageFolderView( const T__IndexedPageViewType& indexedPageFolderView );
+    T__IndexedPageViewType indexedPageFolderView() const;
+    void setFractionalPageFolderView( const T__FractionalPageViewType& fractionalPageFolderView );
+    T__FractionalPageViewType fractionalPageFolderView() const;
+    void setRestriction( const T__RestrictionType& restriction );
+    T__RestrictionType restriction() const;
+    void setParentFolderIds( const T__NonEmptyArrayOfBaseFolderIdsType& parentFolderIds );
+    T__NonEmptyArrayOfBaseFolderIdsType parentFolderIds() const;
+    void setTraversal( const T__FolderQueryTraversalType& traversal );
+    T__FolderQueryTraversalType traversal() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__GetFolderType();
-    ~TNS__GetFolderType();
+    TNS__FindFolderType();
+    ~TNS__FindFolderType();
 
 public:
-    TNS__GetFolderType( const TNS__GetFolderType& );
-    TNS__GetFolderType &operator=( const TNS__GetFolderType& );
+    TNS__FindFolderType( const TNS__FindFolderType& );
+    TNS__FindFolderType &operator=( const TNS__FindFolderType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-/**
-    Identifier for a fully resolved item
- */
-class T__ItemIdType : public T__BaseItemIdType
+class T__PullSubscriptionRequestType : public T__BaseSubscriptionRequestType
 {
 public:
-    void setId( const QString& id );
-    QString id() const;
-    void setChangeKey( const QString& changeKey );
-    QString changeKey() const;
+    void setTimeout( const T__SubscriptionTimeoutType& timeout );
+    T__SubscriptionTimeoutType timeout() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__ItemIdType();
-    ~T__ItemIdType();
+    T__PullSubscriptionRequestType();
+    ~T__PullSubscriptionRequestType();
 
 public:
-    T__ItemIdType( const T__ItemIdType& );
-    T__ItemIdType &operator=( const T__ItemIdType& );
+    T__PullSubscriptionRequestType( const T__PullSubscriptionRequestType& );
+    T__PullSubscriptionRequestType &operator=( const T__PullSubscriptionRequestType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__CreateFolderType : public TNS__BaseRequestType
-{
-public:
-    void setParentFolderId( const T__TargetFolderIdType& parentFolderId );
-    T__TargetFolderIdType parentFolderId() const;
-    void setFolders( const T__NonEmptyArrayOfFoldersType& folders );
-    T__NonEmptyArrayOfFoldersType folders() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__CreateFolderType();
-    ~TNS__CreateFolderType();
-
-public:
-    TNS__CreateFolderType( const TNS__CreateFolderType& );
-    TNS__CreateFolderType &operator=( const TNS__CreateFolderType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__GetEventsResponseType : public TNS__BaseResponseMessageType
+class TNS__SubscribeResponseType : public TNS__BaseResponseMessageType
 {
 public:
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__GetEventsResponseType();
-    ~TNS__GetEventsResponseType();
+    TNS__SubscribeResponseType();
+    ~TNS__SubscribeResponseType();
 
 };
 
-class TNS__MoveItemResponseType : public TNS__BaseResponseMessageType
+class TNS__BaseMoveCopyItemType : public TNS__BaseRequestType
 {
 public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__MoveItemResponseType();
-    ~TNS__MoveItemResponseType();
-
-};
-
-class TNS__GetItemType : public TNS__BaseRequestType
-{
-public:
-    void setItemShape( const T__ItemResponseShapeType& itemShape );
-    T__ItemResponseShapeType itemShape() const;
+    void setToFolderId( const T__TargetFolderIdType& toFolderId );
+    T__TargetFolderIdType toFolderId() const;
     void setItemIds( const T__NonEmptyArrayOfBaseItemIdsType& itemIds );
     T__NonEmptyArrayOfBaseItemIdsType itemIds() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__GetItemType();
-    ~TNS__GetItemType();
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    TNS__BaseMoveCopyItemType();
+    virtual ~TNS__BaseMoveCopyItemType();
 
 public:
-    TNS__GetItemType( const TNS__GetItemType& );
-    TNS__GetItemType &operator=( const TNS__GetItemType& );
+    TNS__BaseMoveCopyItemType( const TNS__BaseMoveCopyItemType& );
+    TNS__BaseMoveCopyItemType &operator=( const TNS__BaseMoveCopyItemType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__ExpandDLResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__ExpandDLResponseType();
+    ~TNS__ExpandDLResponseType();
+
+};
+
+class TNS__SendItemType : public TNS__BaseRequestType
+{
+public:
+    void setItemIds( const T__NonEmptyArrayOfBaseItemIdsType& itemIds );
+    T__NonEmptyArrayOfBaseItemIdsType itemIds() const;
+    void setSavedItemFolderId( const T__TargetFolderIdType& savedItemFolderId );
+    T__TargetFolderIdType savedItemFolderId() const;
+    void setSaveItemToFolder( bool saveItemToFolder );
+    bool saveItemToFolder() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__SendItemType();
+    ~TNS__SendItemType();
+
+public:
+    TNS__SendItemType( const TNS__SendItemType& );
+    TNS__SendItemType &operator=( const TNS__SendItemType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__GetAttachmentType : public TNS__BaseRequestType
+{
+public:
+    void setAttachmentShape( const T__AttachmentResponseShapeType& attachmentShape );
+    T__AttachmentResponseShapeType attachmentShape() const;
+    void setAttachmentIds( const T__NonEmptyArrayOfRequestAttachmentIdsType& attachmentIds );
+    T__NonEmptyArrayOfRequestAttachmentIdsType attachmentIds() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__GetAttachmentType();
+    ~TNS__GetAttachmentType();
+
+public:
+    TNS__GetAttachmentType( const TNS__GetAttachmentType& );
+    TNS__GetAttachmentType &operator=( const TNS__GetAttachmentType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__FindFolderResponseMessageType : public TNS__ResponseMessageType
+{
+public:
+    void setRootFolder( const T__FindFolderParentType& rootFolder );
+    T__FindFolderParentType rootFolder() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__FindFolderResponseMessageType();
+    ~TNS__FindFolderResponseMessageType();
+
+public:
+    TNS__FindFolderResponseMessageType( const TNS__FindFolderResponseMessageType& );
+    TNS__FindFolderResponseMessageType &operator=( const TNS__FindFolderResponseMessageType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__RelativeYearlyRecurrencePatternType : public T__RecurrencePatternBaseType
+{
+public:
+    void setDaysOfWeek( const T__DayOfWeekType& daysOfWeek );
+    T__DayOfWeekType daysOfWeek() const;
+    void setDayOfWeekIndex( const T__DayOfWeekIndexType& dayOfWeekIndex );
+    T__DayOfWeekIndexType dayOfWeekIndex() const;
+    void setMonth( const T__MonthNamesType& month );
+    T__MonthNamesType month() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__RelativeYearlyRecurrencePatternType();
+    ~T__RelativeYearlyRecurrencePatternType();
+
+public:
+    T__RelativeYearlyRecurrencePatternType( const T__RelativeYearlyRecurrencePatternType& );
+    T__RelativeYearlyRecurrencePatternType &operator=( const T__RelativeYearlyRecurrencePatternType& );
 
 private:
     class PrivateDPtr;
@@ -6070,27 +6402,166 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__SendItemType : public TNS__BaseRequestType
+class T__AppendToFolderFieldType : public T__FolderChangeDescriptionType
 {
 public:
-    void setItemIds( const T__NonEmptyArrayOfBaseItemIdsType& itemIds );
-    T__NonEmptyArrayOfBaseItemIdsType itemIds() const;
-    void setSavedItemFolderId( const T__TargetFolderIdType& savedItemFolderId );
-    T__TargetFolderIdType savedItemFolderId() const;
-    void setSaveItemToFolder( bool saveItemToFolder );
-    bool saveItemToFolder() const;
+    void setFolder( const T__FolderType& folder );
+    T__FolderType folder() const;
+    void setCalendarFolder( const T__CalendarFolderType& calendarFolder );
+    T__CalendarFolderType calendarFolder() const;
+    void setContactsFolder( const T__ContactsFolderType& contactsFolder );
+    T__ContactsFolderType contactsFolder() const;
+    void setSearchFolder( const T__SearchFolderType& searchFolder );
+    T__SearchFolderType searchFolder() const;
+    void setTasksFolder( const T__TasksFolderType& tasksFolder );
+    T__TasksFolderType tasksFolder() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__SendItemType();
-    ~TNS__SendItemType();
+    T__AppendToFolderFieldType();
+    ~T__AppendToFolderFieldType();
 
 public:
-    TNS__SendItemType( const TNS__SendItemType& );
-    TNS__SendItemType &operator=( const TNS__SendItemType& );
+    T__AppendToFolderFieldType( const T__AppendToFolderFieldType& );
+    T__AppendToFolderFieldType &operator=( const T__AppendToFolderFieldType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__DeleteItemType : public TNS__BaseRequestType
+{
+public:
+    void setItemIds( const T__NonEmptyArrayOfBaseItemIdsType& itemIds );
+    T__NonEmptyArrayOfBaseItemIdsType itemIds() const;
+    void setDeleteType( const T__DisposalType& deleteType );
+    T__DisposalType deleteType() const;
+    void setSendMeetingCancellations( const T__CalendarItemCreateOrDeleteOperationType& sendMeetingCancellations );
+    T__CalendarItemCreateOrDeleteOperationType sendMeetingCancellations() const;
+    void setAffectedTaskOccurrences( const T__AffectedTaskOccurrencesType& affectedTaskOccurrences );
+    T__AffectedTaskOccurrencesType affectedTaskOccurrences() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__DeleteItemType();
+    ~TNS__DeleteItemType();
+
+public:
+    TNS__DeleteItemType( const TNS__DeleteItemType& );
+    TNS__DeleteItemType &operator=( const TNS__DeleteItemType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__CreateItemResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__CreateItemResponseType();
+    ~TNS__CreateItemResponseType();
+
+};
+
+/**
+    Response Message for a single id conversion in the ConvertId web method.
+    Note that the AlternateId element will be missing in the case of an error.
+ */
+class TNS__ConvertIdResponseMessageType : public TNS__ResponseMessageType
+{
+public:
+    void setAlternateId( const T__AlternateIdBaseType& alternateId );
+    T__AlternateIdBaseType alternateId() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__ConvertIdResponseMessageType();
+    ~TNS__ConvertIdResponseMessageType();
+
+public:
+    TNS__ConvertIdResponseMessageType( const TNS__ConvertIdResponseMessageType& );
+    TNS__ConvertIdResponseMessageType &operator=( const TNS__ConvertIdResponseMessageType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__TwoOperandExpressionType : public T__SearchExpressionType
+{
+public:
+    void setPath( const T__BasePathToElementType& path );
+    T__BasePathToElementType path() const;
+    void setFieldURIOrConstant( const T__FieldURIOrConstantType& fieldURIOrConstant );
+    T__FieldURIOrConstantType fieldURIOrConstant() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__TwoOperandExpressionType();
+    virtual ~T__TwoOperandExpressionType();
+
+public:
+    T__TwoOperandExpressionType( const T__TwoOperandExpressionType& );
+    T__TwoOperandExpressionType &operator=( const T__TwoOperandExpressionType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__CreateItemType : public TNS__BaseRequestType
+{
+public:
+    void setSavedItemFolderId( const T__TargetFolderIdType& savedItemFolderId );
+    T__TargetFolderIdType savedItemFolderId() const;
+    void setItems( const T__NonEmptyArrayOfAllItemsType& items );
+    T__NonEmptyArrayOfAllItemsType items() const;
+    void setMessageDisposition( const T__MessageDispositionType& messageDisposition );
+    T__MessageDispositionType messageDisposition() const;
+    void setSendMeetingInvitations( const T__CalendarItemCreateOrDeleteOperationType& sendMeetingInvitations );
+    T__CalendarItemCreateOrDeleteOperationType sendMeetingInvitations() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__CreateItemType();
+    ~TNS__CreateItemType();
+
+public:
+    TNS__CreateItemType( const TNS__CreateItemType& );
+    TNS__CreateItemType &operator=( const TNS__CreateItemType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__CreateFolderType : public TNS__BaseRequestType
+{
+public:
+    void setParentFolderId( const T__TargetFolderIdType& parentFolderId );
+    T__TargetFolderIdType parentFolderId() const;
+    void setFolders( const T__NonEmptyArrayOfFoldersType& folders );
+    T__NonEmptyArrayOfFoldersType folders() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__CreateFolderType();
+    ~TNS__CreateFolderType();
+
+public:
+    TNS__CreateFolderType( const TNS__CreateFolderType& );
+    TNS__CreateFolderType &operator=( const TNS__CreateFolderType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ItemChangeDescriptionType : public T__ChangeDescriptionType
+{
+public:
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__ItemChangeDescriptionType();
+    virtual ~T__ItemChangeDescriptionType();
+
 };
 
 class TNS__ItemInfoResponseMessageType : public TNS__ResponseMessageType
@@ -6112,23 +6583,509 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__FindItemResponseMessageType : public TNS__ResponseMessageType
+class TNS__UpdateFolderType : public TNS__BaseRequestType
 {
 public:
-    void setRootFolder( const T__FindItemParentType& rootFolder );
-    T__FindItemParentType rootFolder() const;
+    void setFolderChanges( const T__NonEmptyArrayOfFolderChangesType& folderChanges );
+    T__NonEmptyArrayOfFolderChangesType folderChanges() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__FindItemResponseMessageType();
-    ~TNS__FindItemResponseMessageType();
+    TNS__UpdateFolderType();
+    ~TNS__UpdateFolderType();
 
 public:
-    TNS__FindItemResponseMessageType( const TNS__FindItemResponseMessageType& );
-    TNS__FindItemResponseMessageType &operator=( const TNS__FindItemResponseMessageType& );
+    TNS__UpdateFolderType( const TNS__UpdateFolderType& );
+    TNS__UpdateFolderType &operator=( const TNS__UpdateFolderType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__UpdateItemType : public TNS__BaseRequestType
+{
+public:
+    void setSavedItemFolderId( const T__TargetFolderIdType& savedItemFolderId );
+    T__TargetFolderIdType savedItemFolderId() const;
+    void setItemChanges( const T__NonEmptyArrayOfItemChangesType& itemChanges );
+    T__NonEmptyArrayOfItemChangesType itemChanges() const;
+    void setConflictResolution( const T__ConflictResolutionType& conflictResolution );
+    T__ConflictResolutionType conflictResolution() const;
+    void setMessageDisposition( const T__MessageDispositionType& messageDisposition );
+    T__MessageDispositionType messageDisposition() const;
+    void setSendMeetingInvitationsOrCancellations( const T__CalendarItemUpdateOperationType& sendMeetingInvitationsOrCancellations );
+    T__CalendarItemUpdateOperationType sendMeetingInvitationsOrCancellations() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__UpdateItemType();
+    ~TNS__UpdateItemType();
+
+public:
+    TNS__UpdateItemType( const TNS__UpdateItemType& );
+    TNS__UpdateItemType &operator=( const TNS__UpdateItemType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__CopyItemType : public TNS__BaseMoveCopyItemType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__CopyItemType();
+    ~TNS__CopyItemType();
+
+};
+
+class TNS__DeleteAttachmentType : public TNS__BaseRequestType
+{
+public:
+    void setAttachmentIds( const T__NonEmptyArrayOfRequestAttachmentIdsType& attachmentIds );
+    T__NonEmptyArrayOfRequestAttachmentIdsType attachmentIds() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__DeleteAttachmentType();
+    ~TNS__DeleteAttachmentType();
+
+public:
+    TNS__DeleteAttachmentType( const TNS__DeleteAttachmentType& );
+    TNS__DeleteAttachmentType &operator=( const TNS__DeleteAttachmentType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__IsGreaterThanOrEqualToType : public T__TwoOperandExpressionType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__IsGreaterThanOrEqualToType();
+    ~T__IsGreaterThanOrEqualToType();
+
+};
+
+class TNS__SubscribeResponseMessageType : public TNS__ResponseMessageType
+{
+public:
+    void setSubscriptionId( const T__SubscriptionIdType& subscriptionId );
+    T__SubscriptionIdType subscriptionId() const;
+    void setWatermark( const T__WatermarkType& watermark );
+    T__WatermarkType watermark() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__SubscribeResponseMessageType();
+    ~TNS__SubscribeResponseMessageType();
+
+public:
+    TNS__SubscribeResponseMessageType( const TNS__SubscribeResponseMessageType& );
+    TNS__SubscribeResponseMessageType &operator=( const TNS__SubscribeResponseMessageType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__ResolveNamesResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__ResolveNamesResponseType();
+    ~TNS__ResolveNamesResponseType();
+
+};
+
+class TNS__GetUserOofSettingsRequest : public TNS__BaseRequestType
+{
+public:
+    void setMailbox( const T__EmailAddress& mailbox );
+    T__EmailAddress mailbox() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__GetUserOofSettingsRequest();
+    ~TNS__GetUserOofSettingsRequest();
+
+public:
+    TNS__GetUserOofSettingsRequest( const TNS__GetUserOofSettingsRequest& );
+    TNS__GetUserOofSettingsRequest &operator=( const TNS__GetUserOofSettingsRequest& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__TasksFolderType : public T__FolderType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__TasksFolderType();
+    ~T__TasksFolderType();
+
+};
+
+class TNS__SubscribeType : public TNS__BaseRequestType
+{
+public:
+    void setPullSubscriptionRequest( const T__PullSubscriptionRequestType& pullSubscriptionRequest );
+    T__PullSubscriptionRequestType pullSubscriptionRequest() const;
+    void setPushSubscriptionRequest( const T__PushSubscriptionRequestType& pushSubscriptionRequest );
+    T__PushSubscriptionRequestType pushSubscriptionRequest() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__SubscribeType();
+    ~TNS__SubscribeType();
+
+public:
+    TNS__SubscribeType( const TNS__SubscribeType& );
+    TNS__SubscribeType &operator=( const TNS__SubscribeType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__UnknownAttendeeConflictData : public T__AttendeeConflictData
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__UnknownAttendeeConflictData();
+    ~T__UnknownAttendeeConflictData();
+
+};
+
+class TNS__UnsubscribeType : public TNS__BaseRequestType
+{
+public:
+    void setSubscriptionId( const T__SubscriptionIdType& subscriptionId );
+    T__SubscriptionIdType subscriptionId() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__UnsubscribeType();
+    ~TNS__UnsubscribeType();
+
+public:
+    TNS__UnsubscribeType( const TNS__UnsubscribeType& );
+    TNS__UnsubscribeType &operator=( const TNS__UnsubscribeType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__GetFolderType : public TNS__BaseRequestType
+{
+public:
+    void setFolderShape( const T__FolderResponseShapeType& folderShape );
+    T__FolderResponseShapeType folderShape() const;
+    void setFolderIds( const T__NonEmptyArrayOfBaseFolderIdsType& folderIds );
+    T__NonEmptyArrayOfBaseFolderIdsType folderIds() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__GetFolderType();
+    ~TNS__GetFolderType();
+
+public:
+    TNS__GetFolderType( const TNS__GetFolderType& );
+    TNS__GetFolderType &operator=( const TNS__GetFolderType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__SearchFolderType : public T__FolderType
+{
+public:
+    void setSearchParameters( const T__SearchParametersType& searchParameters );
+    T__SearchParametersType searchParameters() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__SearchFolderType();
+    ~T__SearchFolderType();
+
+public:
+    T__SearchFolderType( const T__SearchFolderType& );
+    T__SearchFolderType &operator=( const T__SearchFolderType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__SetFolderFieldType : public T__FolderChangeDescriptionType
+{
+public:
+    void setFolder( const T__FolderType& folder );
+    T__FolderType folder() const;
+    void setCalendarFolder( const T__CalendarFolderType& calendarFolder );
+    T__CalendarFolderType calendarFolder() const;
+    void setContactsFolder( const T__ContactsFolderType& contactsFolder );
+    T__ContactsFolderType contactsFolder() const;
+    void setSearchFolder( const T__SearchFolderType& searchFolder );
+    T__SearchFolderType searchFolder() const;
+    void setTasksFolder( const T__TasksFolderType& tasksFolder );
+    T__TasksFolderType tasksFolder() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__SetFolderFieldType();
+    ~T__SetFolderFieldType();
+
+public:
+    T__SetFolderFieldType( const T__SetFolderFieldType& );
+    T__SetFolderFieldType &operator=( const T__SetFolderFieldType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__CreateManagedFolderRequestType : public TNS__BaseRequestType
+{
+public:
+    void setFolderNames( const T__NonEmptyArrayOfFolderNamesType& folderNames );
+    T__NonEmptyArrayOfFolderNamesType folderNames() const;
+    void setMailbox( const T__EmailAddressType& mailbox );
+    T__EmailAddressType mailbox() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__CreateManagedFolderRequestType();
+    ~TNS__CreateManagedFolderRequestType();
+
+public:
+    TNS__CreateManagedFolderRequestType( const TNS__CreateManagedFolderRequestType& );
+    TNS__CreateManagedFolderRequestType &operator=( const TNS__CreateManagedFolderRequestType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__FindItemType : public TNS__BaseRequestType
+{
+public:
+    void setItemShape( const T__ItemResponseShapeType& itemShape );
+    T__ItemResponseShapeType itemShape() const;
+    void setIndexedPageItemView( const T__IndexedPageViewType& indexedPageItemView );
+    T__IndexedPageViewType indexedPageItemView() const;
+    void setFractionalPageItemView( const T__FractionalPageViewType& fractionalPageItemView );
+    T__FractionalPageViewType fractionalPageItemView() const;
+    void setCalendarView( const T__CalendarViewType& calendarView );
+    T__CalendarViewType calendarView() const;
+    void setContactsView( const T__ContactsViewType& contactsView );
+    T__ContactsViewType contactsView() const;
+    void setGroupBy( const T__GroupByType& groupBy );
+    T__GroupByType groupBy() const;
+    void setDistinguishedGroupBy( const T__DistinguishedGroupByType& distinguishedGroupBy );
+    T__DistinguishedGroupByType distinguishedGroupBy() const;
+    void setRestriction( const T__RestrictionType& restriction );
+    T__RestrictionType restriction() const;
+    void setSortOrder( const T__NonEmptyArrayOfFieldOrdersType& sortOrder );
+    T__NonEmptyArrayOfFieldOrdersType sortOrder() const;
+    void setParentFolderIds( const T__NonEmptyArrayOfBaseFolderIdsType& parentFolderIds );
+    T__NonEmptyArrayOfBaseFolderIdsType parentFolderIds() const;
+    void setTraversal( const T__ItemQueryTraversalType& traversal );
+    T__ItemQueryTraversalType traversal() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__FindItemType();
+    ~TNS__FindItemType();
+
+public:
+    TNS__FindItemType( const TNS__FindItemType& );
+    TNS__FindItemType &operator=( const TNS__FindItemType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__BaseDelegateType : public TNS__BaseRequestType
+{
+public:
+    void setMailbox( const T__EmailAddressType& mailbox );
+    T__EmailAddressType mailbox() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    TNS__BaseDelegateType();
+    virtual ~TNS__BaseDelegateType();
+
+public:
+    TNS__BaseDelegateType( const TNS__BaseDelegateType& );
+    TNS__BaseDelegateType &operator=( const TNS__BaseDelegateType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__CreateFolderResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__CreateFolderResponseType();
+    ~TNS__CreateFolderResponseType();
+
+};
+
+class T__OrType : public T__MultipleOperandBooleanExpressionType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__OrType();
+    ~T__OrType();
+
+};
+
+class T__PathToExceptionFieldType : public T__BasePathToElementType
+{
+public:
+    void setFieldURI( const T__ExceptionPropertyURIType& fieldURI );
+    T__ExceptionPropertyURIType fieldURI() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__PathToExceptionFieldType();
+    ~T__PathToExceptionFieldType();
+
+public:
+    T__PathToExceptionFieldType( const T__PathToExceptionFieldType& );
+    T__PathToExceptionFieldType &operator=( const T__PathToExceptionFieldType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__BaseObjectChangedEventType : public T__BaseNotificationEventType
+{
+public:
+    void setTimeStamp( const KDDateTime& timeStamp );
+    KDDateTime timeStamp() const;
+    void setFolderId( const T__FolderIdType& folderId );
+    T__FolderIdType folderId() const;
+    void setItemId( const T__ItemIdType& itemId );
+    T__ItemIdType itemId() const;
+    void setParentFolderId( const T__FolderIdType& parentFolderId );
+    T__FolderIdType parentFolderId() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__BaseObjectChangedEventType();
+    virtual ~T__BaseObjectChangedEventType();
+
+public:
+    T__BaseObjectChangedEventType( const T__BaseObjectChangedEventType& );
+    T__BaseObjectChangedEventType &operator=( const T__BaseObjectChangedEventType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+/**
+    Response type for the ConvertId web method
+ */
+class TNS__ConvertIdResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__ConvertIdResponseType();
+    ~TNS__ConvertIdResponseType();
+
+};
+
+/**
+    Identifier for a fully resolved item
+ */
+class T__ItemIdType : public T__BaseItemIdType
+{
+public:
+    void setId( const QString& id );
+    QString id() const;
+    void setChangeKey( const QString& changeKey );
+    QString changeKey() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ItemIdType();
+    ~T__ItemIdType();
+
+public:
+    T__ItemIdType( const T__ItemIdType& );
+    T__ItemIdType &operator=( const T__ItemIdType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__CalendarFolderType : public T__BaseFolderType
+{
+public:
+    void setPermissionSet( const T__CalendarPermissionSetType& permissionSet );
+    T__CalendarPermissionSetType permissionSet() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__CalendarFolderType();
+    ~T__CalendarFolderType();
+
+public:
+    T__CalendarFolderType( const T__CalendarFolderType& );
+    T__CalendarFolderType &operator=( const T__CalendarFolderType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+/**
+    Represents an alternate mailbox folder or item Id.
+ */
+class T__AlternateIdType : public T__AlternateIdBaseType
+{
+public:
+    void setId( const QString& id );
+    QString id() const;
+    void setMailbox( const T__NonEmptyStringType& mailbox );
+    T__NonEmptyStringType mailbox() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__AlternateIdType();
+    ~T__AlternateIdType();
+
+public:
+    T__AlternateIdType( const T__AlternateIdType& );
+    T__AlternateIdType &operator=( const T__AlternateIdType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__SyncFolderItemsResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__SyncFolderItemsResponseType();
+    ~TNS__SyncFolderItemsResponseType();
+
+};
+
+class T__IsEqualToType : public T__TwoOperandExpressionType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__IsEqualToType();
+    ~T__IsEqualToType();
+
 };
 
 class TNS__DeleteFolderType : public TNS__BaseRequestType
@@ -6152,82 +7109,23 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__ExpandDLResponseMessageType : public TNS__ResponseMessageType
+class TNS__SyncFolderHierarchyResponseMessageType : public TNS__ResponseMessageType
 {
 public:
-    void setDLExpansion( const T__ArrayOfDLExpansionType& dLExpansion );
-    T__ArrayOfDLExpansionType dLExpansion() const;
+    void setSyncState( const QString& syncState );
+    QString syncState() const;
+    void setIncludesLastFolderInRange( bool includesLastFolderInRange );
+    bool includesLastFolderInRange() const;
+    void setChanges( const T__SyncFolderHierarchyChangesType& changes );
+    T__SyncFolderHierarchyChangesType changes() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__ExpandDLResponseMessageType();
-    ~TNS__ExpandDLResponseMessageType();
+    TNS__SyncFolderHierarchyResponseMessageType();
+    ~TNS__SyncFolderHierarchyResponseMessageType();
 
 public:
-    TNS__ExpandDLResponseMessageType( const TNS__ExpandDLResponseMessageType& );
-    TNS__ExpandDLResponseMessageType &operator=( const TNS__ExpandDLResponseMessageType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__PullSubscriptionRequestType : public T__BaseSubscriptionRequestType
-{
-public:
-    void setTimeout( const T__SubscriptionTimeoutType& timeout );
-    T__SubscriptionTimeoutType timeout() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__PullSubscriptionRequestType();
-    ~T__PullSubscriptionRequestType();
-
-public:
-    T__PullSubscriptionRequestType( const T__PullSubscriptionRequestType& );
-    T__PullSubscriptionRequestType &operator=( const T__PullSubscriptionRequestType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__OccurrenceItemIdType : public T__BaseItemIdType
-{
-public:
-    void setRecurringMasterId( const T__DerivedItemIdType& recurringMasterId );
-    T__DerivedItemIdType recurringMasterId() const;
-    void setChangeKey( const QString& changeKey );
-    QString changeKey() const;
-    void setInstanceIndex( int instanceIndex );
-    int instanceIndex() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__OccurrenceItemIdType();
-    ~T__OccurrenceItemIdType();
-
-public:
-    T__OccurrenceItemIdType( const T__OccurrenceItemIdType& );
-    T__OccurrenceItemIdType &operator=( const T__OccurrenceItemIdType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__FolderType : public T__BaseFolderType
-{
-public:
-    void setPermissionSet( const T__PermissionSetType& permissionSet );
-    T__PermissionSetType permissionSet() const;
-    void setUnreadCount( int unreadCount );
-    int unreadCount() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__FolderType();
-    virtual ~T__FolderType();
-
-public:
-    T__FolderType( const T__FolderType& );
-    T__FolderType &operator=( const T__FolderType& );
+    TNS__SyncFolderHierarchyResponseMessageType( const TNS__SyncFolderHierarchyResponseMessageType& );
+    TNS__SyncFolderHierarchyResponseMessageType &operator=( const TNS__SyncFolderHierarchyResponseMessageType& );
 
 private:
     class PrivateDPtr;
@@ -6295,21 +7193,19 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__AbsoluteYearlyRecurrencePatternType : public T__RecurrencePatternBaseType
+class TNS__FolderInfoResponseMessageType : public TNS__ResponseMessageType
 {
 public:
-    void setDayOfMonth( int dayOfMonth );
-    int dayOfMonth() const;
-    void setMonth( const T__MonthNamesType& month );
-    T__MonthNamesType month() const;
+    void setFolders( const T__ArrayOfFoldersType& folders );
+    T__ArrayOfFoldersType folders() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__AbsoluteYearlyRecurrencePatternType();
-    ~T__AbsoluteYearlyRecurrencePatternType();
+    TNS__FolderInfoResponseMessageType();
+    ~TNS__FolderInfoResponseMessageType();
 
 public:
-    T__AbsoluteYearlyRecurrencePatternType( const T__AbsoluteYearlyRecurrencePatternType& );
-    T__AbsoluteYearlyRecurrencePatternType &operator=( const T__AbsoluteYearlyRecurrencePatternType& );
+    TNS__FolderInfoResponseMessageType( const TNS__FolderInfoResponseMessageType& );
+    TNS__FolderInfoResponseMessageType &operator=( const TNS__FolderInfoResponseMessageType& );
 
 private:
     class PrivateDPtr;
@@ -6340,132 +7236,134 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__PathToExceptionFieldType : public T__BasePathToElementType
+class TNS__CopyFolderResponseType : public TNS__BaseResponseMessageType
 {
 public:
-    void setFieldURI( const T__ExceptionPropertyURIType& fieldURI );
-    T__ExceptionPropertyURIType fieldURI() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__PathToExceptionFieldType();
-    ~T__PathToExceptionFieldType();
+    TNS__CopyFolderResponseType();
+    ~TNS__CopyFolderResponseType();
+
+};
+
+class TNS__BaseMoveCopyFolderType : public TNS__BaseRequestType
+{
+public:
+    void setToFolderId( const T__TargetFolderIdType& toFolderId );
+    T__TargetFolderIdType toFolderId() const;
+    void setFolderIds( const T__NonEmptyArrayOfBaseFolderIdsType& folderIds );
+    T__NonEmptyArrayOfBaseFolderIdsType folderIds() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    TNS__BaseMoveCopyFolderType();
+    virtual ~TNS__BaseMoveCopyFolderType();
 
 public:
-    T__PathToExceptionFieldType( const T__PathToExceptionFieldType& );
-    T__PathToExceptionFieldType &operator=( const T__PathToExceptionFieldType& );
+    TNS__BaseMoveCopyFolderType( const TNS__BaseMoveCopyFolderType& );
+    TNS__BaseMoveCopyFolderType &operator=( const TNS__BaseMoveCopyFolderType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-/**
-    Allows consumers to specify arbitrary groupings for FindItem queries.
- */
-class T__GroupByType : public T__BaseGroupByType
+class TNS__MoveFolderResponseType : public TNS__BaseResponseMessageType
 {
 public:
-    void setFieldURI( const T__PathToUnindexedFieldType& fieldURI );
-    T__PathToUnindexedFieldType fieldURI() const;
-    void setIndexedFieldURI( const T__PathToIndexedFieldType& indexedFieldURI );
-    T__PathToIndexedFieldType indexedFieldURI() const;
-    void setExtendedFieldURI( const T__PathToExtendedFieldType& extendedFieldURI );
-    T__PathToExtendedFieldType extendedFieldURI() const;
-    void setAggregateOn( const T__AggregateOnType& aggregateOn );
-    T__AggregateOnType aggregateOn() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__GroupByType();
-    ~T__GroupByType();
+    TNS__MoveFolderResponseType();
+    ~TNS__MoveFolderResponseType();
+
+};
+
+class TNS__GetAttachmentResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__GetAttachmentResponseType();
+    ~TNS__GetAttachmentResponseType();
+
+};
+
+class TNS__SendItemResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__SendItemResponseType();
+    ~TNS__SendItemResponseType();
+
+};
+
+class T__AndType : public T__MultipleOperandBooleanExpressionType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__AndType();
+    ~T__AndType();
+
+};
+
+class TNS__DeleteAttachmentResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__DeleteAttachmentResponseType();
+    ~TNS__DeleteAttachmentResponseType();
+
+};
+
+class TNS__CopyItemResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__CopyItemResponseType();
+    ~TNS__CopyItemResponseType();
+
+};
+
+class TNS__SyncFolderHierarchyResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__SyncFolderHierarchyResponseType();
+    ~TNS__SyncFolderHierarchyResponseType();
+
+};
+
+class T__IndividualAttendeeConflictData : public T__AttendeeConflictData
+{
+public:
+    void setBusyType( const T__LegacyFreeBusyType& busyType );
+    T__LegacyFreeBusyType busyType() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__IndividualAttendeeConflictData();
+    ~T__IndividualAttendeeConflictData();
 
 public:
-    T__GroupByType( const T__GroupByType& );
-    T__GroupByType &operator=( const T__GroupByType& );
+    T__IndividualAttendeeConflictData( const T__IndividualAttendeeConflictData& );
+    T__IndividualAttendeeConflictData &operator=( const T__IndividualAttendeeConflictData& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__NotType : public T__SearchExpressionType
-{
-public:
-    void setSearchExpression( const T__SearchExpressionType& searchExpression );
-    T__SearchExpressionType searchExpression() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NotType();
-    ~T__NotType();
-
-public:
-    T__NotType( const T__NotType& );
-    T__NotType &operator=( const T__NotType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__PostItemType : public T__ItemType
-{
-public:
-    void setConversationIndex( const QByteArray& conversationIndex );
-    QByteArray conversationIndex() const;
-    void setConversationTopic( const QString& conversationTopic );
-    QString conversationTopic() const;
-    void setFrom( const T__SingleRecipientType& from );
-    T__SingleRecipientType from() const;
-    void setInternetMessageId( const QString& internetMessageId );
-    QString internetMessageId() const;
-    void setIsRead( bool isRead );
-    bool isRead() const;
-    void setPostedTime( const KDDateTime& postedTime );
-    KDDateTime postedTime() const;
-    void setReferences( const QString& references );
-    QString references() const;
-    void setSender( const T__SingleRecipientType& sender );
-    T__SingleRecipientType sender() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__PostItemType();
-    ~T__PostItemType();
-
-public:
-    T__PostItemType( const T__PostItemType& );
-    T__PostItemType &operator=( const T__PostItemType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__UpdateItemResponseType : public TNS__BaseResponseMessageType
+class TNS__DeleteItemResponseType : public TNS__BaseResponseMessageType
 {
 public:
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__UpdateItemResponseType();
-    ~TNS__UpdateItemResponseType();
+    TNS__DeleteItemResponseType();
+    ~TNS__DeleteItemResponseType();
 
-};
-
-class TNS__AttachmentInfoResponseMessageType : public TNS__ResponseMessageType
-{
-public:
-    void setAttachments( const T__ArrayOfAttachmentsType& attachments );
-    T__ArrayOfAttachmentsType attachments() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__AttachmentInfoResponseMessageType();
-    ~TNS__AttachmentInfoResponseMessageType();
-
-public:
-    TNS__AttachmentInfoResponseMessageType( const TNS__AttachmentInfoResponseMessageType& );
-    TNS__AttachmentInfoResponseMessageType &operator=( const TNS__AttachmentInfoResponseMessageType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
 class TNS__SyncFolderItemsType : public TNS__BaseRequestType
@@ -6489,6 +7387,541 @@ public:
 public:
     TNS__SyncFolderItemsType( const TNS__SyncFolderItemsType& );
     TNS__SyncFolderItemsType &operator=( const TNS__SyncFolderItemsType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__GetFolderResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__GetFolderResponseType();
+    ~TNS__GetFolderResponseType();
+
+};
+
+class TNS__UpdateFolderResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__UpdateFolderResponseType();
+    ~TNS__UpdateFolderResponseType();
+
+};
+
+class TNS__CreateAttachmentResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__CreateAttachmentResponseType();
+    ~TNS__CreateAttachmentResponseType();
+
+};
+
+class T__DistributionListType : public T__ItemType
+{
+public:
+    void setDisplayName( const QString& displayName );
+    QString displayName() const;
+    void setFileAs( const QString& fileAs );
+    QString fileAs() const;
+    void setContactSource( const T__ContactSourceType& contactSource );
+    T__ContactSourceType contactSource() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__DistributionListType();
+    ~T__DistributionListType();
+
+public:
+    T__DistributionListType( const T__DistributionListType& );
+    T__DistributionListType &operator=( const T__DistributionListType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__SendNotificationResponseMessageType : public TNS__ResponseMessageType
+{
+public:
+    void setNotification( const T__NotificationType& notification );
+    T__NotificationType notification() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__SendNotificationResponseMessageType();
+    ~TNS__SendNotificationResponseMessageType();
+
+public:
+    TNS__SendNotificationResponseMessageType( const TNS__SendNotificationResponseMessageType& );
+    TNS__SendNotificationResponseMessageType &operator=( const TNS__SendNotificationResponseMessageType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+/**
+    A permission on a folder
+ */
+class T__PermissionType : public T__BasePermissionType
+{
+public:
+    void setReadItems( const T__PermissionReadAccessType& readItems );
+    T__PermissionReadAccessType readItems() const;
+    void setPermissionLevel( const T__PermissionLevelType& permissionLevel );
+    T__PermissionLevelType permissionLevel() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__PermissionType();
+    ~T__PermissionType();
+
+public:
+    T__PermissionType( const T__PermissionType& );
+    T__PermissionType &operator=( const T__PermissionType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__RecurringMasterItemIdType : public T__BaseItemIdType
+{
+public:
+    void setOccurrenceId( const T__DerivedItemIdType& occurrenceId );
+    T__DerivedItemIdType occurrenceId() const;
+    void setChangeKey( const QString& changeKey );
+    QString changeKey() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__RecurringMasterItemIdType();
+    ~T__RecurringMasterItemIdType();
+
+public:
+    T__RecurringMasterItemIdType( const T__RecurringMasterItemIdType& );
+    T__RecurringMasterItemIdType &operator=( const T__RecurringMasterItemIdType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__SyncFolderItemsResponseMessageType : public TNS__ResponseMessageType
+{
+public:
+    void setSyncState( const QString& syncState );
+    QString syncState() const;
+    void setIncludesLastItemInRange( bool includesLastItemInRange );
+    bool includesLastItemInRange() const;
+    void setChanges( const T__SyncFolderItemsChangesType& changes );
+    T__SyncFolderItemsChangesType changes() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__SyncFolderItemsResponseMessageType();
+    ~TNS__SyncFolderItemsResponseMessageType();
+
+public:
+    TNS__SyncFolderItemsResponseMessageType( const TNS__SyncFolderItemsResponseMessageType& );
+    TNS__SyncFolderItemsResponseMessageType &operator=( const TNS__SyncFolderItemsResponseMessageType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__FindItemResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__FindItemResponseType();
+    ~TNS__FindItemResponseType();
+
+};
+
+class TNS__GetEventsResponseMessageType : public TNS__ResponseMessageType
+{
+public:
+    void setNotification( const T__NotificationType& notification );
+    T__NotificationType notification() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__GetEventsResponseMessageType();
+    ~TNS__GetEventsResponseMessageType();
+
+public:
+    TNS__GetEventsResponseMessageType( const TNS__GetEventsResponseMessageType& );
+    TNS__GetEventsResponseMessageType &operator=( const TNS__GetEventsResponseMessageType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__AppendToItemFieldType : public T__ItemChangeDescriptionType
+{
+public:
+    void setItem( const T__ItemType& item );
+    T__ItemType item() const;
+    void setMessage( const T__MessageType& message );
+    T__MessageType message() const;
+    void setCalendarItem( const T__CalendarItemType& calendarItem );
+    T__CalendarItemType calendarItem() const;
+    void setContact( const T__ContactItemType& contact );
+    T__ContactItemType contact() const;
+    void setDistributionList( const T__DistributionListType& distributionList );
+    T__DistributionListType distributionList() const;
+    void setMeetingMessage( const T__MeetingMessageType& meetingMessage );
+    T__MeetingMessageType meetingMessage() const;
+    void setMeetingRequest( const T__MeetingRequestMessageType& meetingRequest );
+    T__MeetingRequestMessageType meetingRequest() const;
+    void setMeetingResponse( const T__MeetingResponseMessageType& meetingResponse );
+    T__MeetingResponseMessageType meetingResponse() const;
+    void setMeetingCancellation( const T__MeetingCancellationMessageType& meetingCancellation );
+    T__MeetingCancellationMessageType meetingCancellation() const;
+    void setTask( const T__TaskType& task );
+    T__TaskType task() const;
+    void setPostItem( const T__PostItemType& postItem );
+    T__PostItemType postItem() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__AppendToItemFieldType();
+    ~T__AppendToItemFieldType();
+
+public:
+    T__AppendToItemFieldType( const T__AppendToItemFieldType& );
+    T__AppendToItemFieldType &operator=( const T__AppendToItemFieldType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__MoveFolderType : public TNS__BaseMoveCopyFolderType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__MoveFolderType();
+    ~TNS__MoveFolderType();
+
+};
+
+class TNS__MoveItemResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__MoveItemResponseType();
+    ~TNS__MoveItemResponseType();
+
+};
+
+class T__IntervalRecurrencePatternBaseType : public T__RecurrencePatternBaseType
+{
+public:
+    void setInterval( int interval );
+    int interval() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__IntervalRecurrencePatternBaseType();
+    virtual ~T__IntervalRecurrencePatternBaseType();
+
+public:
+    T__IntervalRecurrencePatternBaseType( const T__IntervalRecurrencePatternBaseType& );
+    T__IntervalRecurrencePatternBaseType &operator=( const T__IntervalRecurrencePatternBaseType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__CopyFolderType : public TNS__BaseMoveCopyFolderType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__CopyFolderType();
+    ~TNS__CopyFolderType();
+
+};
+
+class T__ContainsExpressionType : public T__SearchExpressionType
+{
+public:
+    void setPath( const T__BasePathToElementType& path );
+    T__BasePathToElementType path() const;
+    void setConstant( const T__ConstantValueType& constant );
+    T__ConstantValueType constant() const;
+    void setContainmentMode( const T__ContainmentModeType& containmentMode );
+    T__ContainmentModeType containmentMode() const;
+    void setContainmentComparison( const T__ContainmentComparisonType& containmentComparison );
+    T__ContainmentComparisonType containmentComparison() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ContainsExpressionType();
+    ~T__ContainsExpressionType();
+
+public:
+    T__ContainsExpressionType( const T__ContainsExpressionType& );
+    T__ContainsExpressionType &operator=( const T__ContainsExpressionType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__SyncFolderHierarchyType : public TNS__BaseRequestType
+{
+public:
+    void setFolderShape( const T__FolderResponseShapeType& folderShape );
+    T__FolderResponseShapeType folderShape() const;
+    void setSyncFolderId( const T__TargetFolderIdType& syncFolderId );
+    T__TargetFolderIdType syncFolderId() const;
+    void setSyncState( const QString& syncState );
+    QString syncState() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__SyncFolderHierarchyType();
+    ~TNS__SyncFolderHierarchyType();
+
+public:
+    TNS__SyncFolderHierarchyType( const TNS__SyncFolderHierarchyType& );
+    TNS__SyncFolderHierarchyType &operator=( const TNS__SyncFolderHierarchyType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ItemAttachmentType : public T__AttachmentType
+{
+public:
+    void setItem( const T__ItemType& item );
+    T__ItemType item() const;
+    void setMessage( const T__MessageType& message );
+    T__MessageType message() const;
+    void setCalendarItem( const T__CalendarItemType& calendarItem );
+    T__CalendarItemType calendarItem() const;
+    void setContact( const T__ContactItemType& contact );
+    T__ContactItemType contact() const;
+    void setMeetingMessage( const T__MeetingMessageType& meetingMessage );
+    T__MeetingMessageType meetingMessage() const;
+    void setMeetingRequest( const T__MeetingRequestMessageType& meetingRequest );
+    T__MeetingRequestMessageType meetingRequest() const;
+    void setMeetingResponse( const T__MeetingResponseMessageType& meetingResponse );
+    T__MeetingResponseMessageType meetingResponse() const;
+    void setMeetingCancellation( const T__MeetingCancellationMessageType& meetingCancellation );
+    T__MeetingCancellationMessageType meetingCancellation() const;
+    void setTask( const T__TaskType& task );
+    T__TaskType task() const;
+    void setPostItem( const T__PostItemType& postItem );
+    T__PostItemType postItem() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ItemAttachmentType();
+    ~T__ItemAttachmentType();
+
+public:
+    T__ItemAttachmentType( const T__ItemAttachmentType& );
+    T__ItemAttachmentType &operator=( const T__ItemAttachmentType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__FindFolderResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__FindFolderResponseType();
+    ~TNS__FindFolderResponseType();
+
+};
+
+class T__IsLessThanType : public T__TwoOperandExpressionType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__IsLessThanType();
+    ~T__IsLessThanType();
+
+};
+
+class TNS__GetEventsResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__GetEventsResponseType();
+    ~TNS__GetEventsResponseType();
+
+};
+
+class TNS__AddDelegateType : public TNS__BaseDelegateType
+{
+public:
+    void setDelegateUsers( const T__ArrayOfDelegateUserType& delegateUsers );
+    T__ArrayOfDelegateUserType delegateUsers() const;
+    void setDeliverMeetingRequests( const T__DeliverMeetingRequestsType& deliverMeetingRequests );
+    T__DeliverMeetingRequestsType deliverMeetingRequests() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__AddDelegateType();
+    ~TNS__AddDelegateType();
+
+public:
+    TNS__AddDelegateType( const TNS__AddDelegateType& );
+    TNS__AddDelegateType &operator=( const TNS__AddDelegateType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__ExpandDLResponseMessageType : public TNS__ResponseMessageType
+{
+public:
+    void setDLExpansion( const T__ArrayOfDLExpansionType& dLExpansion );
+    T__ArrayOfDLExpansionType dLExpansion() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__ExpandDLResponseMessageType();
+    ~TNS__ExpandDLResponseMessageType();
+
+public:
+    TNS__ExpandDLResponseMessageType( const TNS__ExpandDLResponseMessageType& );
+    TNS__ExpandDLResponseMessageType &operator=( const TNS__ExpandDLResponseMessageType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__GroupAttendeeConflictData : public T__AttendeeConflictData
+{
+public:
+    void setNumberOfMembers( int numberOfMembers );
+    int numberOfMembers() const;
+    void setNumberOfMembersAvailable( int numberOfMembersAvailable );
+    int numberOfMembersAvailable() const;
+    void setNumberOfMembersWithConflict( int numberOfMembersWithConflict );
+    int numberOfMembersWithConflict() const;
+    void setNumberOfMembersWithNoData( int numberOfMembersWithNoData );
+    int numberOfMembersWithNoData() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__GroupAttendeeConflictData();
+    ~T__GroupAttendeeConflictData();
+
+public:
+    T__GroupAttendeeConflictData( const T__GroupAttendeeConflictData& );
+    T__GroupAttendeeConflictData &operator=( const T__GroupAttendeeConflictData& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__GetItemType : public TNS__BaseRequestType
+{
+public:
+    void setItemShape( const T__ItemResponseShapeType& itemShape );
+    T__ItemResponseShapeType itemShape() const;
+    void setItemIds( const T__NonEmptyArrayOfBaseItemIdsType& itemIds );
+    T__NonEmptyArrayOfBaseItemIdsType itemIds() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__GetItemType();
+    ~TNS__GetItemType();
+
+public:
+    TNS__GetItemType( const TNS__GetItemType& );
+    TNS__GetItemType &operator=( const TNS__GetItemType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__DeleteAttachmentResponseMessageType : public TNS__ResponseMessageType
+{
+public:
+    void setRootItemId( const T__RootItemIdType& rootItemId );
+    T__RootItemIdType rootItemId() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__DeleteAttachmentResponseMessageType();
+    ~TNS__DeleteAttachmentResponseMessageType();
+
+public:
+    TNS__DeleteAttachmentResponseMessageType( const TNS__DeleteAttachmentResponseMessageType& );
+    TNS__DeleteAttachmentResponseMessageType &operator=( const TNS__DeleteAttachmentResponseMessageType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__SetItemFieldType : public T__ItemChangeDescriptionType
+{
+public:
+    void setItem( const T__ItemType& item );
+    T__ItemType item() const;
+    void setMessage( const T__MessageType& message );
+    T__MessageType message() const;
+    void setCalendarItem( const T__CalendarItemType& calendarItem );
+    T__CalendarItemType calendarItem() const;
+    void setContact( const T__ContactItemType& contact );
+    T__ContactItemType contact() const;
+    void setDistributionList( const T__DistributionListType& distributionList );
+    T__DistributionListType distributionList() const;
+    void setMeetingMessage( const T__MeetingMessageType& meetingMessage );
+    T__MeetingMessageType meetingMessage() const;
+    void setMeetingRequest( const T__MeetingRequestMessageType& meetingRequest );
+    T__MeetingRequestMessageType meetingRequest() const;
+    void setMeetingResponse( const T__MeetingResponseMessageType& meetingResponse );
+    T__MeetingResponseMessageType meetingResponse() const;
+    void setMeetingCancellation( const T__MeetingCancellationMessageType& meetingCancellation );
+    T__MeetingCancellationMessageType meetingCancellation() const;
+    void setTask( const T__TaskType& task );
+    T__TaskType task() const;
+    void setPostItem( const T__PostItemType& postItem );
+    T__PostItemType postItem() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__SetItemFieldType();
+    ~T__SetItemFieldType();
+
+public:
+    T__SetItemFieldType( const T__SetItemFieldType& );
+    T__SetItemFieldType &operator=( const T__SetItemFieldType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__PathToUnindexedFieldType : public T__BasePathToElementType
+{
+public:
+    void setFieldURI( const T__UnindexedFieldURIType& fieldURI );
+    T__UnindexedFieldURIType fieldURI() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__PathToUnindexedFieldType();
+    ~T__PathToUnindexedFieldType();
+
+public:
+    T__PathToUnindexedFieldType( const T__PathToUnindexedFieldType& );
+    T__PathToUnindexedFieldType &operator=( const T__PathToUnindexedFieldType& );
 
 private:
     class PrivateDPtr;
@@ -6572,214 +8005,42 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__GroupAttendeeConflictData : public T__AttendeeConflictData
+class T__ModifiedEventType : public T__BaseObjectChangedEventType
 {
 public:
-    void setNumberOfMembers( int numberOfMembers );
-    int numberOfMembers() const;
-    void setNumberOfMembersAvailable( int numberOfMembersAvailable );
-    int numberOfMembersAvailable() const;
-    void setNumberOfMembersWithConflict( int numberOfMembersWithConflict );
-    int numberOfMembersWithConflict() const;
-    void setNumberOfMembersWithNoData( int numberOfMembersWithNoData );
-    int numberOfMembersWithNoData() const;
+    void setUnreadCount( int unreadCount );
+    int unreadCount() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__GroupAttendeeConflictData();
-    ~T__GroupAttendeeConflictData();
+    T__ModifiedEventType();
+    ~T__ModifiedEventType();
 
 public:
-    T__GroupAttendeeConflictData( const T__GroupAttendeeConflictData& );
-    T__GroupAttendeeConflictData &operator=( const T__GroupAttendeeConflictData& );
+    T__ModifiedEventType( const T__ModifiedEventType& );
+    T__ModifiedEventType &operator=( const T__ModifiedEventType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__DeleteItemType : public TNS__BaseRequestType
-{
-public:
-    void setItemIds( const T__NonEmptyArrayOfBaseItemIdsType& itemIds );
-    T__NonEmptyArrayOfBaseItemIdsType itemIds() const;
-    void setDeleteType( const T__DisposalType& deleteType );
-    T__DisposalType deleteType() const;
-    void setSendMeetingCancellations( const T__CalendarItemCreateOrDeleteOperationType& sendMeetingCancellations );
-    T__CalendarItemCreateOrDeleteOperationType sendMeetingCancellations() const;
-    void setAffectedTaskOccurrences( const T__AffectedTaskOccurrencesType& affectedTaskOccurrences );
-    T__AffectedTaskOccurrencesType affectedTaskOccurrences() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__DeleteItemType();
-    ~TNS__DeleteItemType();
-
-public:
-    TNS__DeleteItemType( const TNS__DeleteItemType& );
-    TNS__DeleteItemType &operator=( const TNS__DeleteItemType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__FolderChangeDescriptionType : public T__ChangeDescriptionType
+class T__RegeneratingPatternBaseType : public T__IntervalRecurrencePatternBaseType
 {
 public:
     virtual KDSoapValue serialize( const QString& valueName ) const;
     virtual void deserialize( const KDSoapValue& mainValue );
-    T__FolderChangeDescriptionType();
-    virtual ~T__FolderChangeDescriptionType();
+    T__RegeneratingPatternBaseType();
+    virtual ~T__RegeneratingPatternBaseType();
 
 };
 
-class TNS__FindFolderType : public TNS__BaseRequestType
-{
-public:
-    void setFolderShape( const T__FolderResponseShapeType& folderShape );
-    T__FolderResponseShapeType folderShape() const;
-    void setIndexedPageFolderView( const T__IndexedPageViewType& indexedPageFolderView );
-    T__IndexedPageViewType indexedPageFolderView() const;
-    void setFractionalPageFolderView( const T__FractionalPageViewType& fractionalPageFolderView );
-    T__FractionalPageViewType fractionalPageFolderView() const;
-    void setRestriction( const T__RestrictionType& restriction );
-    T__RestrictionType restriction() const;
-    void setParentFolderIds( const T__NonEmptyArrayOfBaseFolderIdsType& parentFolderIds );
-    T__NonEmptyArrayOfBaseFolderIdsType parentFolderIds() const;
-    void setTraversal( const T__FolderQueryTraversalType& traversal );
-    T__FolderQueryTraversalType traversal() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__FindFolderType();
-    ~TNS__FindFolderType();
-
-public:
-    TNS__FindFolderType( const TNS__FindFolderType& );
-    TNS__FindFolderType &operator=( const TNS__FindFolderType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__MultipleOperandBooleanExpressionType : public T__SearchExpressionType
-{
-public:
-    void setSearchExpression( const QList<T__SearchExpressionType>& searchExpression );
-    QList<T__SearchExpressionType> searchExpression() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__MultipleOperandBooleanExpressionType();
-    virtual ~T__MultipleOperandBooleanExpressionType();
-
-public:
-    T__MultipleOperandBooleanExpressionType( const T__MultipleOperandBooleanExpressionType& );
-    T__MultipleOperandBooleanExpressionType &operator=( const T__MultipleOperandBooleanExpressionType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__FindFolderResponseMessageType : public TNS__ResponseMessageType
-{
-public:
-    void setRootFolder( const T__FindFolderParentType& rootFolder );
-    T__FindFolderParentType rootFolder() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__FindFolderResponseMessageType();
-    ~TNS__FindFolderResponseMessageType();
-
-public:
-    TNS__FindFolderResponseMessageType( const TNS__FindFolderResponseMessageType& );
-    TNS__FindFolderResponseMessageType &operator=( const TNS__FindFolderResponseMessageType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__UpdateFolderResponseType : public TNS__BaseResponseMessageType
+class T__DeleteFolderFieldType : public T__FolderChangeDescriptionType
 {
 public:
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__UpdateFolderResponseType();
-    ~TNS__UpdateFolderResponseType();
-
-};
-
-class T__ContactsViewType : public T__BasePagingType
-{
-public:
-    void setInitialName( const QString& initialName );
-    QString initialName() const;
-    void setFinalName( const QString& finalName );
-    QString finalName() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ContactsViewType();
-    ~T__ContactsViewType();
-
-public:
-    T__ContactsViewType( const T__ContactsViewType& );
-    T__ContactsViewType &operator=( const T__ContactsViewType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__NumberedRecurrenceRangeType : public T__RecurrenceRangeBaseType
-{
-public:
-    void setNumberOfOccurrences( int numberOfOccurrences );
-    int numberOfOccurrences() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NumberedRecurrenceRangeType();
-    ~T__NumberedRecurrenceRangeType();
-
-public:
-    T__NumberedRecurrenceRangeType( const T__NumberedRecurrenceRangeType& );
-    T__NumberedRecurrenceRangeType &operator=( const T__NumberedRecurrenceRangeType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-/**
-    A permission on a folder
- */
-class T__PermissionType : public T__BasePermissionType
-{
-public:
-    void setReadItems( const T__PermissionReadAccessType& readItems );
-    T__PermissionReadAccessType readItems() const;
-    void setPermissionLevel( const T__PermissionLevelType& permissionLevel );
-    T__PermissionLevelType permissionLevel() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__PermissionType();
-    ~T__PermissionType();
-
-public:
-    T__PermissionType( const T__PermissionType& );
-    T__PermissionType &operator=( const T__PermissionType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__MoveFolderResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__MoveFolderResponseType();
-    ~TNS__MoveFolderResponseType();
+    T__DeleteFolderFieldType();
+    ~T__DeleteFolderFieldType();
 
 };
 
@@ -6798,6 +8059,25 @@ public:
 public:
     T__PushSubscriptionRequestType( const T__PushSubscriptionRequestType& );
     T__PushSubscriptionRequestType &operator=( const T__PushSubscriptionRequestType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__DelegateUserResponseMessageType : public TNS__ResponseMessageType
+{
+public:
+    void setDelegateUser( const T__DelegateUserType& delegateUser );
+    T__DelegateUserType delegateUser() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__DelegateUserResponseMessageType();
+    ~TNS__DelegateUserResponseMessageType();
+
+public:
+    TNS__DelegateUserResponseMessageType( const TNS__DelegateUserResponseMessageType& );
+    TNS__DelegateUserResponseMessageType &operator=( const TNS__DelegateUserResponseMessageType& );
 
 private:
     class PrivateDPtr;
@@ -6834,6 +8114,171 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
+class TNS__ResolveNamesType : public TNS__BaseRequestType
+{
+public:
+    void setParentFolderIds( const T__NonEmptyArrayOfBaseFolderIdsType& parentFolderIds );
+    T__NonEmptyArrayOfBaseFolderIdsType parentFolderIds() const;
+    void setUnresolvedEntry( const T__NonEmptyStringType& unresolvedEntry );
+    T__NonEmptyStringType unresolvedEntry() const;
+    void setReturnFullContactData( bool returnFullContactData );
+    bool returnFullContactData() const;
+    void setSearchScope( const T__ResolveNamesSearchScopeType& searchScope );
+    T__ResolveNamesSearchScopeType searchScope() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__ResolveNamesType();
+    ~TNS__ResolveNamesType();
+
+public:
+    TNS__ResolveNamesType( const TNS__ResolveNamesType& );
+    TNS__ResolveNamesType &operator=( const TNS__ResolveNamesType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__MoveItemType : public TNS__BaseMoveCopyItemType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__MoveItemType();
+    ~TNS__MoveItemType();
+
+};
+
+class TNS__UpdateItemResponseType : public TNS__BaseResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__UpdateItemResponseType();
+    ~TNS__UpdateItemResponseType();
+
+};
+
+class T__CalendarViewType : public T__BasePagingType
+{
+public:
+    void setStartDate( const KDDateTime& startDate );
+    KDDateTime startDate() const;
+    void setEndDate( const KDDateTime& endDate );
+    KDDateTime endDate() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__CalendarViewType();
+    ~T__CalendarViewType();
+
+public:
+    T__CalendarViewType( const T__CalendarViewType& );
+    T__CalendarViewType &operator=( const T__CalendarViewType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__RequestAttachmentIdType : public T__BaseItemIdType
+{
+public:
+    void setId( const QString& id );
+    QString id() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__RequestAttachmentIdType();
+    virtual ~T__RequestAttachmentIdType();
+
+public:
+    T__RequestAttachmentIdType( const T__RequestAttachmentIdType& );
+    T__RequestAttachmentIdType &operator=( const T__RequestAttachmentIdType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__FileAttachmentType : public T__AttachmentType
+{
+public:
+    void setContent( const QByteArray& content );
+    QByteArray content() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__FileAttachmentType();
+    ~T__FileAttachmentType();
+
+public:
+    T__FileAttachmentType( const T__FileAttachmentType& );
+    T__FileAttachmentType &operator=( const T__FileAttachmentType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ExcludesType : public T__SearchExpressionType
+{
+public:
+    void setPath( const T__BasePathToElementType& path );
+    T__BasePathToElementType path() const;
+    void setBitmask( const T__ExcludesValueType& bitmask );
+    T__ExcludesValueType bitmask() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ExcludesType();
+    ~T__ExcludesType();
+
+public:
+    T__ExcludesType( const T__ExcludesType& );
+    T__ExcludesType &operator=( const T__ExcludesType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__EndDateRecurrenceRangeType : public T__RecurrenceRangeBaseType
+{
+public:
+    void setEndDate( const QDate& endDate );
+    QDate endDate() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__EndDateRecurrenceRangeType();
+    ~T__EndDateRecurrenceRangeType();
+
+public:
+    T__EndDateRecurrenceRangeType( const T__EndDateRecurrenceRangeType& );
+    T__EndDateRecurrenceRangeType &operator=( const T__EndDateRecurrenceRangeType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__ContactsViewType : public T__BasePagingType
+{
+public:
+    void setInitialName( const QString& initialName );
+    QString initialName() const;
+    void setFinalName( const QString& finalName );
+    QString finalName() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__ContactsViewType();
+    ~T__ContactsViewType();
+
+public:
+    T__ContactsViewType( const T__ContactsViewType& );
+    T__ContactsViewType &operator=( const T__ContactsViewType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
 class TNS__BaseDelegateResponseMessageType : public TNS__ResponseMessageType
 {
 public:
@@ -6853,44 +8298,19 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__SyncFolderHierarchyType : public TNS__BaseRequestType
+class T__ContactsFolderType : public T__BaseFolderType
 {
 public:
-    void setFolderShape( const T__FolderResponseShapeType& folderShape );
-    T__FolderResponseShapeType folderShape() const;
-    void setSyncFolderId( const T__TargetFolderIdType& syncFolderId );
-    T__TargetFolderIdType syncFolderId() const;
-    void setSyncState( const QString& syncState );
-    QString syncState() const;
+    void setPermissionSet( const T__PermissionSetType& permissionSet );
+    T__PermissionSetType permissionSet() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__SyncFolderHierarchyType();
-    ~TNS__SyncFolderHierarchyType();
+    T__ContactsFolderType();
+    ~T__ContactsFolderType();
 
 public:
-    TNS__SyncFolderHierarchyType( const TNS__SyncFolderHierarchyType& );
-    TNS__SyncFolderHierarchyType &operator=( const TNS__SyncFolderHierarchyType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__FractionalPageViewType : public T__BasePagingType
-{
-public:
-    void setNumerator( int numerator );
-    int numerator() const;
-    void setDenominator( int denominator );
-    int denominator() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__FractionalPageViewType();
-    ~T__FractionalPageViewType();
-
-public:
-    T__FractionalPageViewType( const T__FractionalPageViewType& );
-    T__FractionalPageViewType &operator=( const T__FractionalPageViewType& );
+    T__ContactsFolderType( const T__ContactsFolderType& );
+    T__ContactsFolderType &operator=( const T__ContactsFolderType& );
 
 private:
     class PrivateDPtr;
@@ -6919,55 +8339,6 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__FindFolderResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__FindFolderResponseType();
-    ~TNS__FindFolderResponseType();
-
-};
-
-class TNS__DeleteAttachmentResponseMessageType : public TNS__ResponseMessageType
-{
-public:
-    void setRootItemId( const T__RootItemIdType& rootItemId );
-    T__RootItemIdType rootItemId() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__DeleteAttachmentResponseMessageType();
-    ~TNS__DeleteAttachmentResponseMessageType();
-
-public:
-    TNS__DeleteAttachmentResponseMessageType( const TNS__DeleteAttachmentResponseMessageType& );
-    TNS__DeleteAttachmentResponseMessageType &operator=( const TNS__DeleteAttachmentResponseMessageType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__DeleteItemResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__DeleteItemResponseType();
-    ~TNS__DeleteItemResponseType();
-
-};
-
-class TNS__GetAttachmentResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__GetAttachmentResponseType();
-    ~TNS__GetAttachmentResponseType();
-
-};
-
 class TNS__GetDelegateResponseMessageType : public TNS__BaseDelegateResponseMessageType
 {
 public:
@@ -6987,146 +8358,89 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__DeleteAttachmentType : public TNS__BaseRequestType
+class TNS__SetUserOofSettingsRequest : public TNS__BaseRequestType
 {
 public:
-    void setAttachmentIds( const T__NonEmptyArrayOfRequestAttachmentIdsType& attachmentIds );
-    T__NonEmptyArrayOfRequestAttachmentIdsType attachmentIds() const;
+    void setMailbox( const T__EmailAddress& mailbox );
+    T__EmailAddress mailbox() const;
+    void setUserOofSettings( const T__UserOofSettings& userOofSettings );
+    T__UserOofSettings userOofSettings() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__DeleteAttachmentType();
-    ~TNS__DeleteAttachmentType();
+    TNS__SetUserOofSettingsRequest();
+    ~TNS__SetUserOofSettingsRequest();
 
 public:
-    TNS__DeleteAttachmentType( const TNS__DeleteAttachmentType& );
-    TNS__DeleteAttachmentType &operator=( const TNS__DeleteAttachmentType& );
+    TNS__SetUserOofSettingsRequest( const TNS__SetUserOofSettingsRequest& );
+    TNS__SetUserOofSettingsRequest &operator=( const TNS__SetUserOofSettingsRequest& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__CopyItemType : public TNS__BaseMoveCopyItemType
+class T__TooBigGroupAttendeeConflictData : public T__AttendeeConflictData
 {
 public:
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__CopyItemType();
-    ~TNS__CopyItemType();
+    T__TooBigGroupAttendeeConflictData();
+    ~T__TooBigGroupAttendeeConflictData();
 
 };
 
-class TNS__DeleteFolderResponseType : public TNS__BaseResponseMessageType
+class T__RootItemIdType : public T__BaseItemIdType
 {
 public:
+    void setRootItemId( const QString& rootItemId );
+    QString rootItemId() const;
+    void setRootItemChangeKey( const QString& rootItemChangeKey );
+    QString rootItemChangeKey() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__DeleteFolderResponseType();
-    ~TNS__DeleteFolderResponseType();
-
-};
-
-class TNS__FindItemResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__FindItemResponseType();
-    ~TNS__FindItemResponseType();
-
-};
-
-class T__ContactsFolderType : public T__BaseFolderType
-{
-public:
-    void setPermissionSet( const T__PermissionSetType& permissionSet );
-    T__PermissionSetType permissionSet() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ContactsFolderType();
-    ~T__ContactsFolderType();
+    T__RootItemIdType();
+    ~T__RootItemIdType();
 
 public:
-    T__ContactsFolderType( const T__ContactsFolderType& );
-    T__ContactsFolderType &operator=( const T__ContactsFolderType& );
+    T__RootItemIdType( const T__RootItemIdType& );
+    T__RootItemIdType &operator=( const T__RootItemIdType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__SubscribeResponseType : public TNS__BaseResponseMessageType
+class T__YearlyRegeneratingPatternType : public T__RegeneratingPatternBaseType
 {
 public:
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__SubscribeResponseType();
-    ~TNS__SubscribeResponseType();
+    T__YearlyRegeneratingPatternType();
+    ~T__YearlyRegeneratingPatternType();
 
 };
 
-class TNS__SyncFolderHierarchyResponseMessageType : public TNS__ResponseMessageType
+class T__OccurrenceItemIdType : public T__BaseItemIdType
 {
 public:
-    void setSyncState( const QString& syncState );
-    QString syncState() const;
-    void setIncludesLastFolderInRange( bool includesLastFolderInRange );
-    bool includesLastFolderInRange() const;
-    void setChanges( const T__SyncFolderHierarchyChangesType& changes );
-    T__SyncFolderHierarchyChangesType changes() const;
+    void setRecurringMasterId( const T__DerivedItemIdType& recurringMasterId );
+    T__DerivedItemIdType recurringMasterId() const;
+    void setChangeKey( const QString& changeKey );
+    QString changeKey() const;
+    void setInstanceIndex( int instanceIndex );
+    int instanceIndex() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__SyncFolderHierarchyResponseMessageType();
-    ~TNS__SyncFolderHierarchyResponseMessageType();
+    T__OccurrenceItemIdType();
+    ~T__OccurrenceItemIdType();
 
 public:
-    TNS__SyncFolderHierarchyResponseMessageType( const TNS__SyncFolderHierarchyResponseMessageType& );
-    TNS__SyncFolderHierarchyResponseMessageType &operator=( const TNS__SyncFolderHierarchyResponseMessageType& );
+    T__OccurrenceItemIdType( const T__OccurrenceItemIdType& );
+    T__OccurrenceItemIdType &operator=( const T__OccurrenceItemIdType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__CopyFolderResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__CopyFolderResponseType();
-    ~TNS__CopyFolderResponseType();
-
-};
-
-class TNS__CreateManagedFolderRequestType : public TNS__BaseRequestType
-{
-public:
-    void setFolderNames( const T__NonEmptyArrayOfFolderNamesType& folderNames );
-    T__NonEmptyArrayOfFolderNamesType folderNames() const;
-    void setMailbox( const T__EmailAddressType& mailbox );
-    T__EmailAddressType mailbox() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__CreateManagedFolderRequestType();
-    ~TNS__CreateManagedFolderRequestType();
-
-public:
-    TNS__CreateManagedFolderRequestType( const TNS__CreateManagedFolderRequestType& );
-    TNS__CreateManagedFolderRequestType &operator=( const TNS__CreateManagedFolderRequestType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__UnsubscribeResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__UnsubscribeResponseType();
-    ~TNS__UnsubscribeResponseType();
-
 };
 
 /**
@@ -7154,83 +8468,127 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class T__ItemChangeDescriptionType : public T__ChangeDescriptionType
+class T__MessageType : public T__ItemType
 {
 public:
+    void setSender( const T__SingleRecipientType& sender );
+    T__SingleRecipientType sender() const;
+    void setToRecipients( const T__ArrayOfRecipientsType& toRecipients );
+    T__ArrayOfRecipientsType toRecipients() const;
+    void setCcRecipients( const T__ArrayOfRecipientsType& ccRecipients );
+    T__ArrayOfRecipientsType ccRecipients() const;
+    void setBccRecipients( const T__ArrayOfRecipientsType& bccRecipients );
+    T__ArrayOfRecipientsType bccRecipients() const;
+    void setIsReadReceiptRequested( bool isReadReceiptRequested );
+    bool isReadReceiptRequested() const;
+    void setIsDeliveryReceiptRequested( bool isDeliveryReceiptRequested );
+    bool isDeliveryReceiptRequested() const;
+    void setConversationIndex( const QByteArray& conversationIndex );
+    QByteArray conversationIndex() const;
+    void setConversationTopic( const QString& conversationTopic );
+    QString conversationTopic() const;
+    void setFrom( const T__SingleRecipientType& from );
+    T__SingleRecipientType from() const;
+    void setInternetMessageId( const QString& internetMessageId );
+    QString internetMessageId() const;
+    void setIsRead( bool isRead );
+    bool isRead() const;
+    void setIsResponseRequested( bool isResponseRequested );
+    bool isResponseRequested() const;
+    void setReferences( const QString& references );
+    QString references() const;
+    void setReplyTo( const T__ArrayOfRecipientsType& replyTo );
+    T__ArrayOfRecipientsType replyTo() const;
+    void setReceivedBy( const T__SingleRecipientType& receivedBy );
+    T__SingleRecipientType receivedBy() const;
+    void setReceivedRepresenting( const T__SingleRecipientType& receivedRepresenting );
+    T__SingleRecipientType receivedRepresenting() const;
     virtual KDSoapValue serialize( const QString& valueName ) const;
     virtual void deserialize( const KDSoapValue& mainValue );
-    T__ItemChangeDescriptionType();
-    virtual ~T__ItemChangeDescriptionType();
-
-};
-
-class T__BaseObjectChangedEventType : public T__BaseNotificationEventType
-{
-public:
-    void setTimeStamp( const KDDateTime& timeStamp );
-    KDDateTime timeStamp() const;
-    void setFolderId( const T__FolderIdType& folderId );
-    T__FolderIdType folderId() const;
-    void setItemId( const T__ItemIdType& itemId );
-    T__ItemIdType itemId() const;
-    void setParentFolderId( const T__FolderIdType& parentFolderId );
-    T__FolderIdType parentFolderId() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__BaseObjectChangedEventType();
-    virtual ~T__BaseObjectChangedEventType();
+    T__MessageType();
+    virtual ~T__MessageType();
 
 public:
-    T__BaseObjectChangedEventType( const T__BaseObjectChangedEventType& );
-    T__BaseObjectChangedEventType &operator=( const T__BaseObjectChangedEventType& );
+    T__MessageType( const T__MessageType& );
+    T__MessageType &operator=( const T__MessageType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__CreateAttachmentResponseType : public TNS__BaseResponseMessageType
+class T__MovedCopiedEventType : public T__BaseObjectChangedEventType
 {
 public:
+    void setOldFolderId( const T__FolderIdType& oldFolderId );
+    T__FolderIdType oldFolderId() const;
+    void setOldItemId( const T__ItemIdType& oldItemId );
+    T__ItemIdType oldItemId() const;
+    void setOldParentFolderId( const T__FolderIdType& oldParentFolderId );
+    T__FolderIdType oldParentFolderId() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__CreateAttachmentResponseType();
-    ~TNS__CreateAttachmentResponseType();
-
-};
-
-class T__ExistsType : public T__SearchExpressionType
-{
-public:
-    void setPath( const T__BasePathToElementType& path );
-    T__BasePathToElementType path() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ExistsType();
-    ~T__ExistsType();
+    T__MovedCopiedEventType();
+    ~T__MovedCopiedEventType();
 
 public:
-    T__ExistsType( const T__ExistsType& );
-    T__ExistsType &operator=( const T__ExistsType& );
+    T__MovedCopiedEventType( const T__MovedCopiedEventType& );
+    T__MovedCopiedEventType &operator=( const T__MovedCopiedEventType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__ExpandDLType : public TNS__BaseRequestType
+class T__MonthlyRegeneratingPatternType : public T__RegeneratingPatternBaseType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__MonthlyRegeneratingPatternType();
+    ~T__MonthlyRegeneratingPatternType();
+
+};
+
+/**
+    Identifier for a distinguished folder
+ */
+class T__DistinguishedFolderIdType : public T__BaseFolderIdType
 {
 public:
     void setMailbox( const T__EmailAddressType& mailbox );
     T__EmailAddressType mailbox() const;
+    void setId( const T__DistinguishedFolderIdNameType& id );
+    T__DistinguishedFolderIdNameType id() const;
+    void setChangeKey( const QString& changeKey );
+    QString changeKey() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__ExpandDLType();
-    ~TNS__ExpandDLType();
+    T__DistinguishedFolderIdType();
+    ~T__DistinguishedFolderIdType();
 
 public:
-    TNS__ExpandDLType( const TNS__ExpandDLType& );
-    TNS__ExpandDLType &operator=( const TNS__ExpandDLType& );
+    T__DistinguishedFolderIdType( const T__DistinguishedFolderIdType& );
+    T__DistinguishedFolderIdType &operator=( const T__DistinguishedFolderIdType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__AttachmentInfoResponseMessageType : public TNS__ResponseMessageType
+{
+public:
+    void setAttachments( const T__ArrayOfAttachmentsType& attachments );
+    T__ArrayOfAttachmentsType attachments() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__AttachmentInfoResponseMessageType();
+    ~TNS__AttachmentInfoResponseMessageType();
+
+public:
+    TNS__AttachmentInfoResponseMessageType( const TNS__AttachmentInfoResponseMessageType& );
+    TNS__AttachmentInfoResponseMessageType &operator=( const TNS__AttachmentInfoResponseMessageType& );
 
 private:
     class PrivateDPtr;
@@ -7258,21 +8616,19 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__SetUserOofSettingsRequest : public TNS__BaseRequestType
+class TNS__ExpandDLType : public TNS__BaseRequestType
 {
 public:
-    void setMailbox( const T__EmailAddress& mailbox );
-    T__EmailAddress mailbox() const;
-    void setUserOofSettings( const T__UserOofSettings& userOofSettings );
-    T__UserOofSettings userOofSettings() const;
+    void setMailbox( const T__EmailAddressType& mailbox );
+    T__EmailAddressType mailbox() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__SetUserOofSettingsRequest();
-    ~TNS__SetUserOofSettingsRequest();
+    TNS__ExpandDLType();
+    ~TNS__ExpandDLType();
 
 public:
-    TNS__SetUserOofSettingsRequest( const TNS__SetUserOofSettingsRequest& );
-    TNS__SetUserOofSettingsRequest &operator=( const TNS__SetUserOofSettingsRequest& );
+    TNS__ExpandDLType( const TNS__ExpandDLType& );
+    TNS__ExpandDLType &operator=( const TNS__ExpandDLType& );
 
 private:
     class PrivateDPtr;
@@ -7372,1173 +8728,6 @@ public:
 public:
     T__CalendarItemType( const T__CalendarItemType& );
     T__CalendarItemType &operator=( const T__CalendarItemType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__DeleteFolderFieldType : public T__FolderChangeDescriptionType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__DeleteFolderFieldType();
-    ~T__DeleteFolderFieldType();
-
-};
-
-class T__ExcludesType : public T__SearchExpressionType
-{
-public:
-    void setPath( const T__BasePathToElementType& path );
-    T__BasePathToElementType path() const;
-    void setBitmask( const T__ExcludesValueType& bitmask );
-    T__ExcludesValueType bitmask() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ExcludesType();
-    ~T__ExcludesType();
-
-public:
-    T__ExcludesType( const T__ExcludesType& );
-    T__ExcludesType &operator=( const T__ExcludesType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__RootItemIdType : public T__BaseItemIdType
-{
-public:
-    void setRootItemId( const QString& rootItemId );
-    QString rootItemId() const;
-    void setRootItemChangeKey( const QString& rootItemChangeKey );
-    QString rootItemChangeKey() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__RootItemIdType();
-    ~T__RootItemIdType();
-
-public:
-    T__RootItemIdType( const T__RootItemIdType& );
-    T__RootItemIdType &operator=( const T__RootItemIdType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__GetAttachmentType : public TNS__BaseRequestType
-{
-public:
-    void setAttachmentShape( const T__AttachmentResponseShapeType& attachmentShape );
-    T__AttachmentResponseShapeType attachmentShape() const;
-    void setAttachmentIds( const T__NonEmptyArrayOfRequestAttachmentIdsType& attachmentIds );
-    T__NonEmptyArrayOfRequestAttachmentIdsType attachmentIds() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__GetAttachmentType();
-    ~TNS__GetAttachmentType();
-
-public:
-    TNS__GetAttachmentType( const TNS__GetAttachmentType& );
-    TNS__GetAttachmentType &operator=( const TNS__GetAttachmentType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-/**
-    Represents an alternate mailbox folder or item Id.
- */
-class T__AlternateIdType : public T__AlternateIdBaseType
-{
-public:
-    void setId( const QString& id );
-    QString id() const;
-    void setMailbox( const T__NonEmptyStringType& mailbox );
-    T__NonEmptyStringType mailbox() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__AlternateIdType();
-    ~T__AlternateIdType();
-
-public:
-    T__AlternateIdType( const T__AlternateIdType& );
-    T__AlternateIdType &operator=( const T__AlternateIdType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__TwoOperandExpressionType : public T__SearchExpressionType
-{
-public:
-    void setPath( const T__BasePathToElementType& path );
-    T__BasePathToElementType path() const;
-    void setFieldURIOrConstant( const T__FieldURIOrConstantType& fieldURIOrConstant );
-    T__FieldURIOrConstantType fieldURIOrConstant() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__TwoOperandExpressionType();
-    virtual ~T__TwoOperandExpressionType();
-
-public:
-    T__TwoOperandExpressionType( const T__TwoOperandExpressionType& );
-    T__TwoOperandExpressionType &operator=( const T__TwoOperandExpressionType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__UpdateItemResponseMessageType : public TNS__ItemInfoResponseMessageType
-{
-public:
-    void setConflictResults( const T__ConflictResultsType& conflictResults );
-    T__ConflictResultsType conflictResults() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__UpdateItemResponseMessageType();
-    ~TNS__UpdateItemResponseMessageType();
-
-public:
-    TNS__UpdateItemResponseMessageType( const TNS__UpdateItemResponseMessageType& );
-    TNS__UpdateItemResponseMessageType &operator=( const TNS__UpdateItemResponseMessageType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-/**
-    Response type for the ConvertId web method
- */
-class TNS__ConvertIdResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__ConvertIdResponseType();
-    ~TNS__ConvertIdResponseType();
-
-};
-
-class TNS__FindItemType : public TNS__BaseRequestType
-{
-public:
-    void setItemShape( const T__ItemResponseShapeType& itemShape );
-    T__ItemResponseShapeType itemShape() const;
-    void setIndexedPageItemView( const T__IndexedPageViewType& indexedPageItemView );
-    T__IndexedPageViewType indexedPageItemView() const;
-    void setFractionalPageItemView( const T__FractionalPageViewType& fractionalPageItemView );
-    T__FractionalPageViewType fractionalPageItemView() const;
-    void setCalendarView( const T__CalendarViewType& calendarView );
-    T__CalendarViewType calendarView() const;
-    void setContactsView( const T__ContactsViewType& contactsView );
-    T__ContactsViewType contactsView() const;
-    void setGroupBy( const T__GroupByType& groupBy );
-    T__GroupByType groupBy() const;
-    void setDistinguishedGroupBy( const T__DistinguishedGroupByType& distinguishedGroupBy );
-    T__DistinguishedGroupByType distinguishedGroupBy() const;
-    void setRestriction( const T__RestrictionType& restriction );
-    T__RestrictionType restriction() const;
-    void setSortOrder( const T__NonEmptyArrayOfFieldOrdersType& sortOrder );
-    T__NonEmptyArrayOfFieldOrdersType sortOrder() const;
-    void setParentFolderIds( const T__NonEmptyArrayOfBaseFolderIdsType& parentFolderIds );
-    T__NonEmptyArrayOfBaseFolderIdsType parentFolderIds() const;
-    void setTraversal( const T__ItemQueryTraversalType& traversal );
-    T__ItemQueryTraversalType traversal() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__FindItemType();
-    ~TNS__FindItemType();
-
-public:
-    TNS__FindItemType( const TNS__FindItemType& );
-    TNS__FindItemType &operator=( const TNS__FindItemType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-/**
-    Allows consumers to access standard groupings for FindItem queries. This is
-    in contrast to the arbitrary (custom) groupings available via the
-    t:GroupByType
- */
-class T__DistinguishedGroupByType : public T__BaseGroupByType
-{
-public:
-    void setStandardGroupBy( const T__StandardGroupByType& standardGroupBy );
-    T__StandardGroupByType standardGroupBy() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__DistinguishedGroupByType();
-    ~T__DistinguishedGroupByType();
-
-public:
-    T__DistinguishedGroupByType( const T__DistinguishedGroupByType& );
-    T__DistinguishedGroupByType &operator=( const T__DistinguishedGroupByType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__ResolveNamesType : public TNS__BaseRequestType
-{
-public:
-    void setParentFolderIds( const T__NonEmptyArrayOfBaseFolderIdsType& parentFolderIds );
-    T__NonEmptyArrayOfBaseFolderIdsType parentFolderIds() const;
-    void setUnresolvedEntry( const T__NonEmptyStringType& unresolvedEntry );
-    T__NonEmptyStringType unresolvedEntry() const;
-    void setReturnFullContactData( bool returnFullContactData );
-    bool returnFullContactData() const;
-    void setSearchScope( const T__ResolveNamesSearchScopeType& searchScope );
-    T__ResolveNamesSearchScopeType searchScope() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__ResolveNamesType();
-    ~TNS__ResolveNamesType();
-
-public:
-    TNS__ResolveNamesType( const TNS__ResolveNamesType& );
-    TNS__ResolveNamesType &operator=( const TNS__ResolveNamesType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__PathToUnindexedFieldType : public T__BasePathToElementType
-{
-public:
-    void setFieldURI( const T__UnindexedFieldURIType& fieldURI );
-    T__UnindexedFieldURIType fieldURI() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__PathToUnindexedFieldType();
-    ~T__PathToUnindexedFieldType();
-
-public:
-    T__PathToUnindexedFieldType( const T__PathToUnindexedFieldType& );
-    T__PathToUnindexedFieldType &operator=( const T__PathToUnindexedFieldType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-/**
-    Identifier for a distinguished folder
- */
-class T__DistinguishedFolderIdType : public T__BaseFolderIdType
-{
-public:
-    void setMailbox( const T__EmailAddressType& mailbox );
-    T__EmailAddressType mailbox() const;
-    void setId( const T__DistinguishedFolderIdNameType& id );
-    T__DistinguishedFolderIdNameType id() const;
-    void setChangeKey( const QString& changeKey );
-    QString changeKey() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__DistinguishedFolderIdType();
-    ~T__DistinguishedFolderIdType();
-
-public:
-    T__DistinguishedFolderIdType( const T__DistinguishedFolderIdType& );
-    T__DistinguishedFolderIdType &operator=( const T__DistinguishedFolderIdType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ItemAttachmentType : public T__AttachmentType
-{
-public:
-    void setItem( const T__ItemType& item );
-    T__ItemType item() const;
-    void setMessage( const T__MessageType& message );
-    T__MessageType message() const;
-    void setCalendarItem( const T__CalendarItemType& calendarItem );
-    T__CalendarItemType calendarItem() const;
-    void setContact( const T__ContactItemType& contact );
-    T__ContactItemType contact() const;
-    void setMeetingMessage( const T__MeetingMessageType& meetingMessage );
-    T__MeetingMessageType meetingMessage() const;
-    void setMeetingRequest( const T__MeetingRequestMessageType& meetingRequest );
-    T__MeetingRequestMessageType meetingRequest() const;
-    void setMeetingResponse( const T__MeetingResponseMessageType& meetingResponse );
-    T__MeetingResponseMessageType meetingResponse() const;
-    void setMeetingCancellation( const T__MeetingCancellationMessageType& meetingCancellation );
-    T__MeetingCancellationMessageType meetingCancellation() const;
-    void setTask( const T__TaskType& task );
-    T__TaskType task() const;
-    void setPostItem( const T__PostItemType& postItem );
-    T__PostItemType postItem() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ItemAttachmentType();
-    ~T__ItemAttachmentType();
-
-public:
-    T__ItemAttachmentType( const T__ItemAttachmentType& );
-    T__ItemAttachmentType &operator=( const T__ItemAttachmentType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__SubscribeType : public TNS__BaseRequestType
-{
-public:
-    void setPullSubscriptionRequest( const T__PullSubscriptionRequestType& pullSubscriptionRequest );
-    T__PullSubscriptionRequestType pullSubscriptionRequest() const;
-    void setPushSubscriptionRequest( const T__PushSubscriptionRequestType& pushSubscriptionRequest );
-    T__PushSubscriptionRequestType pushSubscriptionRequest() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__SubscribeType();
-    ~TNS__SubscribeType();
-
-public:
-    TNS__SubscribeType( const TNS__SubscribeType& );
-    TNS__SubscribeType &operator=( const TNS__SubscribeType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__IndexedPageViewType : public T__BasePagingType
-{
-public:
-    void setOffset( int offset );
-    int offset() const;
-    void setBasePoint( const T__IndexBasePointType& basePoint );
-    T__IndexBasePointType basePoint() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__IndexedPageViewType();
-    ~T__IndexedPageViewType();
-
-public:
-    T__IndexedPageViewType( const T__IndexedPageViewType& );
-    T__IndexedPageViewType &operator=( const T__IndexedPageViewType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__UpdateItemType : public TNS__BaseRequestType
-{
-public:
-    void setSavedItemFolderId( const T__TargetFolderIdType& savedItemFolderId );
-    T__TargetFolderIdType savedItemFolderId() const;
-    void setItemChanges( const T__NonEmptyArrayOfItemChangesType& itemChanges );
-    T__NonEmptyArrayOfItemChangesType itemChanges() const;
-    void setConflictResolution( const T__ConflictResolutionType& conflictResolution );
-    T__ConflictResolutionType conflictResolution() const;
-    void setMessageDisposition( const T__MessageDispositionType& messageDisposition );
-    T__MessageDispositionType messageDisposition() const;
-    void setSendMeetingInvitationsOrCancellations( const T__CalendarItemUpdateOperationType& sendMeetingInvitationsOrCancellations );
-    T__CalendarItemUpdateOperationType sendMeetingInvitationsOrCancellations() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__UpdateItemType();
-    ~TNS__UpdateItemType();
-
-public:
-    TNS__UpdateItemType( const TNS__UpdateItemType& );
-    TNS__UpdateItemType &operator=( const TNS__UpdateItemType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__FolderInfoResponseMessageType : public TNS__ResponseMessageType
-{
-public:
-    void setFolders( const T__ArrayOfFoldersType& folders );
-    T__ArrayOfFoldersType folders() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__FolderInfoResponseMessageType();
-    ~TNS__FolderInfoResponseMessageType();
-
-public:
-    TNS__FolderInfoResponseMessageType( const TNS__FolderInfoResponseMessageType& );
-    TNS__FolderInfoResponseMessageType &operator=( const TNS__FolderInfoResponseMessageType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__DeleteAttachmentResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__DeleteAttachmentResponseType();
-    ~TNS__DeleteAttachmentResponseType();
-
-};
-
-class T__IsEqualToType : public T__TwoOperandExpressionType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__IsEqualToType();
-    ~T__IsEqualToType();
-
-};
-
-class T__RequestAttachmentIdType : public T__BaseItemIdType
-{
-public:
-    void setId( const QString& id );
-    QString id() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__RequestAttachmentIdType();
-    virtual ~T__RequestAttachmentIdType();
-
-public:
-    T__RequestAttachmentIdType( const T__RequestAttachmentIdType& );
-    T__RequestAttachmentIdType &operator=( const T__RequestAttachmentIdType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__CalendarViewType : public T__BasePagingType
-{
-public:
-    void setStartDate( const KDDateTime& startDate );
-    KDDateTime startDate() const;
-    void setEndDate( const KDDateTime& endDate );
-    KDDateTime endDate() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__CalendarViewType();
-    ~T__CalendarViewType();
-
-public:
-    T__CalendarViewType( const T__CalendarViewType& );
-    T__CalendarViewType &operator=( const T__CalendarViewType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__DeleteItemFieldType : public T__ItemChangeDescriptionType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__DeleteItemFieldType();
-    ~T__DeleteItemFieldType();
-
-};
-
-class TNS__SubscribeResponseMessageType : public TNS__ResponseMessageType
-{
-public:
-    void setSubscriptionId( const T__SubscriptionIdType& subscriptionId );
-    T__SubscriptionIdType subscriptionId() const;
-    void setWatermark( const T__WatermarkType& watermark );
-    T__WatermarkType watermark() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__SubscribeResponseMessageType();
-    ~TNS__SubscribeResponseMessageType();
-
-public:
-    TNS__SubscribeResponseMessageType( const TNS__SubscribeResponseMessageType& );
-    TNS__SubscribeResponseMessageType &operator=( const TNS__SubscribeResponseMessageType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__CreateItemType : public TNS__BaseRequestType
-{
-public:
-    void setSavedItemFolderId( const T__TargetFolderIdType& savedItemFolderId );
-    T__TargetFolderIdType savedItemFolderId() const;
-    void setItems( const T__NonEmptyArrayOfAllItemsType& items );
-    T__NonEmptyArrayOfAllItemsType items() const;
-    void setMessageDisposition( const T__MessageDispositionType& messageDisposition );
-    T__MessageDispositionType messageDisposition() const;
-    void setSendMeetingInvitations( const T__CalendarItemCreateOrDeleteOperationType& sendMeetingInvitations );
-    T__CalendarItemCreateOrDeleteOperationType sendMeetingInvitations() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__CreateItemType();
-    ~TNS__CreateItemType();
-
-public:
-    TNS__CreateItemType( const TNS__CreateItemType& );
-    TNS__CreateItemType &operator=( const TNS__CreateItemType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__TasksFolderType : public T__FolderType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__TasksFolderType();
-    ~T__TasksFolderType();
-
-};
-
-class TNS__GetFolderResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__GetFolderResponseType();
-    ~TNS__GetFolderResponseType();
-
-};
-
-class T__FileAttachmentType : public T__AttachmentType
-{
-public:
-    void setContent( const QByteArray& content );
-    QByteArray content() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__FileAttachmentType();
-    ~T__FileAttachmentType();
-
-public:
-    T__FileAttachmentType( const T__FileAttachmentType& );
-    T__FileAttachmentType &operator=( const T__FileAttachmentType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__NoEndRecurrenceRangeType : public T__RecurrenceRangeBaseType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__NoEndRecurrenceRangeType();
-    ~T__NoEndRecurrenceRangeType();
-
-};
-
-class T__CalendarFolderType : public T__BaseFolderType
-{
-public:
-    void setPermissionSet( const T__CalendarPermissionSetType& permissionSet );
-    T__CalendarPermissionSetType permissionSet() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__CalendarFolderType();
-    ~T__CalendarFolderType();
-
-public:
-    T__CalendarFolderType( const T__CalendarFolderType& );
-    T__CalendarFolderType &operator=( const T__CalendarFolderType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__SyncFolderHierarchyResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__SyncFolderHierarchyResponseType();
-    ~TNS__SyncFolderHierarchyResponseType();
-
-};
-
-class TNS__GetItemResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__GetItemResponseType();
-    ~TNS__GetItemResponseType();
-
-};
-
-class TNS__GetEventsResponseMessageType : public TNS__ResponseMessageType
-{
-public:
-    void setNotification( const T__NotificationType& notification );
-    T__NotificationType notification() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__GetEventsResponseMessageType();
-    ~TNS__GetEventsResponseMessageType();
-
-public:
-    TNS__GetEventsResponseMessageType( const TNS__GetEventsResponseMessageType& );
-    TNS__GetEventsResponseMessageType &operator=( const TNS__GetEventsResponseMessageType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__SendNotificationResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__SendNotificationResponseType();
-    ~TNS__SendNotificationResponseType();
-
-};
-
-class TNS__UnsubscribeType : public TNS__BaseRequestType
-{
-public:
-    void setSubscriptionId( const T__SubscriptionIdType& subscriptionId );
-    T__SubscriptionIdType subscriptionId() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__UnsubscribeType();
-    ~TNS__UnsubscribeType();
-
-public:
-    TNS__UnsubscribeType( const TNS__UnsubscribeType& );
-    TNS__UnsubscribeType &operator=( const TNS__UnsubscribeType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__UpdateFolderType : public TNS__BaseRequestType
-{
-public:
-    void setFolderChanges( const T__NonEmptyArrayOfFolderChangesType& folderChanges );
-    T__NonEmptyArrayOfFolderChangesType folderChanges() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__UpdateFolderType();
-    ~TNS__UpdateFolderType();
-
-public:
-    TNS__UpdateFolderType( const TNS__UpdateFolderType& );
-    TNS__UpdateFolderType &operator=( const TNS__UpdateFolderType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__PathToIndexedFieldType : public T__BasePathToElementType
-{
-public:
-    void setFieldURI( const T__DictionaryURIType& fieldURI );
-    T__DictionaryURIType fieldURI() const;
-    void setFieldIndex( const QString& fieldIndex );
-    QString fieldIndex() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__PathToIndexedFieldType();
-    ~T__PathToIndexedFieldType();
-
-public:
-    T__PathToIndexedFieldType( const T__PathToIndexedFieldType& );
-    T__PathToIndexedFieldType &operator=( const T__PathToIndexedFieldType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__CreateAttachmentType : public TNS__BaseRequestType
-{
-public:
-    void setParentItemId( const T__ItemIdType& parentItemId );
-    T__ItemIdType parentItemId() const;
-    void setAttachments( const T__NonEmptyArrayOfAttachmentsType& attachments );
-    T__NonEmptyArrayOfAttachmentsType attachments() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__CreateAttachmentType();
-    ~TNS__CreateAttachmentType();
-
-public:
-    TNS__CreateAttachmentType( const TNS__CreateAttachmentType& );
-    TNS__CreateAttachmentType &operator=( const TNS__CreateAttachmentType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__CreateManagedFolderResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__CreateManagedFolderResponseType();
-    ~TNS__CreateManagedFolderResponseType();
-
-};
-
-class TNS__BaseDelegateType : public TNS__BaseRequestType
-{
-public:
-    void setMailbox( const T__EmailAddressType& mailbox );
-    T__EmailAddressType mailbox() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    TNS__BaseDelegateType();
-    virtual ~TNS__BaseDelegateType();
-
-public:
-    TNS__BaseDelegateType( const TNS__BaseDelegateType& );
-    TNS__BaseDelegateType &operator=( const TNS__BaseDelegateType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__BaseMoveCopyFolderType : public TNS__BaseRequestType
-{
-public:
-    void setToFolderId( const T__TargetFolderIdType& toFolderId );
-    T__TargetFolderIdType toFolderId() const;
-    void setFolderIds( const T__NonEmptyArrayOfBaseFolderIdsType& folderIds );
-    T__NonEmptyArrayOfBaseFolderIdsType folderIds() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    TNS__BaseMoveCopyFolderType();
-    virtual ~TNS__BaseMoveCopyFolderType();
-
-public:
-    TNS__BaseMoveCopyFolderType( const TNS__BaseMoveCopyFolderType& );
-    TNS__BaseMoveCopyFolderType &operator=( const TNS__BaseMoveCopyFolderType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__MessageType : public T__ItemType
-{
-public:
-    void setSender( const T__SingleRecipientType& sender );
-    T__SingleRecipientType sender() const;
-    void setToRecipients( const T__ArrayOfRecipientsType& toRecipients );
-    T__ArrayOfRecipientsType toRecipients() const;
-    void setCcRecipients( const T__ArrayOfRecipientsType& ccRecipients );
-    T__ArrayOfRecipientsType ccRecipients() const;
-    void setBccRecipients( const T__ArrayOfRecipientsType& bccRecipients );
-    T__ArrayOfRecipientsType bccRecipients() const;
-    void setIsReadReceiptRequested( bool isReadReceiptRequested );
-    bool isReadReceiptRequested() const;
-    void setIsDeliveryReceiptRequested( bool isDeliveryReceiptRequested );
-    bool isDeliveryReceiptRequested() const;
-    void setConversationIndex( const QByteArray& conversationIndex );
-    QByteArray conversationIndex() const;
-    void setConversationTopic( const QString& conversationTopic );
-    QString conversationTopic() const;
-    void setFrom( const T__SingleRecipientType& from );
-    T__SingleRecipientType from() const;
-    void setInternetMessageId( const QString& internetMessageId );
-    QString internetMessageId() const;
-    void setIsRead( bool isRead );
-    bool isRead() const;
-    void setIsResponseRequested( bool isResponseRequested );
-    bool isResponseRequested() const;
-    void setReferences( const QString& references );
-    QString references() const;
-    void setReplyTo( const T__ArrayOfRecipientsType& replyTo );
-    T__ArrayOfRecipientsType replyTo() const;
-    void setReceivedBy( const T__SingleRecipientType& receivedBy );
-    T__SingleRecipientType receivedBy() const;
-    void setReceivedRepresenting( const T__SingleRecipientType& receivedRepresenting );
-    T__SingleRecipientType receivedRepresenting() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__MessageType();
-    virtual ~T__MessageType();
-
-public:
-    T__MessageType( const T__MessageType& );
-    T__MessageType &operator=( const T__MessageType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__ExpandDLResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__ExpandDLResponseType();
-    ~TNS__ExpandDLResponseType();
-
-};
-
-class T__IntervalRecurrencePatternBaseType : public T__RecurrencePatternBaseType
-{
-public:
-    void setInterval( int interval );
-    int interval() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__IntervalRecurrencePatternBaseType();
-    virtual ~T__IntervalRecurrencePatternBaseType();
-
-public:
-    T__IntervalRecurrencePatternBaseType( const T__IntervalRecurrencePatternBaseType& );
-    T__IntervalRecurrencePatternBaseType &operator=( const T__IntervalRecurrencePatternBaseType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__MoveItemType : public TNS__BaseMoveCopyItemType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__MoveItemType();
-    ~TNS__MoveItemType();
-
-};
-
-class T__RecurringMasterItemIdType : public T__BaseItemIdType
-{
-public:
-    void setOccurrenceId( const T__DerivedItemIdType& occurrenceId );
-    T__DerivedItemIdType occurrenceId() const;
-    void setChangeKey( const QString& changeKey );
-    QString changeKey() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__RecurringMasterItemIdType();
-    ~T__RecurringMasterItemIdType();
-
-public:
-    T__RecurringMasterItemIdType( const T__RecurringMasterItemIdType& );
-    T__RecurringMasterItemIdType &operator=( const T__RecurringMasterItemIdType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__SearchFolderType : public T__FolderType
-{
-public:
-    void setSearchParameters( const T__SearchParametersType& searchParameters );
-    T__SearchParametersType searchParameters() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__SearchFolderType();
-    ~T__SearchFolderType();
-
-public:
-    T__SearchFolderType( const T__SearchFolderType& );
-    T__SearchFolderType &operator=( const T__SearchFolderType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__UnknownAttendeeConflictData : public T__AttendeeConflictData
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__UnknownAttendeeConflictData();
-    ~T__UnknownAttendeeConflictData();
-
-};
-
-class TNS__CopyItemResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__CopyItemResponseType();
-    ~TNS__CopyItemResponseType();
-
-};
-
-class TNS__AddDelegateResponseMessageType : public TNS__BaseDelegateResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__AddDelegateResponseMessageType();
-    ~TNS__AddDelegateResponseMessageType();
-
-};
-
-class T__CalendarPermissionType : public T__BasePermissionType
-{
-public:
-    void setReadItems( const T__CalendarPermissionReadAccessType& readItems );
-    T__CalendarPermissionReadAccessType readItems() const;
-    void setCalendarPermissionLevel( const T__CalendarPermissionLevelType& calendarPermissionLevel );
-    T__CalendarPermissionLevelType calendarPermissionLevel() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__CalendarPermissionType();
-    ~T__CalendarPermissionType();
-
-public:
-    T__CalendarPermissionType( const T__CalendarPermissionType& );
-    T__CalendarPermissionType &operator=( const T__CalendarPermissionType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__OrType : public T__MultipleOperandBooleanExpressionType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__OrType();
-    ~T__OrType();
-
-};
-
-class TNS__CreateItemResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__CreateItemResponseType();
-    ~TNS__CreateItemResponseType();
-
-};
-
-class TNS__SendItemResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__SendItemResponseType();
-    ~TNS__SendItemResponseType();
-
-};
-
-class TNS__GetUserAvailabilityRequestType : public TNS__BaseRequestType
-{
-public:
-    void setTimeZone( const T__SerializableTimeZone& timeZone );
-    T__SerializableTimeZone timeZone() const;
-    void setMailboxDataArray( const T__ArrayOfMailboxData& mailboxDataArray );
-    T__ArrayOfMailboxData mailboxDataArray() const;
-    void setFreeBusyViewOptions( const T__FreeBusyViewOptionsType& freeBusyViewOptions );
-    T__FreeBusyViewOptionsType freeBusyViewOptions() const;
-    void setSuggestionsViewOptions( const T__SuggestionsViewOptionsType& suggestionsViewOptions );
-    T__SuggestionsViewOptionsType suggestionsViewOptions() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__GetUserAvailabilityRequestType();
-    ~TNS__GetUserAvailabilityRequestType();
-
-public:
-    TNS__GetUserAvailabilityRequestType( const TNS__GetUserAvailabilityRequestType& );
-    TNS__GetUserAvailabilityRequestType &operator=( const TNS__GetUserAvailabilityRequestType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__ContainsExpressionType : public T__SearchExpressionType
-{
-public:
-    void setPath( const T__BasePathToElementType& path );
-    T__BasePathToElementType path() const;
-    void setConstant( const T__ConstantValueType& constant );
-    T__ConstantValueType constant() const;
-    void setContainmentMode( const T__ContainmentModeType& containmentMode );
-    T__ContainmentModeType containmentMode() const;
-    void setContainmentComparison( const T__ContainmentComparisonType& containmentComparison );
-    T__ContainmentComparisonType containmentComparison() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__ContainsExpressionType();
-    ~T__ContainsExpressionType();
-
-public:
-    T__ContainsExpressionType( const T__ContainsExpressionType& );
-    T__ContainsExpressionType &operator=( const T__ContainsExpressionType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__IsGreaterThanOrEqualToType : public T__TwoOperandExpressionType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__IsGreaterThanOrEqualToType();
-    ~T__IsGreaterThanOrEqualToType();
-
-};
-
-class TNS__GetUserOofSettingsRequest : public TNS__BaseRequestType
-{
-public:
-    void setMailbox( const T__EmailAddress& mailbox );
-    T__EmailAddress mailbox() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__GetUserOofSettingsRequest();
-    ~TNS__GetUserOofSettingsRequest();
-
-public:
-    TNS__GetUserOofSettingsRequest( const TNS__GetUserOofSettingsRequest& );
-    TNS__GetUserOofSettingsRequest &operator=( const TNS__GetUserOofSettingsRequest& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__RelativeYearlyRecurrencePatternType : public T__RecurrencePatternBaseType
-{
-public:
-    void setDaysOfWeek( const T__DayOfWeekType& daysOfWeek );
-    T__DayOfWeekType daysOfWeek() const;
-    void setDayOfWeekIndex( const T__DayOfWeekIndexType& dayOfWeekIndex );
-    T__DayOfWeekIndexType dayOfWeekIndex() const;
-    void setMonth( const T__MonthNamesType& month );
-    T__MonthNamesType month() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__RelativeYearlyRecurrencePatternType();
-    ~T__RelativeYearlyRecurrencePatternType();
-
-public:
-    T__RelativeYearlyRecurrencePatternType( const T__RelativeYearlyRecurrencePatternType& );
-    T__RelativeYearlyRecurrencePatternType &operator=( const T__RelativeYearlyRecurrencePatternType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__ResolveNamesResponseType : public TNS__BaseResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__ResolveNamesResponseType();
-    ~TNS__ResolveNamesResponseType();
-
-};
-
-class TNS__DelegateUserResponseMessageType : public TNS__ResponseMessageType
-{
-public:
-    void setDelegateUser( const T__DelegateUserType& delegateUser );
-    T__DelegateUserType delegateUser() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__DelegateUserResponseMessageType();
-    ~TNS__DelegateUserResponseMessageType();
-
-public:
-    TNS__DelegateUserResponseMessageType( const TNS__DelegateUserResponseMessageType& );
-    TNS__DelegateUserResponseMessageType &operator=( const TNS__DelegateUserResponseMessageType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__UpdateDelegateResponseMessageType : public TNS__BaseDelegateResponseMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__UpdateDelegateResponseMessageType();
-    ~TNS__UpdateDelegateResponseMessageType();
-
-};
-
-class T__EndDateRecurrenceRangeType : public T__RecurrenceRangeBaseType
-{
-public:
-    void setEndDate( const QDate& endDate );
-    QDate endDate() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__EndDateRecurrenceRangeType();
-    ~T__EndDateRecurrenceRangeType();
-
-public:
-    T__EndDateRecurrenceRangeType( const T__EndDateRecurrenceRangeType& );
-    T__EndDateRecurrenceRangeType &operator=( const T__EndDateRecurrenceRangeType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__AppendToFolderFieldType : public T__FolderChangeDescriptionType
-{
-public:
-    void setFolder( const T__FolderType& folder );
-    T__FolderType folder() const;
-    void setCalendarFolder( const T__CalendarFolderType& calendarFolder );
-    T__CalendarFolderType calendarFolder() const;
-    void setContactsFolder( const T__ContactsFolderType& contactsFolder );
-    T__ContactsFolderType contactsFolder() const;
-    void setSearchFolder( const T__SearchFolderType& searchFolder );
-    T__SearchFolderType searchFolder() const;
-    void setTasksFolder( const T__TasksFolderType& tasksFolder );
-    T__TasksFolderType tasksFolder() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__AppendToFolderFieldType();
-    ~T__AppendToFolderFieldType();
-
-public:
-    T__AppendToFolderFieldType( const T__AppendToFolderFieldType& );
-    T__AppendToFolderFieldType &operator=( const T__AppendToFolderFieldType& );
 
 private:
     class PrivateDPtr;
@@ -8758,6 +8947,54 @@ private:
     ExchangeServices *mService;
     TNS__UpdateFolderType mRequest;
     TNS__UpdateFolderResponseType mResultUpdateFolderResult;
+    T__ServerVersionInfo mResultHeaderServerVersion;
+};
+
+class MoveFolderJob : public KDSoapJob
+{
+    Q_OBJECT
+
+public:
+    MoveFolderJob( ExchangeServices* service, QObject* parent = 0 );
+    void setRequest( const TNS__MoveFolderType& arg0 );
+    TNS__MoveFolderType request() const;
+    TNS__MoveFolderResponseType moveFolderResult() const;
+    T__ServerVersionInfo serverVersion() const;
+
+protected:
+    void doStart();
+
+private Q_SLOTS:
+    void slotFinished( KDSoapPendingCallWatcher* watcher );
+
+private:
+    ExchangeServices *mService;
+    TNS__MoveFolderType mRequest;
+    TNS__MoveFolderResponseType mResultMoveFolderResult;
+    T__ServerVersionInfo mResultHeaderServerVersion;
+};
+
+class CopyFolderJob : public KDSoapJob
+{
+    Q_OBJECT
+
+public:
+    CopyFolderJob( ExchangeServices* service, QObject* parent = 0 );
+    void setRequest( const TNS__CopyFolderType& arg0 );
+    TNS__CopyFolderType request() const;
+    TNS__CopyFolderResponseType copyFolderResult() const;
+    T__ServerVersionInfo serverVersion() const;
+
+protected:
+    void doStart();
+
+private Q_SLOTS:
+    void slotFinished( KDSoapPendingCallWatcher* watcher );
+
+private:
+    ExchangeServices *mService;
+    TNS__CopyFolderType mRequest;
+    TNS__CopyFolderResponseType mResultCopyFolderResult;
     T__ServerVersionInfo mResultHeaderServerVersion;
 };
 
@@ -9217,43 +9454,169 @@ private:
     T__ServerVersionInfo mResultHeaderServerVersion;
 };
 
-class T__ModifiedEventType : public T__BaseObjectChangedEventType
+class T__AbsoluteMonthlyRecurrencePatternType : public T__IntervalRecurrencePatternBaseType
 {
 public:
-    void setUnreadCount( int unreadCount );
-    int unreadCount() const;
+    void setDayOfMonth( int dayOfMonth );
+    int dayOfMonth() const;
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__ModifiedEventType();
-    ~T__ModifiedEventType();
+    T__AbsoluteMonthlyRecurrencePatternType();
+    ~T__AbsoluteMonthlyRecurrencePatternType();
 
 public:
-    T__ModifiedEventType( const T__ModifiedEventType& );
-    T__ModifiedEventType &operator=( const T__ModifiedEventType& );
+    T__AbsoluteMonthlyRecurrencePatternType( const T__AbsoluteMonthlyRecurrencePatternType& );
+    T__AbsoluteMonthlyRecurrencePatternType &operator=( const T__AbsoluteMonthlyRecurrencePatternType& );
 
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__RemoveDelegateResponseMessageType : public TNS__BaseDelegateResponseMessageType
+/**
+    Represents an alternate public folder item Id.
+ */
+class T__AlternatePublicFolderItemIdType : public T__AlternatePublicFolderIdType
+{
+public:
+    void setItemId( const QString& itemId );
+    QString itemId() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__AlternatePublicFolderItemIdType();
+    ~T__AlternatePublicFolderItemIdType();
+
+public:
+    T__AlternatePublicFolderItemIdType( const T__AlternatePublicFolderItemIdType& );
+    T__AlternatePublicFolderItemIdType &operator=( const T__AlternatePublicFolderItemIdType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__GetDelegateType : public TNS__BaseDelegateType
+{
+public:
+    void setUserIds( const T__ArrayOfUserIdType& userIds );
+    T__ArrayOfUserIdType userIds() const;
+    void setIncludePermissions( bool includePermissions );
+    bool includePermissions() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__GetDelegateType();
+    ~TNS__GetDelegateType();
+
+public:
+    TNS__GetDelegateType( const TNS__GetDelegateType& );
+    TNS__GetDelegateType &operator=( const TNS__GetDelegateType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__IsLessThanOrEqualToType : public T__TwoOperandExpressionType
 {
 public:
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    TNS__RemoveDelegateResponseMessageType();
-    ~TNS__RemoveDelegateResponseMessageType();
+    T__IsLessThanOrEqualToType();
+    ~T__IsLessThanOrEqualToType();
 
 };
 
-class T__RegeneratingPatternBaseType : public T__IntervalRecurrencePatternBaseType
+class T__IsGreaterThanType : public T__TwoOperandExpressionType
 {
 public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__IsGreaterThanType();
+    ~T__IsGreaterThanType();
+
+};
+
+class TNS__AddDelegateResponseMessageType : public TNS__BaseDelegateResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__AddDelegateResponseMessageType();
+    ~TNS__AddDelegateResponseMessageType();
+
+};
+
+class T__IsNotEqualToType : public T__TwoOperandExpressionType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__IsNotEqualToType();
+    ~T__IsNotEqualToType();
+
+};
+
+class TNS__UpdateItemResponseMessageType : public TNS__ItemInfoResponseMessageType
+{
+public:
+    void setConflictResults( const T__ConflictResultsType& conflictResults );
+    T__ConflictResultsType conflictResults() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__UpdateItemResponseMessageType();
+    ~TNS__UpdateItemResponseMessageType();
+
+public:
+    TNS__UpdateItemResponseMessageType( const TNS__UpdateItemResponseMessageType& );
+    TNS__UpdateItemResponseMessageType &operator=( const TNS__UpdateItemResponseMessageType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+/**
+    Internal abstract base type for reply objects. Should not appear in client
+    code
+ */
+class T__ResponseObjectCoreType : public T__MessageType
+{
+public:
+    void setReferenceItemId( const T__ItemIdType& referenceItemId );
+    T__ItemIdType referenceItemId() const;
     virtual KDSoapValue serialize( const QString& valueName ) const;
     virtual void deserialize( const KDSoapValue& mainValue );
-    T__RegeneratingPatternBaseType();
-    virtual ~T__RegeneratingPatternBaseType();
+    T__ResponseObjectCoreType();
+    virtual ~T__ResponseObjectCoreType();
 
+public:
+    T__ResponseObjectCoreType( const T__ResponseObjectCoreType& );
+    T__ResponseObjectCoreType &operator=( const T__ResponseObjectCoreType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__AttachmentIdType : public T__RequestAttachmentIdType
+{
+public:
+    void setRootItemId( const QString& rootItemId );
+    QString rootItemId() const;
+    void setRootItemChangeKey( const QString& rootItemChangeKey );
+    QString rootItemChangeKey() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__AttachmentIdType();
+    ~T__AttachmentIdType();
+
+public:
+    T__AttachmentIdType( const T__AttachmentIdType& );
+    T__AttachmentIdType &operator=( const T__AttachmentIdType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
 class T__DailyRegeneratingPatternType : public T__RegeneratingPatternBaseType
@@ -9263,6 +9626,45 @@ public:
     void deserialize( const KDSoapValue& mainValue );
     T__DailyRegeneratingPatternType();
     ~T__DailyRegeneratingPatternType();
+
+};
+
+class TNS__RemoveDelegateType : public TNS__BaseDelegateType
+{
+public:
+    void setUserIds( const T__ArrayOfUserIdType& userIds );
+    T__ArrayOfUserIdType userIds() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__RemoveDelegateType();
+    ~TNS__RemoveDelegateType();
+
+public:
+    TNS__RemoveDelegateType( const TNS__RemoveDelegateType& );
+    TNS__RemoveDelegateType &operator=( const TNS__RemoveDelegateType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__DailyRecurrencePatternType : public T__IntervalRecurrencePatternBaseType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__DailyRecurrencePatternType();
+    ~T__DailyRecurrencePatternType();
+
+};
+
+class T__DeleteItemFieldType : public T__ItemChangeDescriptionType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__DeleteItemFieldType();
+    ~T__DeleteItemFieldType();
 
 };
 
@@ -9283,55 +9685,6 @@ public:
 private:
     class PrivateDPtr;
     QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__AppendToItemFieldType : public T__ItemChangeDescriptionType
-{
-public:
-    void setItem( const T__ItemType& item );
-    T__ItemType item() const;
-    void setMessage( const T__MessageType& message );
-    T__MessageType message() const;
-    void setCalendarItem( const T__CalendarItemType& calendarItem );
-    T__CalendarItemType calendarItem() const;
-    void setContact( const T__ContactItemType& contact );
-    T__ContactItemType contact() const;
-    void setDistributionList( const T__DistributionListType& distributionList );
-    T__DistributionListType distributionList() const;
-    void setMeetingMessage( const T__MeetingMessageType& meetingMessage );
-    T__MeetingMessageType meetingMessage() const;
-    void setMeetingRequest( const T__MeetingRequestMessageType& meetingRequest );
-    T__MeetingRequestMessageType meetingRequest() const;
-    void setMeetingResponse( const T__MeetingResponseMessageType& meetingResponse );
-    T__MeetingResponseMessageType meetingResponse() const;
-    void setMeetingCancellation( const T__MeetingCancellationMessageType& meetingCancellation );
-    T__MeetingCancellationMessageType meetingCancellation() const;
-    void setTask( const T__TaskType& task );
-    T__TaskType task() const;
-    void setPostItem( const T__PostItemType& postItem );
-    T__PostItemType postItem() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__AppendToItemFieldType();
-    ~T__AppendToItemFieldType();
-
-public:
-    T__AppendToItemFieldType( const T__AppendToItemFieldType& );
-    T__AppendToItemFieldType &operator=( const T__AppendToItemFieldType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__IsGreaterThanType : public T__TwoOperandExpressionType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__IsGreaterThanType();
-    ~T__IsGreaterThanType();
-
 };
 
 class T__MeetingMessageType : public T__MessageType
@@ -9367,345 +9720,22 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-class TNS__GetDelegateType : public TNS__BaseDelegateType
-{
-public:
-    void setUserIds( const T__ArrayOfUserIdType& userIds );
-    T__ArrayOfUserIdType userIds() const;
-    void setIncludePermissions( bool includePermissions );
-    bool includePermissions() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__GetDelegateType();
-    ~TNS__GetDelegateType();
-
-public:
-    TNS__GetDelegateType( const TNS__GetDelegateType& );
-    TNS__GetDelegateType &operator=( const TNS__GetDelegateType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__SetFolderFieldType : public T__FolderChangeDescriptionType
-{
-public:
-    void setFolder( const T__FolderType& folder );
-    T__FolderType folder() const;
-    void setCalendarFolder( const T__CalendarFolderType& calendarFolder );
-    T__CalendarFolderType calendarFolder() const;
-    void setContactsFolder( const T__ContactsFolderType& contactsFolder );
-    T__ContactsFolderType contactsFolder() const;
-    void setSearchFolder( const T__SearchFolderType& searchFolder );
-    T__SearchFolderType searchFolder() const;
-    void setTasksFolder( const T__TasksFolderType& tasksFolder );
-    T__TasksFolderType tasksFolder() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__SetFolderFieldType();
-    ~T__SetFolderFieldType();
-
-public:
-    T__SetFolderFieldType( const T__SetFolderFieldType& );
-    T__SetFolderFieldType &operator=( const T__SetFolderFieldType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__DailyRecurrencePatternType : public T__IntervalRecurrencePatternBaseType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__DailyRecurrencePatternType();
-    ~T__DailyRecurrencePatternType();
-
-};
-
-class T__MeetingResponseMessageType : public T__MeetingMessageType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__MeetingResponseMessageType();
-    ~T__MeetingResponseMessageType();
-
-};
-
 /**
-    Represents an alternate public folder item Id.
+    Abstract base type for reply objects
  */
-class T__AlternatePublicFolderItemIdType : public T__AlternatePublicFolderIdType
+class T__ResponseObjectType : public T__ResponseObjectCoreType
 {
 public:
-    void setItemId( const QString& itemId );
-    QString itemId() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__AlternatePublicFolderItemIdType();
-    ~T__AlternatePublicFolderItemIdType();
-
-public:
-    T__AlternatePublicFolderItemIdType( const T__AlternatePublicFolderItemIdType& );
-    T__AlternatePublicFolderItemIdType &operator=( const T__AlternatePublicFolderItemIdType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__AndType : public T__MultipleOperandBooleanExpressionType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__AndType();
-    ~T__AndType();
-
-};
-
-/**
-    Internal abstract base type for reply objects. Should not appear in client
-    code
- */
-class T__ResponseObjectCoreType : public T__MessageType
-{
-public:
-    void setReferenceItemId( const T__ItemIdType& referenceItemId );
-    T__ItemIdType referenceItemId() const;
+    void setObjectName( const QString& objectName );
+    QString objectName() const;
     virtual KDSoapValue serialize( const QString& valueName ) const;
     virtual void deserialize( const KDSoapValue& mainValue );
-    T__ResponseObjectCoreType();
-    virtual ~T__ResponseObjectCoreType();
+    T__ResponseObjectType();
+    virtual ~T__ResponseObjectType();
 
 public:
-    T__ResponseObjectCoreType( const T__ResponseObjectCoreType& );
-    T__ResponseObjectCoreType &operator=( const T__ResponseObjectCoreType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__IsLessThanOrEqualToType : public T__TwoOperandExpressionType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__IsLessThanOrEqualToType();
-    ~T__IsLessThanOrEqualToType();
-
-};
-
-class T__AttachmentIdType : public T__RequestAttachmentIdType
-{
-public:
-    void setRootItemId( const QString& rootItemId );
-    QString rootItemId() const;
-    void setRootItemChangeKey( const QString& rootItemChangeKey );
-    QString rootItemChangeKey() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__AttachmentIdType();
-    ~T__AttachmentIdType();
-
-public:
-    T__AttachmentIdType( const T__AttachmentIdType& );
-    T__AttachmentIdType &operator=( const T__AttachmentIdType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__WeeklyRegeneratingPatternType : public T__RegeneratingPatternBaseType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__WeeklyRegeneratingPatternType();
-    ~T__WeeklyRegeneratingPatternType();
-
-};
-
-class T__SetItemFieldType : public T__ItemChangeDescriptionType
-{
-public:
-    void setItem( const T__ItemType& item );
-    T__ItemType item() const;
-    void setMessage( const T__MessageType& message );
-    T__MessageType message() const;
-    void setCalendarItem( const T__CalendarItemType& calendarItem );
-    T__CalendarItemType calendarItem() const;
-    void setContact( const T__ContactItemType& contact );
-    T__ContactItemType contact() const;
-    void setDistributionList( const T__DistributionListType& distributionList );
-    T__DistributionListType distributionList() const;
-    void setMeetingMessage( const T__MeetingMessageType& meetingMessage );
-    T__MeetingMessageType meetingMessage() const;
-    void setMeetingRequest( const T__MeetingRequestMessageType& meetingRequest );
-    T__MeetingRequestMessageType meetingRequest() const;
-    void setMeetingResponse( const T__MeetingResponseMessageType& meetingResponse );
-    T__MeetingResponseMessageType meetingResponse() const;
-    void setMeetingCancellation( const T__MeetingCancellationMessageType& meetingCancellation );
-    T__MeetingCancellationMessageType meetingCancellation() const;
-    void setTask( const T__TaskType& task );
-    T__TaskType task() const;
-    void setPostItem( const T__PostItemType& postItem );
-    T__PostItemType postItem() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__SetItemFieldType();
-    ~T__SetItemFieldType();
-
-public:
-    T__SetItemFieldType( const T__SetItemFieldType& );
-    T__SetItemFieldType &operator=( const T__SetItemFieldType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__MovedCopiedEventType : public T__BaseObjectChangedEventType
-{
-public:
-    void setOldFolderId( const T__FolderIdType& oldFolderId );
-    T__FolderIdType oldFolderId() const;
-    void setOldItemId( const T__ItemIdType& oldItemId );
-    T__ItemIdType oldItemId() const;
-    void setOldParentFolderId( const T__FolderIdType& oldParentFolderId );
-    T__FolderIdType oldParentFolderId() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__MovedCopiedEventType();
-    ~T__MovedCopiedEventType();
-
-public:
-    T__MovedCopiedEventType( const T__MovedCopiedEventType& );
-    T__MovedCopiedEventType &operator=( const T__MovedCopiedEventType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__IsLessThanType : public T__TwoOperandExpressionType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__IsLessThanType();
-    ~T__IsLessThanType();
-
-};
-
-class T__IsNotEqualToType : public T__TwoOperandExpressionType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__IsNotEqualToType();
-    ~T__IsNotEqualToType();
-
-};
-
-class T__MonthlyRegeneratingPatternType : public T__RegeneratingPatternBaseType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__MonthlyRegeneratingPatternType();
-    ~T__MonthlyRegeneratingPatternType();
-
-};
-
-class TNS__AddDelegateType : public TNS__BaseDelegateType
-{
-public:
-    void setDelegateUsers( const T__ArrayOfDelegateUserType& delegateUsers );
-    T__ArrayOfDelegateUserType delegateUsers() const;
-    void setDeliverMeetingRequests( const T__DeliverMeetingRequestsType& deliverMeetingRequests );
-    T__DeliverMeetingRequestsType deliverMeetingRequests() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__AddDelegateType();
-    ~TNS__AddDelegateType();
-
-public:
-    TNS__AddDelegateType( const TNS__AddDelegateType& );
-    TNS__AddDelegateType &operator=( const TNS__AddDelegateType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__CopyFolderType : public TNS__BaseMoveCopyFolderType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__CopyFolderType();
-    ~TNS__CopyFolderType();
-
-};
-
-class TNS__MoveFolderType : public TNS__BaseMoveCopyFolderType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__MoveFolderType();
-    ~TNS__MoveFolderType();
-
-};
-
-class T__YearlyRegeneratingPatternType : public T__RegeneratingPatternBaseType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__YearlyRegeneratingPatternType();
-    ~T__YearlyRegeneratingPatternType();
-
-};
-
-class T__AbsoluteMonthlyRecurrencePatternType : public T__IntervalRecurrencePatternBaseType
-{
-public:
-    void setDayOfMonth( int dayOfMonth );
-    int dayOfMonth() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__AbsoluteMonthlyRecurrencePatternType();
-    ~T__AbsoluteMonthlyRecurrencePatternType();
-
-public:
-    T__AbsoluteMonthlyRecurrencePatternType( const T__AbsoluteMonthlyRecurrencePatternType& );
-    T__AbsoluteMonthlyRecurrencePatternType &operator=( const T__AbsoluteMonthlyRecurrencePatternType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class TNS__RemoveDelegateType : public TNS__BaseDelegateType
-{
-public:
-    void setUserIds( const T__ArrayOfUserIdType& userIds );
-    T__ArrayOfUserIdType userIds() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    TNS__RemoveDelegateType();
-    ~TNS__RemoveDelegateType();
-
-public:
-    TNS__RemoveDelegateType( const TNS__RemoveDelegateType& );
-    TNS__RemoveDelegateType &operator=( const TNS__RemoveDelegateType& );
+    T__ResponseObjectType( const T__ResponseObjectType& );
+    T__ResponseObjectType &operator=( const T__ResponseObjectType& );
 
 private:
     class PrivateDPtr;
@@ -9748,6 +9778,338 @@ public:
 public:
     T__RelativeMonthlyRecurrencePatternType( const T__RelativeMonthlyRecurrencePatternType& );
     T__RelativeMonthlyRecurrencePatternType &operator=( const T__RelativeMonthlyRecurrencePatternType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__WeeklyRegeneratingPatternType : public T__RegeneratingPatternBaseType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__WeeklyRegeneratingPatternType();
+    ~T__WeeklyRegeneratingPatternType();
+
+};
+
+class T__WellKnownResponseObjectType : public T__ResponseObjectType
+{
+public:
+    void setItemClass( const T__ItemClassType& itemClass );
+    T__ItemClassType itemClass() const;
+    void setSensitivity( const T__SensitivityChoicesType& sensitivity );
+    T__SensitivityChoicesType sensitivity() const;
+    void setBody( const T__BodyType& body );
+    T__BodyType body() const;
+    void setAttachments( const T__NonEmptyArrayOfAttachmentsType& attachments );
+    T__NonEmptyArrayOfAttachmentsType attachments() const;
+    void setInternetMessageHeaders( const T__NonEmptyArrayOfInternetHeadersType& internetMessageHeaders );
+    T__NonEmptyArrayOfInternetHeadersType internetMessageHeaders() const;
+    void setSender( const T__SingleRecipientType& sender );
+    T__SingleRecipientType sender() const;
+    void setToRecipients( const T__ArrayOfRecipientsType& toRecipients );
+    T__ArrayOfRecipientsType toRecipients() const;
+    void setCcRecipients( const T__ArrayOfRecipientsType& ccRecipients );
+    T__ArrayOfRecipientsType ccRecipients() const;
+    void setBccRecipients( const T__ArrayOfRecipientsType& bccRecipients );
+    T__ArrayOfRecipientsType bccRecipients() const;
+    void setIsReadReceiptRequested( bool isReadReceiptRequested );
+    bool isReadReceiptRequested() const;
+    void setIsDeliveryReceiptRequested( bool isDeliveryReceiptRequested );
+    bool isDeliveryReceiptRequested() const;
+    void setFrom( const T__SingleRecipientType& from );
+    T__SingleRecipientType from() const;
+    void setReferenceItemId( const T__ItemIdType& referenceItemId );
+    T__ItemIdType referenceItemId() const;
+    void setObjectName( const QString& objectName );
+    QString objectName() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__WellKnownResponseObjectType();
+    virtual ~T__WellKnownResponseObjectType();
+
+public:
+    T__WellKnownResponseObjectType( const T__WellKnownResponseObjectType& );
+    T__WellKnownResponseObjectType &operator=( const T__WellKnownResponseObjectType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__AcceptItemType : public T__WellKnownResponseObjectType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__AcceptItemType();
+    ~T__AcceptItemType();
+
+};
+
+class T__PostReplyItemBaseType : public T__ResponseObjectType
+{
+public:
+    void setSubject( const QString& subject );
+    QString subject() const;
+    void setBody( const T__BodyType& body );
+    T__BodyType body() const;
+    void setReferenceItemId( const T__ItemIdType& referenceItemId );
+    T__ItemIdType referenceItemId() const;
+    void setObjectName( const QString& objectName );
+    QString objectName() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__PostReplyItemBaseType();
+    virtual ~T__PostReplyItemBaseType();
+
+public:
+    T__PostReplyItemBaseType( const T__PostReplyItemBaseType& );
+    T__PostReplyItemBaseType &operator=( const T__PostReplyItemBaseType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class TNS__RemoveDelegateResponseMessageType : public TNS__BaseDelegateResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__RemoveDelegateResponseMessageType();
+    ~TNS__RemoveDelegateResponseMessageType();
+
+};
+
+class TNS__UpdateDelegateResponseMessageType : public TNS__BaseDelegateResponseMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    TNS__UpdateDelegateResponseMessageType();
+    ~TNS__UpdateDelegateResponseMessageType();
+
+};
+
+class T__RemoveItemType : public T__ResponseObjectType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__RemoveItemType();
+    ~T__RemoveItemType();
+
+};
+
+class T__SmartResponseBaseType : public T__ResponseObjectType
+{
+public:
+    void setSubject( const QString& subject );
+    QString subject() const;
+    void setBody( const T__BodyType& body );
+    T__BodyType body() const;
+    void setToRecipients( const T__ArrayOfRecipientsType& toRecipients );
+    T__ArrayOfRecipientsType toRecipients() const;
+    void setCcRecipients( const T__ArrayOfRecipientsType& ccRecipients );
+    T__ArrayOfRecipientsType ccRecipients() const;
+    void setBccRecipients( const T__ArrayOfRecipientsType& bccRecipients );
+    T__ArrayOfRecipientsType bccRecipients() const;
+    void setIsReadReceiptRequested( bool isReadReceiptRequested );
+    bool isReadReceiptRequested() const;
+    void setIsDeliveryReceiptRequested( bool isDeliveryReceiptRequested );
+    bool isDeliveryReceiptRequested() const;
+    void setFrom( const T__SingleRecipientType& from );
+    T__SingleRecipientType from() const;
+    void setReferenceItemId( const T__ItemIdType& referenceItemId );
+    T__ItemIdType referenceItemId() const;
+    void setObjectName( const QString& objectName );
+    QString objectName() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__SmartResponseBaseType();
+    virtual ~T__SmartResponseBaseType();
+
+public:
+    T__SmartResponseBaseType( const T__SmartResponseBaseType& );
+    T__SmartResponseBaseType &operator=( const T__SmartResponseBaseType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class GetDelegateJob : public KDSoapJob
+{
+    Q_OBJECT
+
+public:
+    GetDelegateJob( ExchangeServices* service, QObject* parent = 0 );
+    void setRequest( const TNS__GetDelegateType& arg0 );
+    TNS__GetDelegateType request() const;
+    TNS__GetDelegateResponseMessageType getDelegateResult() const;
+    T__ServerVersionInfo serverVersion() const;
+
+protected:
+    void doStart();
+
+private Q_SLOTS:
+    void slotFinished( KDSoapPendingCallWatcher* watcher );
+
+private:
+    ExchangeServices *mService;
+    TNS__GetDelegateType mRequest;
+    TNS__GetDelegateResponseMessageType mResultGetDelegateResult;
+    T__ServerVersionInfo mResultHeaderServerVersion;
+};
+
+class AddDelegateJob : public KDSoapJob
+{
+    Q_OBJECT
+
+public:
+    AddDelegateJob( ExchangeServices* service, QObject* parent = 0 );
+    void setRequest( const TNS__AddDelegateType& arg0 );
+    TNS__AddDelegateType request() const;
+    TNS__AddDelegateResponseMessageType addDelegateResult() const;
+    T__ServerVersionInfo serverVersion() const;
+
+protected:
+    void doStart();
+
+private Q_SLOTS:
+    void slotFinished( KDSoapPendingCallWatcher* watcher );
+
+private:
+    ExchangeServices *mService;
+    TNS__AddDelegateType mRequest;
+    TNS__AddDelegateResponseMessageType mResultAddDelegateResult;
+    T__ServerVersionInfo mResultHeaderServerVersion;
+};
+
+class RemoveDelegateJob : public KDSoapJob
+{
+    Q_OBJECT
+
+public:
+    RemoveDelegateJob( ExchangeServices* service, QObject* parent = 0 );
+    void setRequest( const TNS__RemoveDelegateType& arg0 );
+    TNS__RemoveDelegateType request() const;
+    TNS__RemoveDelegateResponseMessageType removeDelegateResult() const;
+    T__ServerVersionInfo serverVersion() const;
+
+protected:
+    void doStart();
+
+private Q_SLOTS:
+    void slotFinished( KDSoapPendingCallWatcher* watcher );
+
+private:
+    ExchangeServices *mService;
+    TNS__RemoveDelegateType mRequest;
+    TNS__RemoveDelegateResponseMessageType mResultRemoveDelegateResult;
+    T__ServerVersionInfo mResultHeaderServerVersion;
+};
+
+class UpdateDelegateJob : public KDSoapJob
+{
+    Q_OBJECT
+
+public:
+    UpdateDelegateJob( ExchangeServices* service, QObject* parent = 0 );
+    void setRequest( const TNS__UpdateDelegateType& arg0 );
+    TNS__UpdateDelegateType request() const;
+    TNS__UpdateDelegateResponseMessageType updateDelegateResult() const;
+    T__ServerVersionInfo serverVersion() const;
+
+protected:
+    void doStart();
+
+private Q_SLOTS:
+    void slotFinished( KDSoapPendingCallWatcher* watcher );
+
+private:
+    ExchangeServices *mService;
+    TNS__UpdateDelegateType mRequest;
+    TNS__UpdateDelegateResponseMessageType mResultUpdateDelegateResult;
+    T__ServerVersionInfo mResultHeaderServerVersion;
+};
+
+class T__ReferenceItemResponseType : public T__ResponseObjectType
+{
+public:
+    void setReferenceItemId( const T__ItemIdType& referenceItemId );
+    T__ItemIdType referenceItemId() const;
+    void setObjectName( const QString& objectName );
+    QString objectName() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__ReferenceItemResponseType();
+    virtual ~T__ReferenceItemResponseType();
+
+public:
+    T__ReferenceItemResponseType( const T__ReferenceItemResponseType& );
+    T__ReferenceItemResponseType &operator=( const T__ReferenceItemResponseType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__SmartResponseType : public T__SmartResponseBaseType
+{
+public:
+    void setNewBodyContent( const T__BodyType& newBodyContent );
+    T__BodyType newBodyContent() const;
+    virtual KDSoapValue serialize( const QString& valueName ) const;
+    virtual void deserialize( const KDSoapValue& mainValue );
+    T__SmartResponseType();
+    virtual ~T__SmartResponseType();
+
+public:
+    T__SmartResponseType( const T__SmartResponseType& );
+    T__SmartResponseType &operator=( const T__SmartResponseType& );
+
+private:
+    class PrivateDPtr;
+    QSharedDataPointer<PrivateDPtr> d_ptr;
+};
+
+class T__MeetingResponseMessageType : public T__MeetingMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__MeetingResponseMessageType();
+    ~T__MeetingResponseMessageType();
+
+};
+
+class T__MeetingCancellationMessageType : public T__MeetingMessageType
+{
+public:
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__MeetingCancellationMessageType();
+    ~T__MeetingCancellationMessageType();
+
+};
+
+class T__PostReplyItemType : public T__PostReplyItemBaseType
+{
+public:
+    void setNewBodyContent( const T__BodyType& newBodyContent );
+    T__BodyType newBodyContent() const;
+    KDSoapValue serialize( const QString& valueName ) const;
+    void deserialize( const KDSoapValue& mainValue );
+    T__PostReplyItemType();
+    ~T__PostReplyItemType();
+
+public:
+    T__PostReplyItemType( const T__PostReplyItemType& );
+    T__PostReplyItemType &operator=( const T__PostReplyItemType& );
 
 private:
     class PrivateDPtr;
@@ -9849,375 +10211,13 @@ private:
     QSharedDataPointer<PrivateDPtr> d_ptr;
 };
 
-/**
-    Abstract base type for reply objects
- */
-class T__ResponseObjectType : public T__ResponseObjectCoreType
-{
-public:
-    void setObjectName( const QString& objectName );
-    QString objectName() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__ResponseObjectType();
-    virtual ~T__ResponseObjectType();
-
-public:
-    T__ResponseObjectType( const T__ResponseObjectType& );
-    T__ResponseObjectType &operator=( const T__ResponseObjectType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class MoveFolderJob : public KDSoapJob
-{
-    Q_OBJECT
-
-public:
-    MoveFolderJob( ExchangeServices* service, QObject* parent = 0 );
-    void setRequest( const TNS__MoveFolderType& arg0 );
-    TNS__MoveFolderType request() const;
-    TNS__MoveFolderResponseType moveFolderResult() const;
-    T__ServerVersionInfo serverVersion() const;
-
-protected:
-    void doStart();
-
-private Q_SLOTS:
-    void slotFinished( KDSoapPendingCallWatcher* watcher );
-
-private:
-    ExchangeServices *mService;
-    TNS__MoveFolderType mRequest;
-    TNS__MoveFolderResponseType mResultMoveFolderResult;
-    T__ServerVersionInfo mResultHeaderServerVersion;
-};
-
-class CopyFolderJob : public KDSoapJob
-{
-    Q_OBJECT
-
-public:
-    CopyFolderJob( ExchangeServices* service, QObject* parent = 0 );
-    void setRequest( const TNS__CopyFolderType& arg0 );
-    TNS__CopyFolderType request() const;
-    TNS__CopyFolderResponseType copyFolderResult() const;
-    T__ServerVersionInfo serverVersion() const;
-
-protected:
-    void doStart();
-
-private Q_SLOTS:
-    void slotFinished( KDSoapPendingCallWatcher* watcher );
-
-private:
-    ExchangeServices *mService;
-    TNS__CopyFolderType mRequest;
-    TNS__CopyFolderResponseType mResultCopyFolderResult;
-    T__ServerVersionInfo mResultHeaderServerVersion;
-};
-
-class GetDelegateJob : public KDSoapJob
-{
-    Q_OBJECT
-
-public:
-    GetDelegateJob( ExchangeServices* service, QObject* parent = 0 );
-    void setRequest( const TNS__GetDelegateType& arg0 );
-    TNS__GetDelegateType request() const;
-    TNS__GetDelegateResponseMessageType getDelegateResult() const;
-    T__ServerVersionInfo serverVersion() const;
-
-protected:
-    void doStart();
-
-private Q_SLOTS:
-    void slotFinished( KDSoapPendingCallWatcher* watcher );
-
-private:
-    ExchangeServices *mService;
-    TNS__GetDelegateType mRequest;
-    TNS__GetDelegateResponseMessageType mResultGetDelegateResult;
-    T__ServerVersionInfo mResultHeaderServerVersion;
-};
-
-class AddDelegateJob : public KDSoapJob
-{
-    Q_OBJECT
-
-public:
-    AddDelegateJob( ExchangeServices* service, QObject* parent = 0 );
-    void setRequest( const TNS__AddDelegateType& arg0 );
-    TNS__AddDelegateType request() const;
-    TNS__AddDelegateResponseMessageType addDelegateResult() const;
-    T__ServerVersionInfo serverVersion() const;
-
-protected:
-    void doStart();
-
-private Q_SLOTS:
-    void slotFinished( KDSoapPendingCallWatcher* watcher );
-
-private:
-    ExchangeServices *mService;
-    TNS__AddDelegateType mRequest;
-    TNS__AddDelegateResponseMessageType mResultAddDelegateResult;
-    T__ServerVersionInfo mResultHeaderServerVersion;
-};
-
-class RemoveDelegateJob : public KDSoapJob
-{
-    Q_OBJECT
-
-public:
-    RemoveDelegateJob( ExchangeServices* service, QObject* parent = 0 );
-    void setRequest( const TNS__RemoveDelegateType& arg0 );
-    TNS__RemoveDelegateType request() const;
-    TNS__RemoveDelegateResponseMessageType removeDelegateResult() const;
-    T__ServerVersionInfo serverVersion() const;
-
-protected:
-    void doStart();
-
-private Q_SLOTS:
-    void slotFinished( KDSoapPendingCallWatcher* watcher );
-
-private:
-    ExchangeServices *mService;
-    TNS__RemoveDelegateType mRequest;
-    TNS__RemoveDelegateResponseMessageType mResultRemoveDelegateResult;
-    T__ServerVersionInfo mResultHeaderServerVersion;
-};
-
-class UpdateDelegateJob : public KDSoapJob
-{
-    Q_OBJECT
-
-public:
-    UpdateDelegateJob( ExchangeServices* service, QObject* parent = 0 );
-    void setRequest( const TNS__UpdateDelegateType& arg0 );
-    TNS__UpdateDelegateType request() const;
-    TNS__UpdateDelegateResponseMessageType updateDelegateResult() const;
-    T__ServerVersionInfo serverVersion() const;
-
-protected:
-    void doStart();
-
-private Q_SLOTS:
-    void slotFinished( KDSoapPendingCallWatcher* watcher );
-
-private:
-    ExchangeServices *mService;
-    TNS__UpdateDelegateType mRequest;
-    TNS__UpdateDelegateResponseMessageType mResultUpdateDelegateResult;
-    T__ServerVersionInfo mResultHeaderServerVersion;
-};
-
-class T__MeetingCancellationMessageType : public T__MeetingMessageType
+class T__ForwardItemType : public T__SmartResponseType
 {
 public:
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__MeetingCancellationMessageType();
-    ~T__MeetingCancellationMessageType();
-
-};
-
-class T__ReferenceItemResponseType : public T__ResponseObjectType
-{
-public:
-    void setReferenceItemId( const T__ItemIdType& referenceItemId );
-    T__ItemIdType referenceItemId() const;
-    void setObjectName( const QString& objectName );
-    QString objectName() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__ReferenceItemResponseType();
-    virtual ~T__ReferenceItemResponseType();
-
-public:
-    T__ReferenceItemResponseType( const T__ReferenceItemResponseType& );
-    T__ReferenceItemResponseType &operator=( const T__ReferenceItemResponseType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__SmartResponseBaseType : public T__ResponseObjectType
-{
-public:
-    void setSubject( const QString& subject );
-    QString subject() const;
-    void setBody( const T__BodyType& body );
-    T__BodyType body() const;
-    void setToRecipients( const T__ArrayOfRecipientsType& toRecipients );
-    T__ArrayOfRecipientsType toRecipients() const;
-    void setCcRecipients( const T__ArrayOfRecipientsType& ccRecipients );
-    T__ArrayOfRecipientsType ccRecipients() const;
-    void setBccRecipients( const T__ArrayOfRecipientsType& bccRecipients );
-    T__ArrayOfRecipientsType bccRecipients() const;
-    void setIsReadReceiptRequested( bool isReadReceiptRequested );
-    bool isReadReceiptRequested() const;
-    void setIsDeliveryReceiptRequested( bool isDeliveryReceiptRequested );
-    bool isDeliveryReceiptRequested() const;
-    void setFrom( const T__SingleRecipientType& from );
-    T__SingleRecipientType from() const;
-    void setReferenceItemId( const T__ItemIdType& referenceItemId );
-    T__ItemIdType referenceItemId() const;
-    void setObjectName( const QString& objectName );
-    QString objectName() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__SmartResponseBaseType();
-    virtual ~T__SmartResponseBaseType();
-
-public:
-    T__SmartResponseBaseType( const T__SmartResponseBaseType& );
-    T__SmartResponseBaseType &operator=( const T__SmartResponseBaseType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__PostReplyItemBaseType : public T__ResponseObjectType
-{
-public:
-    void setSubject( const QString& subject );
-    QString subject() const;
-    void setBody( const T__BodyType& body );
-    T__BodyType body() const;
-    void setReferenceItemId( const T__ItemIdType& referenceItemId );
-    T__ItemIdType referenceItemId() const;
-    void setObjectName( const QString& objectName );
-    QString objectName() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__PostReplyItemBaseType();
-    virtual ~T__PostReplyItemBaseType();
-
-public:
-    T__PostReplyItemBaseType( const T__PostReplyItemBaseType& );
-    T__PostReplyItemBaseType &operator=( const T__PostReplyItemBaseType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__SuppressReadReceiptType : public T__ReferenceItemResponseType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__SuppressReadReceiptType();
-    ~T__SuppressReadReceiptType();
-
-};
-
-class T__WellKnownResponseObjectType : public T__ResponseObjectType
-{
-public:
-    void setItemClass( const T__ItemClassType& itemClass );
-    T__ItemClassType itemClass() const;
-    void setSensitivity( const T__SensitivityChoicesType& sensitivity );
-    T__SensitivityChoicesType sensitivity() const;
-    void setBody( const T__BodyType& body );
-    T__BodyType body() const;
-    void setAttachments( const T__NonEmptyArrayOfAttachmentsType& attachments );
-    T__NonEmptyArrayOfAttachmentsType attachments() const;
-    void setInternetMessageHeaders( const T__NonEmptyArrayOfInternetHeadersType& internetMessageHeaders );
-    T__NonEmptyArrayOfInternetHeadersType internetMessageHeaders() const;
-    void setSender( const T__SingleRecipientType& sender );
-    T__SingleRecipientType sender() const;
-    void setToRecipients( const T__ArrayOfRecipientsType& toRecipients );
-    T__ArrayOfRecipientsType toRecipients() const;
-    void setCcRecipients( const T__ArrayOfRecipientsType& ccRecipients );
-    T__ArrayOfRecipientsType ccRecipients() const;
-    void setBccRecipients( const T__ArrayOfRecipientsType& bccRecipients );
-    T__ArrayOfRecipientsType bccRecipients() const;
-    void setIsReadReceiptRequested( bool isReadReceiptRequested );
-    bool isReadReceiptRequested() const;
-    void setIsDeliveryReceiptRequested( bool isDeliveryReceiptRequested );
-    bool isDeliveryReceiptRequested() const;
-    void setFrom( const T__SingleRecipientType& from );
-    T__SingleRecipientType from() const;
-    void setReferenceItemId( const T__ItemIdType& referenceItemId );
-    T__ItemIdType referenceItemId() const;
-    void setObjectName( const QString& objectName );
-    QString objectName() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__WellKnownResponseObjectType();
-    virtual ~T__WellKnownResponseObjectType();
-
-public:
-    T__WellKnownResponseObjectType( const T__WellKnownResponseObjectType& );
-    T__WellKnownResponseObjectType &operator=( const T__WellKnownResponseObjectType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__SmartResponseType : public T__SmartResponseBaseType
-{
-public:
-    void setNewBodyContent( const T__BodyType& newBodyContent );
-    T__BodyType newBodyContent() const;
-    virtual KDSoapValue serialize( const QString& valueName ) const;
-    virtual void deserialize( const KDSoapValue& mainValue );
-    T__SmartResponseType();
-    virtual ~T__SmartResponseType();
-
-public:
-    T__SmartResponseType( const T__SmartResponseType& );
-    T__SmartResponseType &operator=( const T__SmartResponseType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__RemoveItemType : public T__ResponseObjectType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__RemoveItemType();
-    ~T__RemoveItemType();
-
-};
-
-class T__PostReplyItemType : public T__PostReplyItemBaseType
-{
-public:
-    void setNewBodyContent( const T__BodyType& newBodyContent );
-    T__BodyType newBodyContent() const;
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__PostReplyItemType();
-    ~T__PostReplyItemType();
-
-public:
-    T__PostReplyItemType( const T__PostReplyItemType& );
-    T__PostReplyItemType &operator=( const T__PostReplyItemType& );
-
-private:
-    class PrivateDPtr;
-    QSharedDataPointer<PrivateDPtr> d_ptr;
-};
-
-class T__DeclineItemType : public T__WellKnownResponseObjectType
-{
-public:
-    KDSoapValue serialize( const QString& valueName ) const;
-    void deserialize( const KDSoapValue& mainValue );
-    T__DeclineItemType();
-    ~T__DeclineItemType();
+    T__ForwardItemType();
+    ~T__ForwardItemType();
 
 };
 
@@ -10231,13 +10231,13 @@ public:
 
 };
 
-class T__TentativelyAcceptItemType : public T__WellKnownResponseObjectType
+class T__DeclineItemType : public T__WellKnownResponseObjectType
 {
 public:
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__TentativelyAcceptItemType();
-    ~T__TentativelyAcceptItemType();
+    T__DeclineItemType();
+    ~T__DeclineItemType();
 
 };
 
@@ -10251,13 +10251,13 @@ public:
 
 };
 
-class T__ForwardItemType : public T__SmartResponseType
+class T__TentativelyAcceptItemType : public T__WellKnownResponseObjectType
 {
 public:
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__ForwardItemType();
-    ~T__ForwardItemType();
+    T__TentativelyAcceptItemType();
+    ~T__TentativelyAcceptItemType();
 
 };
 
@@ -10271,13 +10271,13 @@ public:
 
 };
 
-class T__AcceptItemType : public T__WellKnownResponseObjectType
+class T__SuppressReadReceiptType : public T__ReferenceItemResponseType
 {
 public:
     KDSoapValue serialize( const QString& valueName ) const;
     void deserialize( const KDSoapValue& mainValue );
-    T__AcceptItemType();
-    ~T__AcceptItemType();
+    T__SuppressReadReceiptType();
+    ~T__SuppressReadReceiptType();
 
 };
 
