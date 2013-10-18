@@ -1,0 +1,71 @@
+/***************************************************************************
+ *   Copyright (C) 2013 Daniel Nicoletti <dantti12@gmail.com>              *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
+ ***************************************************************************/
+
+#ifndef EWSAUTODISCOVER_H
+#define EWSAUTODISCOVER_H
+
+#include "ewsexport.h"
+
+#include <QObject>
+#include <QUrl>
+#include <QDomDocument>
+
+class EwsConnection;
+class EwsAutoDiscoverReply;
+class EWS_EXPORT EwsAutoDiscover : public QObject
+{
+    Q_OBJECT
+public:
+    explicit EwsAutoDiscover(QObject *parent = 0);
+    
+    void autodiscover(const QString &emailAddress, const QString &username, const QString &password);
+    bool isValid() const;
+    QString errorMessage() const;
+    QUrl uri() const;
+    QString emailAddress() const;
+    QString asUrl() const;
+    QString oabUrl() const;
+
+signals:
+    void finished();
+
+private slots:
+
+    void requestFinished();
+    void resultsReady();
+
+private:
+    void performAutoDiscover(const QUrl &uri);
+    bool parseAutoDiscover(const QDomDocument &document);
+    bool parseAutoDiscoverProtocol(const QDomElement &element);
+    QUrl autodiscoverUrl(const QString &scheme, const QUrl &url);
+
+    EwsConnection *m_connection;
+    QList<EwsAutoDiscoverReply*> m_replies;
+    bool m_srvLookupDone;
+    bool m_valid;
+    QUrl m_uri;
+    QDomDocument m_message;
+    QString m_emailAddress;
+    QString m_asUrl;
+    QString m_oabUrl;
+    QString m_errorMessage;
+};
+
+#endif // EWSAUTODISCOVER_H
