@@ -85,7 +85,7 @@ EwsSyncFolderHierarchyReply *EwsConnection::syncFolderHierarch(EwsFolder::BaseSh
     shape.setBaseShape(baseShape);
     request.setFolderShape(shape);
 
-//    if (!folderId.isEmpty()) {
+    if (!folderId.isEmpty()) {
         qDebug() << Q_FUNC_INFO << folderId;
 
         T__FolderIdType folderType;
@@ -94,11 +94,11 @@ EwsSyncFolderHierarchyReply *EwsConnection::syncFolderHierarch(EwsFolder::BaseSh
         T__TargetFolderIdType folder;
         folder.setFolderId(folderType);
         request.setSyncFolderId(folder);
-//    }
+    }
 
     if (!syncState.isEmpty()) {
-//        qDebug() << Q_FUNC_INFO << syncState;
-//        request.setSyncState(syncState);
+        qDebug() << Q_FUNC_INFO << syncState;
+        request.setSyncState(syncState);
     }
 
     ExchangeServices *service = new ExchangeServices;

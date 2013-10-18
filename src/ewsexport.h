@@ -31,13 +31,13 @@
 #include <QtCore/QtGlobal>
 
 #ifndef EWS_EXPORT
-//# if defined(MAKE_EWS_LIB)
+# if defined(MAKE_EWS_LIB)
 /* We are building this library */
 #  define EWS_EXPORT Q_DECL_EXPORT
-//# else
+# else
 /* We are using this library */
-//#  define EWS_EXPORT Q_DECL_IMPORT
-//# endif
+#  define EWS_EXPORT Q_DECL_IMPORT
+# endif
 #endif
 
 #endif // EWSEXPORT_H

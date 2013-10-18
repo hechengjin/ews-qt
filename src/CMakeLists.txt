@@ -34,6 +34,7 @@ set(libews_qt_SRCS
 )
 
 set(ewsqt_HEADERS
+    ewsexport.h
     ESoapNamespaces.h
     ESoapMessage.h
     ESoapElement.h
@@ -51,9 +52,10 @@ set(ewsqt_HEADERS
     EwsConnection.h
 )
 
-add_library(libews-qt5 SHARED ${libews_qt_SRCS})
-set_target_properties(libews-qt5 PROPERTIES VERSION ${EWSQT_VERSION} SOVERSION ${EWSQT_API_LEVEL})
-target_link_libraries(libews-qt5
+add_library(ews-qt5 SHARED ${libews_qt_SRCS})
+set_target_properties(ews-qt5 PROPERTIES VERSION ${EWSQT_VERSION} SOVERSION ${EWSQT_API_LEVEL})
+set_property(TARGET ews-qt5 PROPERTY COMPILE_DEFINITIONS MAKE_EWS_LIB)
+target_link_libraries(ews-qt5
     ${Qt5Widgets_LIBRARIES}
     ${Qt5Quick_LIBRARIES}
     ${Qt5Network_LIBRARIES}
@@ -63,16 +65,14 @@ target_link_libraries(libews-qt5
     -lresolv
 )
 
-set_property(TARGET libews-qt5 PROPERTY COMPILE_DEFINITIONS UDISKS_STATIC)
+set_property(TARGET ews-qt5 PROPERTY COMPILE_DEFINITIONS UDISKS_STATIC)
 
-install(TARGETS libews-qt5 DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(TARGETS ews-qt5 DESTINATION ${CMAKE_INSTALL_LIBDIR})
 #install(FILES ${CMAKE_CURRENT_BINARY_DIR}/libews-qt5.pc
 #        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
 #)
 install(FILES ${ewsqt_HEADERS}
         DESTINATION include/EwsQt5
 )
-
-set_property(TARGET libews-qt5 PROPERTY COMPILE_DEFINITIONS MAKE_EWS_LIB)
 
 add_subdirectory(modules)
