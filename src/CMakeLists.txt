@@ -52,14 +52,10 @@ set(ewsqt_HEADERS
 add_library(ews-qt5 SHARED ${libews_qt_SRCS})
 set_target_properties(ews-qt5 PROPERTIES VERSION ${EWSQT_VERSION} SOVERSION ${EWSQT_API_LEVEL})
 set_property(TARGET ews-qt5 PROPERTY COMPILE_DEFINITIONS MAKE_EWS_LIB)
+
+qt5_use_modules(ews-qt5 Core Network)
 target_link_libraries(ews-qt5
-    ${Qt5Widgets_LIBRARIES}
-    ${Qt5Quick_LIBRARIES}
-    ${Qt5Network_LIBRARIES}
-    ${Qt5Xml_LIBRARIES}
-    ${Qt5Core_LIBRARIES}
     KDSoap::kdsoap
-    -lresolv
 )
 
 set_property(TARGET ews-qt5 PROPERTY COMPILE_DEFINITIONS UDISKS_STATIC)
