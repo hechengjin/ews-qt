@@ -23,6 +23,7 @@
 
 class EwsReply;
 class EwsConnection;
+class EwsFolderPrivate;
 class EWS_EXPORT EwsFolder
 {
     Q_GADGET
@@ -96,10 +97,13 @@ public:
      * @param changeKey required on rename operation
      */
     EwsFolder(EwsConnection *connection, const QString &folderId, const QString &changeKey = QString());
-    EwsFolder(const ESoapElement &rootElement);
+    EwsFolder();
+    virtual ~EwsFolder();
 
     QString id() const;
+    void setId(const QString &id);
     QString changeKey() const;
+    void setChangeKey(const QString &changeKey);
     WellKnownFolderName wellKnownFolderName() const;
     QString wellKnownFolderNameString() const;
     QString folderClass() const;
@@ -117,21 +121,12 @@ public:
     EwsReply *update() const;
     EwsReply *remove(DeleteType mode) const;
 
+protected:
+    Q_DECLARE_PRIVATE(EwsFolder)
+    EwsFolderPrivate *d_ptr;
+
 private:
-    WellKnownFolderName m_wellKnownFolderName;
-    QString m_id;
-    QString m_changeKey;
-    QString m_folderClass;
-    QString m_parentId;
-    QString m_parentChangeKey;
-    QString m_displayName;
-    EwsEffectiveRights m_effectiveRights;
-    int m_totalCount;
-    int m_unreadCount;
-    int m_childFolderCount;
-    QList<EwsPermission> m_permissions;
-    QHash<QString, QString> m_changes;
-    EwsConnection *m_connection;
+    friend class EwsSyncFolderHierarchyReplyPrivate;
 };
 
 #endif // EWSFOLDER_H

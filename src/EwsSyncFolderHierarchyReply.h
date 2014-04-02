@@ -17,18 +17,16 @@
 #define EWSSYNCFOLDERHIERARCHYREPLY_H
 
 #include "ewsexport.h"
-#include "EwsReply.h"
 #include "EwsFolder.h"
 
 #include <QStringList>
 
 class EwsSyncFolderHierarchyReplyPrivate;
-class EWS_EXPORT EwsSyncFolderHierarchyReply : public EwsReply
+class EWS_EXPORT EwsSyncFolderHierarchyReply : public QObject
 {
     Q_OBJECT
 public:
-    EwsSyncFolderHierarchyReply(QNetworkReply *reply);
-    EwsSyncFolderHierarchyReply(void *reply);
+    EwsSyncFolderHierarchyReply(QObject *exchangeServices);
 
     QString responseCode() const;
     QString syncState() const;
@@ -41,9 +39,6 @@ public:
      * @return returns a list of IDs to be deleted
      */
     QStringList deleteFolders() const;
-
-protected:
-    virtual bool parseDocument(ESoapElement &response);
 
 private:
     Q_DECLARE_PRIVATE(EwsSyncFolderHierarchyReply)

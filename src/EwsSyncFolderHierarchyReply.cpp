@@ -15,19 +15,14 @@
 
 #include "EwsSyncFolderHierarchyReply.h"
 #include "EwsSyncFolderHierarchyReply_p.h"
+#include "EwsFolder_p.h"
 
 #include <QDebug>
 
-EwsSyncFolderHierarchyReply::EwsSyncFolderHierarchyReply(QNetworkReply *reply) :
-    EwsReply(reply, QLatin1String("SyncFolderHierarchy"))
-{
-}
-
-EwsSyncFolderHierarchyReply::EwsSyncFolderHierarchyReply(void *reply) :
-    EwsReply(reply),
+EwsSyncFolderHierarchyReply::EwsSyncFolderHierarchyReply(QObject *exchangeServices) :
     d_ptr(new EwsSyncFolderHierarchyReplyPrivate)
 {
-    ExchangeServices *service = static_cast<ExchangeServices*>(reply);
+    ExchangeServices *service = qobject_cast<ExchangeServices*>(exchangeServices);
 
     connect(service, SIGNAL(syncFolderHierarchyDone(TNS__SyncFolderHierarchyResponseType)),
             d_ptr, SLOT(syncFolderHierarchyDone(TNS__SyncFolderHierarchyResponseType)));
@@ -71,58 +66,6 @@ QStringList EwsSyncFolderHierarchyReply::deleteFolders() const
     return d->deleteFolders;
 }
 
-bool EwsSyncFolderHierarchyReply::parseDocument(ESoapElement &response)
-{
-//    ESoapElement element;
-//    element = response.firstChildTypedElement(QLatin1String("SyncState"), EWS_MESSAGES_NS);
-//    if (!element.isNull()) {
-//        m_syncState = element.text();
-//    }
-
-//    element = response.firstChildTypedElement(QLatin1String("IncludesLastFolderInRange"), EWS_MESSAGES_NS);
-//    if (!element.isNull()) {
-//        m_includesLastFolderInRange = element.text() == QLatin1String("true");
-//    }
-
-//    element = response.firstChildTypedElement(QLatin1String("ResponseCode"), EWS_MESSAGES_NS);
-//    if (!element.isNull()) {
-//        m_responseCode = element.text();
-//    }
-
-//    element = response.firstChildTypedElement(QLatin1String("MessageText"), EWS_MESSAGES_NS);
-//    if (!element.isNull()) {
-//        m_messageText = element.text();
-//    }
-
-//    ESoapElement changes = response.firstChildTypedElement(QLatin1String("Changes"), EWS_MESSAGES_NS);
-//    if (!changes.isNull()) {
-//        element = changes.firstChildElement();
-//        while (!element.isNull()) {
-//            if (element.equalNS(QLatin1String("Create"), EWS_TYPES_NS)) {
-//                ESoapElement childElement = element.firstChildElement();
-//                if (childElement.equalNS(QLatin1String("Folder"), EWS_TYPES_NS)) {
-//                    m_createFolders << EwsFolder(childElement);
-//                }
-//            } else if (element.equalNS(QLatin1String("Update"), EWS_TYPES_NS)) {
-//                ESoapElement childElement = element.firstChildElement();
-//                if (childElement.equalNS(QLatin1String("Folder"), EWS_TYPES_NS)) {
-//                    m_updateFolders << EwsFolder(childElement);
-//                }
-//            } else if (element.equalNS(QLatin1String("Delete"), EWS_TYPES_NS)) {
-//                ESoapElement childElement = element.firstChildElement();
-//                m_deleteFolders << childElement.attribute(QLatin1String("Id"));
-//            } else {
-//                qWarning() << Q_FUNC_INFO << "Unknown Changes child:" <<  element.nodeName();
-//            }
-
-//            element = element.nextSiblingElement();
-//        }
-//    }
-
-    return true;
-}
-
-
 EwsSyncFolderHierarchyReplyPrivate::EwsSyncFolderHierarchyReplyPrivate() :
     includesLastFolderInRange(false)
 {
@@ -149,11 +92,24 @@ void EwsSyncFolderHierarchyReplyPrivate::syncFolderHierarchyDone(const TNS__Sync
         qDebug() << "update" <<  changes.update().size();
         foreach (const T__SyncFolderHierarchyCreateOrUpdateType &create, changes.create()) {
             qDebug() << create.folder().displayName();
+            EwsFolder folder;
+            qDebug() << folder.d_ptr;
+//            folder.d_ptr->setData(create.folder());
+//            createFolders << folder;
         }
 
-        foreach (const T__SyncFolderHierarchyCreateOrUpdateType &create, changes.create()) {
-            qDebug() << Q_FUNC_INFO << create.calendarFolder().displayName();
+        foreach (const T__SyncFolderHierarchyCreateOrUpdateType &update, changes.update()) {
+            qDebug() << Q_FUNC_INFO << update.folder().displayName();
+            EwsFolder folder;
+            folder.d_ptr->setData(update.folder());
+//            updateFolders << folder;
         }
+
+        foreach (const T__SyncFolderHierarchyDeleteType &deleteFolder, changes.delete_()) {
+            qDebug() << Q_FUNC_INFO << deleteFolder.folderId().id();
+            deleteFolders << deleteFolder.folderId().id();
+        }
+
         qDebug() << Q_FUNC_INFO << msg.includesLastFolderInRange();
         qDebug() << Q_FUNC_INFO << msg.responseCode();
         qDebug() << Q_FUNC_INFO << msg.messageText();
@@ -166,5 +122,3 @@ void EwsSyncFolderHierarchyReplyPrivate::syncFolderHierarchyError(const KDSoapMe
 {
     qDebug() << Q_FUNC_INFO << fault.faultAsString();
 }
-
-#include "moc_EwsSyncFolderHierarchyReply.cpp"

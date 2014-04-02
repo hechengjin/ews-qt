@@ -30,11 +30,14 @@ class EwsAutoDiscoverReply;
 class EwsReply;
 class EwsSyncFolderItemsReply;
 class EwsSyncFolderHierarchyReply;
+class EwsConnectionPrivate;
 class EWS_EXPORT EwsConnection : public QObject
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(EwsConnection)
 public:
     explicit EwsConnection(QObject *parent = 0, QNetworkAccessManager *networkAccessManager = 0);
+    ~EwsConnection();
 
     EwsReply *getFolders(const QList<EwsFolder> &folders, EwsFolder::BaseShape folderShape);
     EwsReply *deleteFolders(const QList<EwsFolder> &folders, EwsFolder::DeleteType mode);
@@ -42,7 +45,8 @@ public:
     EwsSyncFolderItemsReply *syncFolderItems(EwsFolder::BaseShape itemShape, const QString &folderId, int maxChanges, const QString &syncState = QString());
 
     void setUri(const QUrl &uri);
-    EwsRequest::ServerVersion serverVersion();
+    EwsRequest::ServerVersion serverVersion() const;
+    void setServerVersion(EwsRequest::ServerVersion version);
 
     QNetworkReply *post(const EwsRequest &message);
     EwsAutoDiscoverReply *post(const QUrl &url, const QDomDocument &document);
@@ -60,22 +64,15 @@ protected:
      */
     QNetworkReply *postDocument(const QUrl &url, const QDomDocument &document);
 
+    EwsConnectionPrivate *d_ptr;
+
 private slots:
     void sslErrors(QNetworkReply *reply, const QList<QSslError> &errors);
 
 private:
     friend class EwsAutoDiscoverReply;
 
-    /**
-     * @brief appendFoldersIdsToElement convenience function to add folders to an Element
-     * @param folders
-     * @param element
-     */
-    static void appendFoldersIdsToElement(const QList<EwsFolder> &folders, ESoapElement element);
-
     QNetworkAccessManager *m_networkMgr;
-    QUrl m_uri;
-    EwsRequest::ServerVersion m_serverVersion;
 };
 
 #endif // EWSCONNECTION_H

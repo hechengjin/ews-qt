@@ -17,22 +17,20 @@
 #define EWSSYNCFOLDERITEMSREPLY_H
 
 #include "ewsexport.h"
-#include "EwsReply.h"
 #include "EwsMessage.h"
 
-class EWS_EXPORT EwsSyncFolderItemsReply : public EwsReply
+class EwsSyncFolderItemsReplyPrivate;
+class EWS_EXPORT EwsSyncFolderItemsReply : public QObject
 {
     Q_OBJECT
 public:
-    EwsSyncFolderItemsReply(QNetworkReply *reply);
-
     QString responseCode() const;
     QString syncState() const;
     bool includesLastItemInRange() const;
     QList<EwsMessage> createMessages() const;
 
 protected:
-    virtual bool parseDocument(ESoapElement &response);
+    EwsSyncFolderItemsReply(QObject *reply);
 
 private:
     QString m_messageText;
@@ -40,6 +38,11 @@ private:
     QString m_syncState;
     bool m_includesLastItemInRange;
     QList<EwsMessage> m_createMessages;
+
+private:
+    friend class EwsConnection;
+    Q_DECLARE_PRIVATE(EwsSyncFolderItemsReply)
+    EwsSyncFolderItemsReplyPrivate *d_ptr;
 };
 
 #endif // EWSSYNCFOLDERITEMSREPLY_H

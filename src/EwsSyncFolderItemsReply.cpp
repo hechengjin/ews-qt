@@ -13,13 +13,19 @@
  *
  */
 
-#include "EwsSyncFolderItemsReply.h"
+#include "EwsSyncFolderItemsReply_p.h"
+#include "wsdl_Services.h"
 
 #include <QDebug>
 
-EwsSyncFolderItemsReply::EwsSyncFolderItemsReply(QNetworkReply *reply) :
-    EwsReply(reply, QLatin1String("SyncFolderItems"))
+EwsSyncFolderItemsReply::EwsSyncFolderItemsReply(QObject *exchangeServices)
 {
+    ExchangeServices *service = qobject_cast<ExchangeServices*>(exchangeServices);
+
+    connect(service, SIGNAL(syncFolderItemsDone(TNS__SyncFolderItemsResponseType)),
+            d_ptr, SLOT(syncFolderItemsDone(TNS__SyncFolderItemsResponseType)));
+    connect(service, SIGNAL(syncFolderHierarchyError(KDSoapMessage)),
+            d_ptr, SLOT(syncFolderHierarchyError(KDSoapMessage)));
 }
 
 QString EwsSyncFolderItemsReply::responseCode() const
@@ -42,47 +48,58 @@ QList<EwsMessage> EwsSyncFolderItemsReply::createMessages() const
     return m_createMessages;
 }
 
-bool EwsSyncFolderItemsReply::parseDocument(ESoapElement &response)
+//bool EwsSyncFolderItemsReply::parseDocument(ESoapElement &response)
+//{
+//    ESoapElement element;
+//    element = response.firstChildTypedElement(QLatin1String("SyncState"), EWS_MESSAGES_NS);
+//    if (!element.isNull()) {
+//        m_syncState = element.text();
+//    }
+
+//    element = response.firstChildTypedElement(QLatin1String("IncludesLastItemInRange"), EWS_MESSAGES_NS);
+//    if (!element.isNull()) {
+//        m_includesLastItemInRange = element.text() == QLatin1String("true");
+//    }
+
+//    element = response.firstChildTypedElement(QLatin1String("ResponseCode"), EWS_MESSAGES_NS);
+//    if (!element.isNull()) {
+//        m_responseCode = element.text();
+//    }
+
+//    element = response.firstChildTypedElement(QLatin1String("MessageText"), EWS_MESSAGES_NS);
+//    if (!element.isNull()) {
+//        m_messageText = element.text();
+//    }
+
+//    ESoapElement changes = response.firstChildTypedElement(QLatin1String("Changes"), EWS_MESSAGES_NS);
+//    if (!changes.isNull()) {
+//        element = changes.firstChildElement();
+//        while (!element.isNull()) {
+//            if (element.equalNS(QLatin1String("Create"), EWS_TYPES_NS)) {
+//                ESoapElement childElement = element.firstChildElement();
+//                if (childElement.equalNS(QLatin1String("Message"), EWS_TYPES_NS)) {
+//                    m_createMessages << EwsMessage(childElement);
+//                }
+//            } else {
+//                qWarning() << Q_FUNC_INFO << "Unknown Changes child:" <<  element.nodeName();
+//            }
+
+//            element = element.nextSiblingElement();
+//        }
+//    } else {
+//        qWarning() << Q_FUNC_INFO << "Changes is null";
+//    }
+
+//    return true;
+//}
+
+
+void EwsSyncFolderItemsReplyPrivate::syncFolderItemsDone(const TNS__SyncFolderItemsResponseType &syncFolderItemsResult)
 {
-    ESoapElement element;
-    element = response.firstChildTypedElement(QLatin1String("SyncState"), EWS_MESSAGES_NS);
-    if (!element.isNull()) {
-        m_syncState = element.text();
-    }
 
-    element = response.firstChildTypedElement(QLatin1String("IncludesLastItemInRange"), EWS_MESSAGES_NS);
-    if (!element.isNull()) {
-        m_includesLastItemInRange = element.text() == QLatin1String("true");
-    }
+}
 
-    element = response.firstChildTypedElement(QLatin1String("ResponseCode"), EWS_MESSAGES_NS);
-    if (!element.isNull()) {
-        m_responseCode = element.text();
-    }
+void EwsSyncFolderItemsReplyPrivate::syncFolderItemsError(const KDSoapMessage &fault)
+{
 
-    element = response.firstChildTypedElement(QLatin1String("MessageText"), EWS_MESSAGES_NS);
-    if (!element.isNull()) {
-        m_messageText = element.text();
-    }
-
-    ESoapElement changes = response.firstChildTypedElement(QLatin1String("Changes"), EWS_MESSAGES_NS);
-    if (!changes.isNull()) {
-        element = changes.firstChildElement();
-        while (!element.isNull()) {
-            if (element.equalNS(QLatin1String("Create"), EWS_TYPES_NS)) {
-                ESoapElement childElement = element.firstChildElement();
-                if (childElement.equalNS(QLatin1String("Message"), EWS_TYPES_NS)) {
-                    m_createMessages << EwsMessage(childElement);
-                }
-            } else {
-                qWarning() << Q_FUNC_INFO << "Unknown Changes child:" <<  element.nodeName();
-            }
-
-            element = element.nextSiblingElement();
-        }
-    } else {
-        qWarning() << Q_FUNC_INFO << "Changes is null";
-    }
-
-    return true;
 }

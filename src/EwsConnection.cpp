@@ -13,9 +13,10 @@
  *
  */
 
-#include "EwsConnection.h"
+#include "EwsConnection_p.h"
 
 #include "EwsRequest.h"
+#include "EwsReply.h"
 #include "EwsAutoDiscoverReply.h"
 
 #include "EwsSyncFolderHierarchyReply.h"
@@ -32,8 +33,12 @@
 #include <QDebug>
 
 EwsConnection::EwsConnection(QObject *parent, QNetworkAccessManager *networkAccessManager) :
-    QObject(parent)
+    QObject(parent),
+    d_ptr(new EwsConnectionPrivate)
 {
+    Q_D(EwsConnection);
+
+    d->service = new ExchangeServices(this);
     if (networkAccessManager) {
         m_networkMgr = networkAccessManager;
     } else {
@@ -42,41 +47,82 @@ EwsConnection::EwsConnection(QObject *parent, QNetworkAccessManager *networkAcce
     connect(m_networkMgr, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
             SLOT(sslErrors(QNetworkReply*,QList<QSslError>)));
 
-    ESoapNamespaces::instance()->registerNamespace("t", EWS_TYPES_NS);
-    ESoapNamespaces::instance()->registerNamespace("m", EWS_MESSAGES_NS);
-    m_serverVersion = EwsRequest::Exchange2007_SP1;
+//    ESoapNamespaces::instance()->registerNamespace("t", EWS_TYPES_NS);
+//    ESoapNamespaces::instance()->registerNamespace("m", EWS_MESSAGES_NS);
+    setServerVersion(EwsRequest::Exchange2007);
+}
+
+EwsConnection::~EwsConnection()
+{
+    delete d_ptr;
 }
 
 EwsReply *EwsConnection::getFolders(const QList<EwsFolder> &folders, EwsFolder::BaseShape folderShape)
 {
-    EwsRequest message(QLatin1String("GetFolder"), m_serverVersion);
+    Q_D(EwsConnection);
 
-    ESoapElement folderShapeElement = message.createElement(QLatin1String("FolderShape"));
-    message.method().appendChild(folderShapeElement);
+    TNS__GetFolderType request;
 
-    ESoapElement baseShape = message.createTypedElement(QLatin1String("BaseShape"), EWS_TYPES_NS);
-    baseShape.setText(EwsUtils::enumToString<EwsFolder>("BaseShape", folderShape));
-    folderShapeElement.appendChild(baseShape);
+    T__NonEmptyArrayOfBaseFolderIdsType baseFolderIds;
+    QList<T__FolderIdType> folderIds;
+    foreach (const EwsFolder &folder, folders) {
+        T__FolderIdType folderId;
+        folderId.setId(folder.id());
+        folderId.setChangeKey(folder.changeKey());
+        folderIds << folderId;
+    }
+    baseFolderIds.setFolderId(folderIds);
+    request.setFolderIds(baseFolderIds);
 
-    appendFoldersIdsToElement(folders, message.method());
+    GetFolderJob *job = new GetFolderJob(d->service, this);
+    job->setRequest(request);
+    job->start();
 
-    return new EwsReply(post(message), message.methodName());
+    return new EwsReply(job);
 }
 
 EwsReply *EwsConnection::deleteFolders(const QList<EwsFolder> &folders, EwsFolder::DeleteType mode)
 {
-    EwsRequest message(QLatin1String("DeleteFolder"), m_serverVersion);
+    Q_D(EwsConnection);
 
-    message.method().setAttribute(QLatin1String("DeleteType"),
-                                  EwsUtils::enumToString<EwsFolder>("DeleteType", mode));
+    TNS__DeleteFolderType request;
 
-    appendFoldersIdsToElement(folders, message.method());
+    T__DisposalType deleteMode;
+    switch (mode) {
+    case EwsFolder::HardDelete:
+        deleteMode.setType(T__DisposalType::HardDelete);
+        break;
+    case EwsFolder::MoveToDeletedItems:
+        deleteMode.setType(T__DisposalType::MoveToDeletedItems);
+        break;
+    case EwsFolder::SoftDelete:
+        deleteMode.setType(T__DisposalType::SoftDelete);
+        break;
+    }
+    request.setDeleteType(deleteMode);
 
-    return new EwsReply(post(message), message.methodName());
+    T__NonEmptyArrayOfBaseFolderIdsType baseFolderIds;
+    QList<T__FolderIdType> folderIds;
+    foreach (const EwsFolder &folder, folders) {
+        T__FolderIdType folderId;
+        folderId.setId(folder.id());
+        folderId.setChangeKey(folder.changeKey());
+        folderIds << folderId;
+    }
+    baseFolderIds.setFolderId(folderIds);
+    request.setFolderIds(baseFolderIds);
+
+    DeleteFolderJob *job = new DeleteFolderJob(d->service, this);
+    job->setRequest(request);
+    job->start();
+
+    return new EwsReply(job);
 }
 
 EwsSyncFolderHierarchyReply *EwsConnection::syncFolderHierarch(EwsFolder::BaseShape folderShape, const QString &folderId, const QString &syncState)
 {
+    Q_D(EwsConnection);
+
     TNS__SyncFolderHierarchyType request;
 
     T__DefaultShapeNamesType baseShape;
@@ -86,8 +132,6 @@ EwsSyncFolderHierarchyReply *EwsConnection::syncFolderHierarch(EwsFolder::BaseSh
     request.setFolderShape(shape);
 
     if (!folderId.isEmpty()) {
-        qDebug() << Q_FUNC_INFO << folderId;
-
         T__FolderIdType folderType;
         folderType.setId(folderId);
 
@@ -97,88 +141,89 @@ EwsSyncFolderHierarchyReply *EwsConnection::syncFolderHierarch(EwsFolder::BaseSh
     }
 
     if (!syncState.isEmpty()) {
-        qDebug() << Q_FUNC_INFO << syncState;
         request.setSyncState(syncState);
     }
 
-    ExchangeServices *service = new ExchangeServices;
-    service->setEndPoint(m_uri.toString());
-    T__ExchangeVersionType versionType(T__ExchangeVersionType::Exchange2007_SP1);
-    T__RequestServerVersion version;
-    version.setVersion(versionType);
-    service->setRequestVersionHeader(version);
-    service->asyncSyncFolderHierarchy(request);
+    SyncFolderHierarchyJob *job = new SyncFolderHierarchyJob(d->service, this);
+    job->setRequest(request);
+    job->start();
 
-
-//    EwsRequest message(QLatin1String("SyncFolderHierarchy"), m_serverVersion);
-
-//    ESoapElement folderShapeElement = message.createElement(QLatin1String("FolderShape"));
-//    message.method().appendChild(folderShapeElement);
-
-//    ESoapElement baseShape = message.createTypedElement(QLatin1String("BaseShape"), EWS_TYPES_NS);
-//    baseShape.setText(EwsUtils::enumToString<EwsFolder>("BaseShape", folderShape));
-//    folderShapeElement.appendChild(baseShape);
-
-//    if (!folderId.isEmpty()) {
-//        ESoapElement syncFolderId = message.createElement(QLatin1String("SyncFolderId"));
-//        message.method().appendChild(syncFolderId);
-//        ESoapElement folderElement = message.createTypedElement(QLatin1String("FolderId"), EWS_TYPES_NS);
-//        folderElement.setAttribute(QLatin1String("Id"), folderId);
-//        syncFolderId.appendChild(folderElement);
-//    }
-
-//    if (!syncState.isEmpty()) {
-//        ESoapElement syncElement = message.createElement(QLatin1String("SyncState"));
-//        syncElement.setText(syncState);
-//        message.method().appendChild(syncElement);
-//    }
-
-    return new EwsSyncFolderHierarchyReply(service);
+    return new EwsSyncFolderHierarchyReply(job);
 }
 
 EwsSyncFolderItemsReply *EwsConnection::syncFolderItems(EwsFolder::BaseShape itemShape, const QString &folderId, int maxChanges, const QString &syncState)
 {
-    EwsRequest message(QLatin1String("SyncFolderItems"), m_serverVersion);
+    Q_D(EwsConnection);
 
-    ESoapElement folderShape = message.createElement(QLatin1String("ItemShape"));
-    message.method().appendChild(folderShape);
+    TNS__SyncFolderItemsType request;
 
-    ESoapElement baseShape = message.createTypedElement(QLatin1String("BaseShape"), EWS_TYPES_NS);
-    baseShape.setText(EwsUtils::enumToString<EwsFolder>("BaseShape", itemShape));
-    folderShape.appendChild(baseShape);
+    T__DefaultShapeNamesType baseShape;
+    baseShape.setType(T__DefaultShapeNamesType::AllProperties);
+    T__ItemResponseShapeType shape;
+    shape.setBaseShape(baseShape);
+    request.setItemShape(shape);
 
-    ESoapElement syncFolderId = message.createElement(QLatin1String("SyncFolderId"));
-    message.method().appendChild(syncFolderId);
-    ESoapElement folderElement = message.createTypedElement(QLatin1String("FolderId"), EWS_TYPES_NS);
-    folderElement.setAttribute(QLatin1String("Id"), folderId);
-    syncFolderId.appendChild(folderElement);
+    if (!folderId.isEmpty()) {
+        T__FolderIdType folderType;
+        folderType.setId(folderId);
 
-    ESoapElement maxChangesElement = message.createElement(QLatin1String("MaxChangesReturned"));
-    maxChangesElement.setText(QString::number(maxChanges));
-    message.method().appendChild(maxChangesElement);
-
-    if (!syncState.isEmpty()) {
-        ESoapElement syncElement = message.createElement(QLatin1String("SyncState"));
-        syncElement.setText(syncState);
-        message.method().appendChild(syncElement);
+        T__TargetFolderIdType folder;
+        folder.setFolderId(folderType);
+        request.setSyncFolderId(folder);
     }
 
-    return new EwsSyncFolderItemsReply(post(message));
+    if (!syncState.isEmpty()) {
+        request.setSyncState(syncState);
+    }
+
+    T__MaxSyncChangesReturnedType maxSyncChanges;
+    maxSyncChanges.setValue(maxChanges);
+    request.setMaxChangesReturned(maxSyncChanges);
+
+    SyncFolderItemsJob *job = new SyncFolderItemsJob(d->service, this);
+    job->setRequest(request);
+    job->start();
+
+    return new EwsSyncFolderItemsReply(job);
 }
 
 void EwsConnection::setUri(const QUrl &uri)
 {
-    m_uri = uri;
+    Q_D(EwsConnection);
+    d->uri = uri;
+    d->service->setEndPoint(uri.toString());
 }
 
-EwsRequest::ServerVersion EwsConnection::serverVersion()
+EwsRequest::ServerVersion EwsConnection::serverVersion() const
 {
-    return m_serverVersion;
+    Q_D(const EwsConnection);
+    return d->serverVersion;
+}
+
+void EwsConnection::setServerVersion(EwsRequest::ServerVersion ver)
+{
+    Q_D(EwsConnection);
+
+    d->serverVersion = ver;
+    T__RequestServerVersion version;
+    switch (ver) {
+    case EwsRequest::Exchange2007:
+        version.setVersion(T__ExchangeVersionType(T__ExchangeVersionType::Exchange2007));
+        break;
+    case EwsRequest::Exchange2007_SP1:
+        version.setVersion(T__ExchangeVersionType(T__ExchangeVersionType::Exchange2007_SP1));
+        break;
+    default:
+        version.setVersion(T__ExchangeVersionType(T__ExchangeVersionType::Exchange2007_SP1));
+    }
+
+    d->service->setRequestVersionHeader(version);
 }
 
 QNetworkReply *EwsConnection::post(const EwsRequest &message)
 {
-    return postDocument(m_uri, message);
+    Q_D(EwsConnection);
+    return postDocument(d->uri, message);
 }
 
 EwsAutoDiscoverReply *EwsConnection::post(const QUrl &url, const QDomDocument &document)
@@ -214,30 +259,4 @@ void EwsConnection::sslErrors(QNetworkReply *reply, const QList<QSslError> &erro
         qDebug() << Q_FUNC_INFO << error.errorString();
     }
     reply->ignoreSslErrors();
-}
-
-void EwsConnection::appendFoldersIdsToElement(const QList<EwsFolder> &folders, ESoapElement element)
-{
-    EwsRequest request = static_cast<EwsRequest>(element.ownerDocument());
-    ESoapElement folderIds = request.createElement(QLatin1String("FolderIds"));
-    element.appendChild(folderIds);
-
-    foreach (const EwsFolder &folder, folders) {
-        ESoapElement folderIdElement;
-        if (folder.id().isEmpty()) {
-            folderIdElement = request.createTypedElement(QLatin1String("FolderId"), EWS_TYPES_NS);
-            folderIdElement.setAttribute(QLatin1String("Id"), folder.id());
-            if (!folder.changeKey().isEmpty()) {
-                folderIdElement.setAttribute(QLatin1String("ChangeKey"), folder.changeKey());
-            }
-            folderIds.appendChild(folderIdElement);
-        } else {
-            folderIdElement = request.createTypedElement(QLatin1String("DistinguishedFolderId"), EWS_TYPES_NS);
-            folderIdElement.setAttribute(QLatin1String("Id"), folder.wellKnownFolderNameString());
-            if (!folder.changeKey().isEmpty()) {
-                folderIdElement.setAttribute(QLatin1String("ChangeKey"), folder.changeKey());
-            }
-            folderIds.appendChild(folderIdElement);
-        }
-    }
 }
