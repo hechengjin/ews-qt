@@ -17,42 +17,27 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-#ifndef EWSREQUEST_H
-#define EWSREQUEST_H
-
-#include <QObject>
-#include <QDomDocument>
-#include <QUrl>
-
-#include <ESoapMessage.h>
+#ifndef ESOAPNAMESPACES_H
+#define ESOAPNAMESPACES_H
 
 #include "ewsexport.h"
 
-class EWS_EXPORT EwsRequest : public ESoapMessage
+#include <QSharedPointer>
+#include <QString>
+#include <QHash>
+
+class EWS_EXPORT ESoapNamespaces
 {
-    Q_GADGET
-    Q_ENUMS(ServerVersion)
 public:
-    enum ServerVersion {
-        Exchange2007,
-        Exchange2007_SP1,
-        Exchange2010,
-        Exchange2010_SP1,
-        Exchange2010_SP2
-    };
-    EwsRequest(const QDomDocument &document);
-    EwsRequest(const QString &method,
-               ServerVersion version);
+    typedef QSharedPointer<ESoapNamespaces> Ptr;
+    ESoapNamespaces();
+    void registerNamespace(const QString &prefix, const QString &uri);
+    QString prefixFor(const QString &ns);
 
-    static QDomDocument autoDiscover(const QString &emailAddress);
-
-    ESoapElement method() const;
-    QString methodName() const;
+    static ESoapNamespaces::Ptr &instance();
 
 private:
-    void init(ServerVersion version);
-//    ESoapElement createMethod(const QString &method);
-    ESoapElement m_method;
+    QHash<QString, QString> m_namespaces;
 };
 
-#endif // EWSREQUEST_H
+#endif // ESOAPNAMESPACES_H

@@ -17,42 +17,28 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-#ifndef EWSREQUEST_H
-#define EWSREQUEST_H
+#include "ESoapNamespaces.h"
+#include <QDebug>
 
-#include <QObject>
-#include <QDomDocument>
-#include <QUrl>
-
-#include <ESoapMessage.h>
-
-#include "ewsexport.h"
-
-class EWS_EXPORT EwsRequest : public ESoapMessage
+ESoapNamespaces::ESoapNamespaces()
 {
-    Q_GADGET
-    Q_ENUMS(ServerVersion)
-public:
-    enum ServerVersion {
-        Exchange2007,
-        Exchange2007_SP1,
-        Exchange2010,
-        Exchange2010_SP1,
-        Exchange2010_SP2
-    };
-    EwsRequest(const QDomDocument &document);
-    EwsRequest(const QString &method,
-               ServerVersion version);
+}
 
-    static QDomDocument autoDiscover(const QString &emailAddress);
+void ESoapNamespaces::registerNamespace(const QString &prefix, const QString &uri)
+{
+    m_namespaces.insert(uri, prefix);
+}
 
-    ESoapElement method() const;
-    QString methodName() const;
+QString ESoapNamespaces::prefixFor(const QString &ns)
+{
+    if (!m_namespaces.contains(ns)) {
+        qWarning() << Q_FUNC_INFO << "namespace NOT found" << ns;
+    }
+    return m_namespaces.value(ns);
+}
 
-private:
-    void init(ServerVersion version);
-//    ESoapElement createMethod(const QString &method);
-    ESoapElement m_method;
-};
-
-#endif // EWSREQUEST_H
+ESoapNamespaces::Ptr &ESoapNamespaces::instance()
+{
+    static ESoapNamespaces::Ptr esoapNamespaces(new ESoapNamespaces());
+    return esoapNamespaces;
+}

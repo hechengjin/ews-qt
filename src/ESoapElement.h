@@ -17,42 +17,42 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-#ifndef EWSREQUEST_H
-#define EWSREQUEST_H
-
-#include <QObject>
-#include <QDomDocument>
-#include <QUrl>
-
-#include <ESoapMessage.h>
+#ifndef ESOAPELEMENT_H
+#define ESOAPELEMENT_H
 
 #include "ewsexport.h"
+#include "ESoapNamespaces.h"
 
-class EWS_EXPORT EwsRequest : public ESoapMessage
+#include <QDomElement>
+#include <QHash>
+
+class EWS_EXPORT ESoapElement : public QDomElement
 {
-    Q_GADGET
-    Q_ENUMS(ServerVersion)
 public:
-    enum ServerVersion {
-        Exchange2007,
-        Exchange2007_SP1,
-        Exchange2010,
-        Exchange2010_SP1,
-        Exchange2010_SP2
-    };
-    EwsRequest(const QDomDocument &document);
-    EwsRequest(const QString &method,
-               ServerVersion version);
+    ESoapElement();
+    ESoapElement(const ESoapNamespaces::Ptr &namespaces);
+    ESoapElement(const QDomElement &other);
 
-    static QDomDocument autoDiscover(const QString &emailAddress);
+    bool equalNS(const QString &name, const QString &nsUri) const;
 
-    ESoapElement method() const;
-    QString methodName() const;
+    QDomNode appendChild(const ESoapElement &newChild);
+    void setPrefixNS(const QString &prefix, const QString &nsUri);
+    void setText(const QString &text);
+    QString prefix() const;
+    QString nsUri() const;
+    void addNamespace(const QString &nsUri);
+    void setDefaultNamespace(const QString &nsUri);
+    void setESoapNamespaces(const ESoapNamespaces::Ptr &namespaces);
+
+    ESoapElement firstChildTypedElement(const QString &name, const QString &nsUri) const;
+    ESoapElement firstChildElement(const QString &tagName = QString()) const;
+    ESoapElement nextSiblingElement(const QString &tagName = QString()) const;
 
 private:
-    void init(ServerVersion version);
-//    ESoapElement createMethod(const QString &method);
-    ESoapElement m_method;
+    QString findParentNamespace(const QDomNode &parent, const QString &prefix);
+    QString m_prefix;
+    QString m_nsUri;
+    ESoapNamespaces::Ptr m_namespaces;
 };
 
-#endif // EWSREQUEST_H
+#endif // ESOAPELEMENT_H

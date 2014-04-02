@@ -15,7 +15,10 @@ include_directories(${CMAKE_BINARY_DIR}
 
 set(libews_qt_SRCS
     wsdl_Services.cpp
-#    EwsEmailAddress.cpp
+    ESoapNamespaces.cpp
+    ESoapElement.cpp
+    ESoapMessage.cpp
+    EwsEmailAddress.cpp
     EwsPermission.cpp
     EwsFolder.cpp
     EwsFolder_p.h
@@ -27,7 +30,7 @@ set(libews_qt_SRCS
     EwsSyncFolderItemsReply_p.h
     EwsSyncFolderHierarchyReply.cpp
     EwsSyncFolderHierarchyReply_p.h
-#    EwsRequest.cpp
+    EwsRequest.cpp
     EwsAutoDiscover.cpp
     EwsAutoDiscoverReply.cpp
     EwsConnection.cpp
@@ -35,7 +38,8 @@ set(libews_qt_SRCS
 
 set(ewsqt_HEADERS
     ewsexport.h
-#    EwsEmailAddress.h
+    ESoapMessage.h
+    EwsEmailAddress.h
     EwsPermission.h
     EwsFolder.h
     EwsEffectiveRights.h
@@ -43,7 +47,7 @@ set(ewsqt_HEADERS
     EwsReply.h
     EwsSyncFolderItemsReply.h
     EwsSyncFolderHierarchyReply.h
-#    EwsRequest.h
+    EwsRequest.h
     EwsAutoDiscover.h
     EwsAutoDiscoverReply.h
     EwsConnection.h

@@ -17,42 +17,45 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  ***************************************************************************/
 
-#ifndef EWSREQUEST_H
-#define EWSREQUEST_H
-
-#include <QObject>
-#include <QDomDocument>
-#include <QUrl>
-
-#include <ESoapMessage.h>
+#ifndef ESOAPMESSAGE_H
+#define ESOAPMESSAGE_H
 
 #include "ewsexport.h"
+#include "ESoapElement.h"
+#include "ESoapNamespaces.h"
 
-class EWS_EXPORT EwsRequest : public ESoapMessage
+#include <QDomDocument>
+#include <QHash>
+
+#define EWS_TYPES_NS    "http://schemas.microsoft.com/exchange/services/2006/types"
+#define EWS_MESSAGES_NS "http://schemas.microsoft.com/exchange/services/2006/messages"
+
+class EwsConnection;
+class EWS_EXPORT ESoapMessage : public QDomDocument
 {
-    Q_GADGET
-    Q_ENUMS(ServerVersion)
 public:
-    enum ServerVersion {
-        Exchange2007,
-        Exchange2007_SP1,
-        Exchange2010,
-        Exchange2010_SP1,
-        Exchange2010_SP2
-    };
-    EwsRequest(const QDomDocument &document);
-    EwsRequest(const QString &method,
-               ServerVersion version);
+    ESoapMessage();
+    ESoapMessage(const QDomDocument &other);
 
-    static QDomDocument autoDiscover(const QString &emailAddress);
+    void print();
+    bool parserError();
 
-    ESoapElement method() const;
-    QString methodName() const;
+    ESoapElement envelope() const;
+    ESoapElement header();
+    ESoapElement body();
 
-private:
-    void init(ServerVersion version);
-//    ESoapElement createMethod(const QString &method);
-    ESoapElement m_method;
+    ESoapElement createElement(const QString &name);
+    ESoapElement createTypedElement(const QString &name, const QString &nsUri);
+    ESoapElement createTypedHeaderElement(const QString &name, const QString &nsUri);
+
+protected:
+    void extractNamespaces(const QDomElement &element);
+
+    ESoapElement m_envelope;
+    ESoapElement m_header;
+    ESoapElement m_body;
+    ESoapNamespaces::Ptr m_namespaces;
+    bool m_parserError;
 };
 
-#endif // EWSREQUEST_H
+#endif // ESOAPMESSAGE_H
