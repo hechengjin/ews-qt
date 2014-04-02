@@ -18,39 +18,39 @@
 
 #include <QDebug>
 
-EwsPermission::EwsPermission(const ESoapElement &rootElement)
+EwsPermission::EwsPermission()
 {
-    ESoapElement element;;
+//    ESoapElement element;;
 
-    element = rootElement.firstChildElement();
-    while (!element.isNull()) {
-        if (element.equalNS(QLatin1String("UserId"), EWS_TYPES_NS)) {
-            m_userId = element.text();
-        } else if (element.equalNS(QLatin1String("CanCreateItems"), EWS_TYPES_NS)) {
-            m_canCreateItems = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("CanCreateSubFolders"), EWS_TYPES_NS)) {
-            m_canCreateSubFolders = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("IsFolderOwner"), EWS_TYPES_NS)) {
-            m_isFolderOwner = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("IsFolderVisible"), EWS_TYPES_NS)) {
-            m_isFolderVisible = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("IsFolderContact"), EWS_TYPES_NS)) {
-            m_isFolderContact = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("EditItems"), EWS_TYPES_NS)) {
-            m_editItems = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("DeleteItems"), EWS_TYPES_NS)) {
-            m_deleteItems = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("ReadItems"), EWS_TYPES_NS)) {
-            m_readItems = element.text();
-        } else if (element.equalNS(QLatin1String("PermissionLevel"), EWS_TYPES_NS)) {
-            m_permissionLevel = element.text();
-        } else {
-            // TODO create PermissionSet class
-            qWarning() << Q_FUNC_INFO << "element unknown" << element.nodeName();
-        }
+//    element = rootElement.firstChildElement();
+//    while (!element.isNull()) {
+//        if (element.equalNS(QLatin1String("UserId"), EWS_TYPES_NS)) {
+//            m_userId = element.text();
+//        } else if (element.equalNS(QLatin1String("CanCreateItems"), EWS_TYPES_NS)) {
+//            m_canCreateItems = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("CanCreateSubFolders"), EWS_TYPES_NS)) {
+//            m_canCreateSubFolders = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("IsFolderOwner"), EWS_TYPES_NS)) {
+//            m_isFolderOwner = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("IsFolderVisible"), EWS_TYPES_NS)) {
+//            m_isFolderVisible = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("IsFolderContact"), EWS_TYPES_NS)) {
+//            m_isFolderContact = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("EditItems"), EWS_TYPES_NS)) {
+//            m_editItems = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("DeleteItems"), EWS_TYPES_NS)) {
+//            m_deleteItems = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("ReadItems"), EWS_TYPES_NS)) {
+//            m_readItems = element.text();
+//        } else if (element.equalNS(QLatin1String("PermissionLevel"), EWS_TYPES_NS)) {
+//            m_permissionLevel = element.text();
+//        } else {
+//            // TODO create PermissionSet class
+//            qWarning() << Q_FUNC_INFO << "element unknown" << element.nodeName();
+//        }
 
-        element = element.nextSiblingElement();
-    }
+//        element = element.nextSiblingElement();
+//    }
 }
 
 QString EwsPermission::userId() const

@@ -18,7 +18,7 @@
 
 #include <QDebug>
 
-EwsMessage::EwsMessage(const ESoapElement &rootElement) :
+EwsMessage::EwsMessage(/*const ESoapElement &rootElement*/) :
     m_size(0),
     m_isRead(false),
     m_isResponseRequested(false),
@@ -31,95 +31,95 @@ EwsMessage::EwsMessage(const ESoapElement &rootElement) :
     m_reminderMinutesBeforeStart(0),
     m_hasAttachments(false)
 {
-    ESoapElement element;
+//    ESoapElement element;
 
-    element = rootElement.firstChildElement();
-    while (!element.isNull()) {
-        if (element.equalNS(QLatin1String("ItemId"), EWS_TYPES_NS)) {
-            m_id = element.attribute(QLatin1String("Id"));
-            m_changeKey = element.attribute(QLatin1String("ChangeKey"));
-        } else if (element.equalNS(QLatin1String("ParentFolderId"), EWS_TYPES_NS)) {
-            m_parentId = element.attribute(QLatin1String("Id"));
-            m_parentChangeKey = element.attribute(QLatin1String("ChangeKey"));
-        } else if (element.equalNS(QLatin1String("ItemClass"), EWS_TYPES_NS)) {
-            m_itemClass = element.text();
-        } else if (element.equalNS(QLatin1String("Subject"), EWS_TYPES_NS)) {
-            m_subject = element.text();
-        } else if (element.equalNS(QLatin1String("DateTimeReceived"), EWS_TYPES_NS)) {
-            m_dateTimeReceived = QDateTime::fromString(element.text(), Qt::ISODate);
-        } else if (element.equalNS(QLatin1String("DateTimeSent"), EWS_TYPES_NS)) {
-            m_dateTimeSent = QDateTime::fromString(element.text(), Qt::ISODate);
-        } else if (element.equalNS(QLatin1String("DateTimeCreated"), EWS_TYPES_NS)) {
-            m_dateTimeCreated = QDateTime::fromString(element.text(), Qt::ISODate);
-        } else if (element.equalNS(QLatin1String("Size"), EWS_TYPES_NS)) {
-            m_size = element.text().toInt();
-        } else if (element.equalNS(QLatin1String("HasAttachments"), EWS_TYPES_NS)) {
-            m_hasAttachments = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("Importance"), EWS_TYPES_NS)) {
-            m_importance = element.text();
-        } else if (element.equalNS(QLatin1String("InReplyTo"), EWS_TYPES_NS)) {
-            m_inReplyTo = element.text();
-        } else if (element.equalNS(QLatin1String("ConversationIndex"), EWS_TYPES_NS)) {
-            m_conversationIndex = element.text();
-        } else if (element.equalNS(QLatin1String("ConversationTopic"), EWS_TYPES_NS)) {
-            m_conversationTopic = element.text();
-        } else if (element.equalNS(QLatin1String("InternetMessageId"), EWS_TYPES_NS)) {
-            m_internetMessageId = element.text();
-        } else if (element.equalNS(QLatin1String("IsRead"), EWS_TYPES_NS)) {
-            m_isRead = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("IsResponseRequested"), EWS_TYPES_NS)) {
-            m_isResponseRequested = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("IsReadReceiptRequested"), EWS_TYPES_NS)) {
-            m_isReadReceiptRequested = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("IsDeliveryReceiptRequested"), EWS_TYPES_NS)) {
-            m_isDeliveryReceiptRequested = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("References"), EWS_TYPES_NS)) {
-            m_references = element.text();
-        } else if (element.equalNS(QLatin1String("Sender"), EWS_TYPES_NS)) {
-            m_sender = EwsEmailAddress(element.firstChildElement());
-        } else if (element.equalNS(QLatin1String("From"), EWS_TYPES_NS)) {
-            m_from = EwsEmailAddress(element.firstChildElement());
-        } else if (element.equalNS(QLatin1String("ReceivedBy"), EWS_TYPES_NS)) {
-            m_receivedBy = EwsEmailAddress(element.firstChildElement());
-        } else if (element.equalNS(QLatin1String("ReceivedRepresenting"), EWS_TYPES_NS)) {
-            m_receivedRepresenting = EwsEmailAddress(element.firstChildElement());
-        } else if (element.equalNS(QLatin1String("IsDraft"), EWS_TYPES_NS)) {
-            m_isDraft = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("IsFromMe"), EWS_TYPES_NS)) {
-            m_isFromMe = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("IsResend"), EWS_TYPES_NS)) {
-            m_isResend = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("IsSubmitted"), EWS_TYPES_NS)) {
-            m_isSubmitted = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("IsUnmodified"), EWS_TYPES_NS)) {
-            m_isUnmodified = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("Body"), EWS_TYPES_NS)) {
-            m_body = element.text();
-        } else if (element.equalNS(QLatin1String("Sensitivity"), EWS_TYPES_NS)) {
-            m_sensivity = element.text();
-        } else if (element.equalNS(QLatin1String("ReminderIsSet"), EWS_TYPES_NS)) {
-            m_isReminderSet = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("ReminderMinutesBeforeStart"), EWS_TYPES_NS)) {
-            m_reminderMinutesBeforeStart = element.text().toInt();
-        } else if (element.equalNS(QLatin1String("DisplayCc"), EWS_TYPES_NS)) {
-            m_displayCC = element.text();
-        } else if (element.equalNS(QLatin1String("DisplayTo"), EWS_TYPES_NS)) {
-            m_displayTo = element.text();
-        } else if (element.equalNS(QLatin1String("Culture"), EWS_TYPES_NS)) {
-            m_culture = element.text();
-        } else if (element.equalNS(QLatin1String("EffectiveRights"), EWS_TYPES_NS)) {
-            m_effectiveRights = EwsEffectiveRights(element);
-        } else if (element.equalNS(QLatin1String("LastModifiedName"), EWS_TYPES_NS)) {
-            m_lastModifiedName = element.text();
-        } else if (element.equalNS(QLatin1String("LastModifiedTime"), EWS_TYPES_NS)) {
-            m_lastModifiedTime = QDateTime::fromString(element.text(), Qt::ISODate);
-        } else {
-            // TODO create PermissionSet class
-            qWarning() << Q_FUNC_INFO << "element unknown" << element.nodeName() << element.text();
-        }
+//    element = rootElement.firstChildElement();
+//    while (!element.isNull()) {
+//        if (element.equalNS(QLatin1String("ItemId"), EWS_TYPES_NS)) {
+//            m_id = element.attribute(QLatin1String("Id"));
+//            m_changeKey = element.attribute(QLatin1String("ChangeKey"));
+//        } else if (element.equalNS(QLatin1String("ParentFolderId"), EWS_TYPES_NS)) {
+//            m_parentId = element.attribute(QLatin1String("Id"));
+//            m_parentChangeKey = element.attribute(QLatin1String("ChangeKey"));
+//        } else if (element.equalNS(QLatin1String("ItemClass"), EWS_TYPES_NS)) {
+//            m_itemClass = element.text();
+//        } else if (element.equalNS(QLatin1String("Subject"), EWS_TYPES_NS)) {
+//            m_subject = element.text();
+//        } else if (element.equalNS(QLatin1String("DateTimeReceived"), EWS_TYPES_NS)) {
+//            m_dateTimeReceived = QDateTime::fromString(element.text(), Qt::ISODate);
+//        } else if (element.equalNS(QLatin1String("DateTimeSent"), EWS_TYPES_NS)) {
+//            m_dateTimeSent = QDateTime::fromString(element.text(), Qt::ISODate);
+//        } else if (element.equalNS(QLatin1String("DateTimeCreated"), EWS_TYPES_NS)) {
+//            m_dateTimeCreated = QDateTime::fromString(element.text(), Qt::ISODate);
+//        } else if (element.equalNS(QLatin1String("Size"), EWS_TYPES_NS)) {
+//            m_size = element.text().toInt();
+//        } else if (element.equalNS(QLatin1String("HasAttachments"), EWS_TYPES_NS)) {
+//            m_hasAttachments = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("Importance"), EWS_TYPES_NS)) {
+//            m_importance = element.text();
+//        } else if (element.equalNS(QLatin1String("InReplyTo"), EWS_TYPES_NS)) {
+//            m_inReplyTo = element.text();
+//        } else if (element.equalNS(QLatin1String("ConversationIndex"), EWS_TYPES_NS)) {
+//            m_conversationIndex = element.text();
+//        } else if (element.equalNS(QLatin1String("ConversationTopic"), EWS_TYPES_NS)) {
+//            m_conversationTopic = element.text();
+//        } else if (element.equalNS(QLatin1String("InternetMessageId"), EWS_TYPES_NS)) {
+//            m_internetMessageId = element.text();
+//        } else if (element.equalNS(QLatin1String("IsRead"), EWS_TYPES_NS)) {
+//            m_isRead = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("IsResponseRequested"), EWS_TYPES_NS)) {
+//            m_isResponseRequested = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("IsReadReceiptRequested"), EWS_TYPES_NS)) {
+//            m_isReadReceiptRequested = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("IsDeliveryReceiptRequested"), EWS_TYPES_NS)) {
+//            m_isDeliveryReceiptRequested = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("References"), EWS_TYPES_NS)) {
+//            m_references = element.text();
+//        } else if (element.equalNS(QLatin1String("Sender"), EWS_TYPES_NS)) {
+//            m_sender = EwsEmailAddress(element.firstChildElement());
+//        } else if (element.equalNS(QLatin1String("From"), EWS_TYPES_NS)) {
+//            m_from = EwsEmailAddress(element.firstChildElement());
+//        } else if (element.equalNS(QLatin1String("ReceivedBy"), EWS_TYPES_NS)) {
+//            m_receivedBy = EwsEmailAddress(element.firstChildElement());
+//        } else if (element.equalNS(QLatin1String("ReceivedRepresenting"), EWS_TYPES_NS)) {
+//            m_receivedRepresenting = EwsEmailAddress(element.firstChildElement());
+//        } else if (element.equalNS(QLatin1String("IsDraft"), EWS_TYPES_NS)) {
+//            m_isDraft = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("IsFromMe"), EWS_TYPES_NS)) {
+//            m_isFromMe = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("IsResend"), EWS_TYPES_NS)) {
+//            m_isResend = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("IsSubmitted"), EWS_TYPES_NS)) {
+//            m_isSubmitted = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("IsUnmodified"), EWS_TYPES_NS)) {
+//            m_isUnmodified = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("Body"), EWS_TYPES_NS)) {
+//            m_body = element.text();
+//        } else if (element.equalNS(QLatin1String("Sensitivity"), EWS_TYPES_NS)) {
+//            m_sensivity = element.text();
+//        } else if (element.equalNS(QLatin1String("ReminderIsSet"), EWS_TYPES_NS)) {
+//            m_isReminderSet = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("ReminderMinutesBeforeStart"), EWS_TYPES_NS)) {
+//            m_reminderMinutesBeforeStart = element.text().toInt();
+//        } else if (element.equalNS(QLatin1String("DisplayCc"), EWS_TYPES_NS)) {
+//            m_displayCC = element.text();
+//        } else if (element.equalNS(QLatin1String("DisplayTo"), EWS_TYPES_NS)) {
+//            m_displayTo = element.text();
+//        } else if (element.equalNS(QLatin1String("Culture"), EWS_TYPES_NS)) {
+//            m_culture = element.text();
+//        } else if (element.equalNS(QLatin1String("EffectiveRights"), EWS_TYPES_NS)) {
+//            m_effectiveRights = EwsEffectiveRights(element);
+//        } else if (element.equalNS(QLatin1String("LastModifiedName"), EWS_TYPES_NS)) {
+//            m_lastModifiedName = element.text();
+//        } else if (element.equalNS(QLatin1String("LastModifiedTime"), EWS_TYPES_NS)) {
+//            m_lastModifiedTime = QDateTime::fromString(element.text(), Qt::ISODate);
+//        } else {
+//            // TODO create PermissionSet class
+//            qWarning() << Q_FUNC_INFO << "element unknown" << element.nodeName() << element.text();
+//        }
 
-        element = element.nextSiblingElement();
-    }
+//        element = element.nextSiblingElement();
+//    }
 }
 
 QString EwsMessage::id() const

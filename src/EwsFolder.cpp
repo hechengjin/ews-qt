@@ -282,6 +282,7 @@ EwsReply *EwsFolder::remove(DeleteType mode) const
 void EwsFolderPrivate::setData(const T__FolderType &value)
 {
     folder = value;
+    folder.permissionSet();
 }
 
 EwsFolderPrivate::~EwsFolderPrivate()

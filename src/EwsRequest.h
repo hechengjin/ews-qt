@@ -25,12 +25,8 @@
 #include <QUrl>
 
 #include "ewsexport.h"
-#include "ESoapMessage.h"
 
-#define EWS_TYPES_NS    "http://schemas.microsoft.com/exchange/services/2006/types"
-#define EWS_MESSAGES_NS "http://schemas.microsoft.com/exchange/services/2006/messages"
-
-class EWS_EXPORT EwsRequest : public ESoapMessage
+class EWS_EXPORT EwsRequest
 {
     Q_GADGET
     Q_ENUMS(ServerVersion)
@@ -46,15 +42,12 @@ public:
     EwsRequest(const QString &method,
                ServerVersion version);
 
-    ESoapElement method() const;
-    QString methodName() const;
-
     static QDomDocument autoDiscover(const QString &emailAddress);
 
 private:
     void init(ServerVersion version);
-    ESoapElement createMethod(const QString &method);
-    ESoapElement m_method;
+//    ESoapElement createMethod(const QString &method);
+//    ESoapElement m_method;
 };
 
 #endif // EWSREQUEST_H

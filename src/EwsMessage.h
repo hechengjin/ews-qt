@@ -17,7 +17,7 @@
 #define EWSMESSAGE_H
 
 #include "ewsexport.h"
-#include "ESoapElement.h"
+//#include "ESoapElement.h"
 #include "EwsEmailAddress.h"
 #include "EwsEffectiveRights.h"
 
@@ -26,7 +26,7 @@
 class EWS_EXPORT EwsMessage
 {
 public:
-    EwsMessage(const ESoapElement &rootElement);
+    EwsMessage(/*const ESoapElement &rootElement*/);
 
     QString id() const;
     QString changeKey() const;

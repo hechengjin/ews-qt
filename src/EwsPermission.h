@@ -17,12 +17,14 @@
 #define EWSPERMISSION_H
 
 #include "ewsexport.h"
-#include "ESoapElement.h"
+
+#include <QString>
+//#include "ESoapElement.h"
 
 class EWS_EXPORT EwsPermission
 {
 public:
-    EwsPermission(const ESoapElement &rootElement);
+    EwsPermission(/*const ESoapElement &rootElement*/);
 
     QString userId() const;
     bool canCreateItems() const;

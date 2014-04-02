@@ -23,8 +23,6 @@
 #include "EwsSyncFolderItemsReply.h"
 #include "EwsUtils.h"
 
-#include "ESoapNamespaces.h"
-
 #include "wsdl_Services.h"
 
 #include <QNetworkRequest>
@@ -47,9 +45,7 @@ EwsConnection::EwsConnection(QObject *parent, QNetworkAccessManager *networkAcce
     connect(m_networkMgr, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
             SLOT(sslErrors(QNetworkReply*,QList<QSslError>)));
 
-//    ESoapNamespaces::instance()->registerNamespace("t", EWS_TYPES_NS);
-//    ESoapNamespaces::instance()->registerNamespace("m", EWS_MESSAGES_NS);
-    setServerVersion(EwsRequest::Exchange2007);
+    setServerVersion(EwsConnection::Exchange2007);
 }
 
 EwsConnection::~EwsConnection()
@@ -194,23 +190,23 @@ void EwsConnection::setUri(const QUrl &uri)
     d->service->setEndPoint(uri.toString());
 }
 
-EwsRequest::ServerVersion EwsConnection::serverVersion() const
+EwsConnection::ServerVersion EwsConnection::serverVersion() const
 {
     Q_D(const EwsConnection);
     return d->serverVersion;
 }
 
-void EwsConnection::setServerVersion(EwsRequest::ServerVersion ver)
+void EwsConnection::setServerVersion(EwsConnection::ServerVersion ver)
 {
     Q_D(EwsConnection);
 
     d->serverVersion = ver;
     T__RequestServerVersion version;
     switch (ver) {
-    case EwsRequest::Exchange2007:
+    case EwsConnection::Exchange2007:
         version.setVersion(T__ExchangeVersionType(T__ExchangeVersionType::Exchange2007));
         break;
-    case EwsRequest::Exchange2007_SP1:
+    case EwsConnection::Exchange2007_SP1:
         version.setVersion(T__ExchangeVersionType(T__ExchangeVersionType::Exchange2007_SP1));
         break;
     default:
@@ -218,12 +214,6 @@ void EwsConnection::setServerVersion(EwsRequest::ServerVersion ver)
     }
 
     d->service->setRequestVersionHeader(version);
-}
-
-QNetworkReply *EwsConnection::post(const EwsRequest &message)
-{
-    Q_D(EwsConnection);
-    return postDocument(d->uri, message);
 }
 
 EwsAutoDiscoverReply *EwsConnection::post(const QUrl &url, const QDomDocument &document)

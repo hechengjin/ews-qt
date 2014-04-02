@@ -31,7 +31,7 @@ EwsReply::EwsReply(QObject *exchangeServices) :
     m_responseCode(NoError),
     m_parseFailed(false)
 {
-    KDSoapJob *job = qobject_cast<KDSoapJob*>(exchangeServices);
+    GetFolderJob *job = qobject_cast<GetFolderJob*>(exchangeServices);
 
     connect(job, &KDSoapJob::finished,
             d_ptr, &EwsReplyPrivate::finished);
@@ -138,5 +138,8 @@ void EwsReplyPrivate::finished(KDSoapJob *job)
 {
     qWarning() << Q_FUNC_INFO << job;
 
+    if (job->isFault()) {
+        responseCode = job->faultAsString();
+    }
 //    emit qfinished();
 }

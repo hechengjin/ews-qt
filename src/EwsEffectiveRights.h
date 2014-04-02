@@ -17,13 +17,13 @@
 #define EWSEFFECTIVERIGHTS_H
 
 #include "ewsexport.h"
-#include "ESoapElement.h"
+//#include "ESoapElement.h"
 
 class EWS_EXPORT EwsEffectiveRights
 {
 public:
     EwsEffectiveRights();
-    EwsEffectiveRights(const ESoapElement &emailAddressElement);
+//    EwsEffectiveRights(/*const ESoapElement &emailAddressElement*/);
 
     bool canCreateAssociated() const;
     bool canCreateContents() const;

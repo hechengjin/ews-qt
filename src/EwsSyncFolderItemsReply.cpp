@@ -20,7 +20,7 @@
 
 EwsSyncFolderItemsReply::EwsSyncFolderItemsReply(QObject *exchangeServices)
 {
-    ExchangeServices *service = qobject_cast<ExchangeServices*>(exchangeServices);
+    SyncFolderItemsJob *service = qobject_cast<SyncFolderItemsJob*>(exchangeServices);
 
     connect(service, SIGNAL(syncFolderItemsDone(TNS__SyncFolderItemsResponseType)),
             d_ptr, SLOT(syncFolderItemsDone(TNS__SyncFolderItemsResponseType)));

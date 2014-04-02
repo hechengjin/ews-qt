@@ -94,7 +94,7 @@ void EwsSyncFolderHierarchyReplyPrivate::syncFolderHierarchyDone(const TNS__Sync
             qDebug() << create.folder().displayName();
             EwsFolder folder;
             qDebug() << folder.d_ptr;
-//            folder.d_ptr->setData(create.folder());
+            folder.d_ptr->setData(create.folder());
 //            createFolders << folder;
         }
 

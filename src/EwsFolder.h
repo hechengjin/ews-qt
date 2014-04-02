@@ -17,9 +17,11 @@
 #define EWSFOLDER_H
 
 #include "ewsexport.h"
-#include "ESoapElement.h"
+//#include "ESoapElement.h"
 #include "EwsEffectiveRights.h"
 #include "EwsPermission.h"
+
+#include <QObject>
 
 class EwsReply;
 class EwsConnection;

@@ -17,13 +17,14 @@
 #define EWSEMAILADDRESS_H
 
 #include "ewsexport.h"
-#include "ESoapElement.h"
+
+#include <QString>
 
 class EWS_EXPORT EwsEmailAddress
 {
 public:
     EwsEmailAddress();
-    EwsEmailAddress(const ESoapElement &rootElement);
+//    EwsEmailAddress(/*const ESoapElement &rootElement*/);
 
     QString id() const;
     QString name() const;

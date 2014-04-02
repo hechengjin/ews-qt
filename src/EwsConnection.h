@@ -36,6 +36,13 @@ class EWS_EXPORT EwsConnection : public QObject
     Q_OBJECT
     Q_DECLARE_PRIVATE(EwsConnection)
 public:
+    enum ServerVersion {
+        Exchange2007,
+        Exchange2007_SP1,
+        Exchange2010,
+        Exchange2010_SP1,
+        Exchange2010_SP2
+    };
     explicit EwsConnection(QObject *parent = 0, QNetworkAccessManager *networkAccessManager = 0);
     ~EwsConnection();
 
@@ -45,10 +52,12 @@ public:
     EwsSyncFolderItemsReply *syncFolderItems(EwsFolder::BaseShape itemShape, const QString &folderId, int maxChanges, const QString &syncState = QString());
 
     void setUri(const QUrl &uri);
-    EwsRequest::ServerVersion serverVersion() const;
-    void setServerVersion(EwsRequest::ServerVersion version);
+    ServerVersion serverVersion() const;
+    void setServerVersion(ServerVersion version);
 
-    QNetworkReply *post(const EwsRequest &message);
+    /**
+     * Needed for autodiscover
+     */
     EwsAutoDiscoverReply *post(const QUrl &url, const QDomDocument &document);
     EwsAutoDiscoverReply *get(const QUrl &url, const QDomDocument &document);
 

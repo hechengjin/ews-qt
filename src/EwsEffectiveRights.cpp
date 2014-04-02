@@ -20,29 +20,29 @@ EwsEffectiveRights::EwsEffectiveRights()
 {
 }
 
-EwsEffectiveRights::EwsEffectiveRights(const ESoapElement &emailAddressElement)
-{
-    ESoapElement element;
+//EwsEffectiveRights::EwsEffectiveRights(const ESoapElement &emailAddressElement)
+//{
+//    ESoapElement element;
 
-    element = emailAddressElement.firstChildElement();
-    while (!element.isNull()) {
-        if (element.equalNS(QLatin1String("CreateAssociated"), EWS_TYPES_NS)) {
-            m_canCreateAssociated = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("CreateContents"), EWS_TYPES_NS)) {
-            m_canCreateContents = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("CreateHierarchy"), EWS_TYPES_NS)) {
-            m_canCreateHierarchy = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("Delete"), EWS_TYPES_NS)) {
-            m_canDelete = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("Modify"), EWS_TYPES_NS)) {
-            m_canModify = element.text() == QLatin1String("true");
-        } else if (element.equalNS(QLatin1String("Read"), EWS_TYPES_NS)) {
-            m_canRead = element.text() == QLatin1String("true");
-        }
+//    element = emailAddressElement.firstChildElement();
+//    while (!element.isNull()) {
+//        if (element.equalNS(QLatin1String("CreateAssociated"), EWS_TYPES_NS)) {
+//            m_canCreateAssociated = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("CreateContents"), EWS_TYPES_NS)) {
+//            m_canCreateContents = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("CreateHierarchy"), EWS_TYPES_NS)) {
+//            m_canCreateHierarchy = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("Delete"), EWS_TYPES_NS)) {
+//            m_canDelete = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("Modify"), EWS_TYPES_NS)) {
+//            m_canModify = element.text() == QLatin1String("true");
+//        } else if (element.equalNS(QLatin1String("Read"), EWS_TYPES_NS)) {
+//            m_canRead = element.text() == QLatin1String("true");
+//        }
 
-        element = element.nextSiblingElement();
-    }
-}
+//        element = element.nextSiblingElement();
+//    }
+//}
 
 bool EwsEffectiveRights::canCreateAssociated() const
 {

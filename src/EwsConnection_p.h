@@ -8,7 +8,7 @@ class EwsConnectionPrivate
 {
 public:
     ExchangeServices *service;
-    EwsRequest::ServerVersion serverVersion;
+    EwsConnection::ServerVersion serverVersion;
     QUrl uri;
 };
 

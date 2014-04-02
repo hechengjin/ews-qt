@@ -22,30 +22,30 @@ EwsEmailAddress::EwsEmailAddress()
 {
 }
 
-EwsEmailAddress::EwsEmailAddress(const ESoapElement &rootElement)
-{
-    ESoapElement element;
+//EwsEmailAddress::EwsEmailAddress(const ESoapElement &rootElement)
+//{
+//    ESoapElement element;
 
-    element = rootElement.firstChildElement();
-    while (!element.isNull()) {
-        if (element.equalNS(QLatin1String("Name"), EWS_TYPES_NS)) {
-            m_name = element.text();
-        } else if (element.equalNS(QLatin1String("EmailAddress"), EWS_TYPES_NS)) {
-            m_emailAddress = element.text();
-        } else if (element.equalNS(QLatin1String("RoutingType"), EWS_TYPES_NS)) {
-            m_routingType = element.text();
-        } else if (element.equalNS(QLatin1String("MailboxType"), EWS_TYPES_NS)) {
-            m_mailboxType = element.text();
-        } else if (element.equalNS(QLatin1String("ItemId"), EWS_TYPES_NS)) {
-             m_id = element.text();
-        } else {
-            // TODO create PermissionSet class
-            qWarning() << Q_FUNC_INFO << "element unknown" << element.nodeName();
-        }
+//    element = rootElement.firstChildElement();
+//    while (!element.isNull()) {
+//        if (element.equalNS(QLatin1String("Name"), EWS_TYPES_NS)) {
+//            m_name = element.text();
+//        } else if (element.equalNS(QLatin1String("EmailAddress"), EWS_TYPES_NS)) {
+//            m_emailAddress = element.text();
+//        } else if (element.equalNS(QLatin1String("RoutingType"), EWS_TYPES_NS)) {
+//            m_routingType = element.text();
+//        } else if (element.equalNS(QLatin1String("MailboxType"), EWS_TYPES_NS)) {
+//            m_mailboxType = element.text();
+//        } else if (element.equalNS(QLatin1String("ItemId"), EWS_TYPES_NS)) {
+//             m_id = element.text();
+//        } else {
+//            // TODO create PermissionSet class
+//            qWarning() << Q_FUNC_INFO << "element unknown" << element.nodeName();
+//        }
 
-        element = element.nextSiblingElement();
-    }
-}
+//        element = element.nextSiblingElement();
+//    }
+//}
 
 QString EwsEmailAddress::id() const
 {
