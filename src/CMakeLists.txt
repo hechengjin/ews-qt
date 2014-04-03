@@ -7,42 +7,42 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(libews_qt_SRCS
     wsdl_Services.cpp
-    ESoapNamespaces.cpp
-    ESoapElement.cpp
-    ESoapMessage.cpp
-    EwsEmailAddress.cpp
-    EwsPermission.cpp
-    EwsFolder.cpp
-    EwsFolder_p.h
-    EwsEffectiveRights.cpp
-    EwsMessage.cpp
-    EwsReply.cpp
-    EwsReply_p.h
-    EwsSyncFolderItemsReply.cpp
-    EwsSyncFolderItemsReply_p.h
-    EwsSyncFolderHierarchyReply.cpp
-    EwsSyncFolderHierarchyReply_p.h
-    EwsRequest.cpp
-    EwsAutoDiscover.cpp
-    EwsAutoDiscoverReply.cpp
-    EwsConnection.cpp
+    esoapnamespaces.cpp
+    esoapelement.cpp
+    esoapmessage.cpp
+    emailaddress.cpp
+    permission.cpp
+    folder.cpp
+    folder_p.h
+    effectiverights.cpp
+    message.cpp
+    reply.cpp
+    reply_p.h
+    syncfolderitemsreply.cpp
+    syncfolderitemsreply_p.h
+    syncfolderhierarchyreply.cpp
+    syncfolderhierarchyreply_p.h
+    request.cpp
+    autodiscover.cpp
+    autodiscoverreply.cpp
+    connection.cpp
 )
 
 set(ewsqt_HEADERS
-    ewsexport.h
-    ESoapMessage.h
-    EwsEmailAddress.h
-    EwsPermission.h
-    EwsFolder.h
-    EwsEffectiveRights.h
-    EwsMessage.h
-    EwsReply.h
-    EwsSyncFolderItemsReply.h
-    EwsSyncFolderHierarchyReply.h
-    EwsRequest.h
-    EwsAutoDiscover.h
-    EwsAutoDiscoverReply.h
-    EwsConnection.h
+    export.h
+    esoapmessage.h
+    emailaddress.h
+    permission.h
+    folder.h
+    effectiverights.h
+    message.h
+    reply.h
+    syncfolderitemsreply.h
+    syncfolderhierarchyreply.h
+    request.h
+    autodiscover.h
+    autodiscoverreply.h
+    connection.h
 )
 
 add_library(ews-qt5 SHARED ${libews_qt_SRCS})
