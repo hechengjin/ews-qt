@@ -478,7 +478,7 @@ public:
         ErrorInvalidRetentionTagNone,
         ErrorDiscoverySearchesDisabled
     };
-    EwsReply(QObject *exchangeServices);
+    EwsReply(void *job);
     ~EwsReply();
 
     void setReply(QNetworkReply *reply);
@@ -489,19 +489,10 @@ public:
 signals:
     void finished();
 
-private slots:
-    void requestFinished();
-
 private:
     friend class EwsConnection;
     Q_DECLARE_PRIVATE(EwsReply)
     EwsReplyPrivate *d_ptr;
-
-    QString m_requestName;
-    QString m_errorMessage;
-    ResponseCode m_responseCode;
-    bool m_parseFailed;
-
 };
 
 #endif // EWSREPLY_H

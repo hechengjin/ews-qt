@@ -18,14 +18,12 @@
 
 #include <QDebug>
 
-EwsSyncFolderItemsReply::EwsSyncFolderItemsReply(QObject *exchangeServices)
+EwsSyncFolderItemsReply::EwsSyncFolderItemsReply(QObject *job)
 {
-    SyncFolderItemsJob *service = qobject_cast<SyncFolderItemsJob*>(exchangeServices);
+    SyncFolderItemsJob *syncJob = qobject_cast<SyncFolderItemsJob*>(job);
 
-    connect(service, SIGNAL(syncFolderItemsDone(TNS__SyncFolderItemsResponseType)),
-            d_ptr, SLOT(syncFolderItemsDone(TNS__SyncFolderItemsResponseType)));
-    connect(service, SIGNAL(syncFolderHierarchyError(KDSoapMessage)),
-            d_ptr, SLOT(syncFolderHierarchyError(KDSoapMessage)));
+    connect(syncJob, &SyncFolderItemsJob::finished,
+            d_ptr, &EwsSyncFolderItemsReplyPrivate::syncFolderItemsDone);
 }
 
 QString EwsSyncFolderItemsReply::responseCode() const
@@ -94,9 +92,58 @@ QList<EwsMessage> EwsSyncFolderItemsReply::createMessages() const
 //}
 
 
-void EwsSyncFolderItemsReplyPrivate::syncFolderItemsDone(const TNS__SyncFolderItemsResponseType &syncFolderItemsResult)
+EwsSyncFolderItemsReplyPrivate::EwsSyncFolderItemsReplyPrivate(KDSoapJob *job) :
+    EwsReplyPrivate(job)
 {
 
+}
+
+void EwsSyncFolderItemsReplyPrivate::syncFolderItemsDone(KDSoapJob *job)
+{
+    if (job->isFault()) {
+        qWarning() << Q_FUNC_INFO << job->faultAsString();
+    }
+
+    SyncFolderItemsJob *syncJob = qobject_cast<SyncFolderItemsJob*>(job);
+    const TNS__SyncFolderItemsResponseType &response = syncJob->syncFolderItemsResult();
+
+    TNS__ArrayOfResponseMessagesType messages = response.responseMessages();
+
+    QList<TNS__SyncFolderItemsResponseMessageType> responseMsgs;
+    responseMsgs = messages.syncFolderItemsResponseMessage();
+
+    foreach (const TNS__SyncFolderItemsResponseMessageType &msg, responseMsgs) {
+        qDebug() << Q_FUNC_INFO << msg.serialize(QString());
+        syncState = msg.syncState();
+        includesLastItemInRange = msg.includesLastItemInRange();
+        responseCode = msg.responseCode();
+        messageText = msg.messageText();
+
+        T__SyncFolderItemsChangesType changes = msg.changes();
+        qDebug() << "create" <<  changes.create().size();
+        qDebug() << "delete" <<  changes.delete_().size();
+        qDebug() << "update" <<  changes.update().size();
+        foreach (const T__SyncFolderItemsCreateOrUpdateType &create, changes.create()) {
+            qDebug() << create.item().subject();
+//            createFolders << folder;
+        }
+
+        foreach (const T__SyncFolderItemsCreateOrUpdateType &update, changes.update()) {
+            qDebug() << Q_FUNC_INFO << update.item().subject();
+//            updateFolders << folder;
+        }
+
+        foreach (const T__SyncFolderItemsDeleteType &deleteFolder, changes.delete_()) {
+            qDebug() << Q_FUNC_INFO << deleteFolder.itemId().id();
+            deleteItems << deleteFolder.itemId().id();
+        }
+
+        qDebug() << Q_FUNC_INFO << msg.includesLastItemInRange();
+        qDebug() << Q_FUNC_INFO << msg.responseCode();
+        qDebug() << Q_FUNC_INFO << msg.messageText();
+//        qDebug() << Q_FUNC_INFO << msg.messageXml();
+//        msg.changes();
+    }
 }
 
 void EwsSyncFolderItemsReplyPrivate::syncFolderItemsError(const KDSoapMessage &fault)

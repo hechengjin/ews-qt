@@ -29,15 +29,27 @@ class EwsReplyPrivate : public QObject
 {
     Q_OBJECT
 public:
+    EwsReplyPrivate(KDSoapJob *job);
+
     QString messageText;
     QString responseCode;
     QString syncState;
     bool includesLastFolderInRange;
 
-public slots:
-    void deleteFolderDone(const TNS__DeleteFolderResponseType &deleteFolderResult);
-    void handleError(const KDSoapMessage &fault);
-    void finished(KDSoapJob *job);
+protected:
+    /**
+     * This is only called when the job
+     * has finished without errors,
+     *
+     * DO NOT EMIT FINISHED
+     */
+    virtual void processJob(KDSoapJob *job);
+
+signals:
+    void finished();
+
+private:
+    void jobFinished(KDSoapJob *job);
 };
 
 #endif // EWSREPLY_P_H

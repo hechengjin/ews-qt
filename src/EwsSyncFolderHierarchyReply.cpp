@@ -13,21 +13,15 @@
  *
  */
 
-#include "EwsSyncFolderHierarchyReply.h"
 #include "EwsSyncFolderHierarchyReply_p.h"
 #include "EwsFolder_p.h"
 
 #include <QDebug>
 
-EwsSyncFolderHierarchyReply::EwsSyncFolderHierarchyReply(QObject *exchangeServices) :
-    d_ptr(new EwsSyncFolderHierarchyReplyPrivate)
+EwsSyncFolderHierarchyReply::EwsSyncFolderHierarchyReply(EwsSyncFolderHierarchyReplyPrivate *priv) :
+    EwsReply(priv),
+    d_ptr(priv)
 {
-    ExchangeServices *service = qobject_cast<ExchangeServices*>(exchangeServices);
-
-    connect(service, SIGNAL(syncFolderHierarchyDone(TNS__SyncFolderHierarchyResponseType)),
-            d_ptr, SLOT(syncFolderHierarchyDone(TNS__SyncFolderHierarchyResponseType)));
-    connect(service, SIGNAL(syncFolderHierarchyError(KDSoapMessage)),
-            d_ptr, SLOT(syncFolderHierarchyError(KDSoapMessage)));
 }
 
 QString EwsSyncFolderHierarchyReply::responseCode() const
@@ -66,14 +60,23 @@ QStringList EwsSyncFolderHierarchyReply::deleteFolders() const
     return d->deleteFolders;
 }
 
-EwsSyncFolderHierarchyReplyPrivate::EwsSyncFolderHierarchyReplyPrivate() :
+EwsSyncFolderHierarchyReplyPrivate::EwsSyncFolderHierarchyReplyPrivate(KDSoapJob *job) :
+    EwsReplyPrivate(job),
     includesLastFolderInRange(false)
 {
 
 }
 
-void EwsSyncFolderHierarchyReplyPrivate::syncFolderHierarchyDone(const TNS__SyncFolderHierarchyResponseType &response)
+void EwsSyncFolderHierarchyReplyPrivate::syncFolderHierarchyDone(KDSoapJob *job)
 {
+    if (job->isFault()) {
+        qWarning() << Q_FUNC_INFO << "Failed" << job->faultAsString();
+        return;
+    }
+
+    SyncFolderHierarchyJob *syncJob = qobject_cast<SyncFolderHierarchyJob*>(job);
+    const TNS__SyncFolderHierarchyResponseType &response = syncJob->syncFolderHierarchyResult();
+
     TNS__ArrayOfResponseMessagesType messages = response.responseMessages();
 
     QList<TNS__SyncFolderHierarchyResponseMessageType> responseMsgs;
@@ -91,18 +94,13 @@ void EwsSyncFolderHierarchyReplyPrivate::syncFolderHierarchyDone(const TNS__Sync
         qDebug() << "delete" <<  changes.delete_().size();
         qDebug() << "update" <<  changes.update().size();
         foreach (const T__SyncFolderHierarchyCreateOrUpdateType &create, changes.create()) {
-            qDebug() << create.folder().displayName();
-            EwsFolder folder;
-            qDebug() << folder.d_ptr;
-            folder.d_ptr->setData(create.folder());
-//            createFolders << folder;
+            qDebug() << Q_FUNC_INFO << create.folder().displayName();
+            createFolders << EwsFolder(new EwsFolderPrivate(create.folder()));
         }
 
         foreach (const T__SyncFolderHierarchyCreateOrUpdateType &update, changes.update()) {
             qDebug() << Q_FUNC_INFO << update.folder().displayName();
-            EwsFolder folder;
-            folder.d_ptr->setData(update.folder());
-//            updateFolders << folder;
+            updateFolders << EwsFolder(new EwsFolderPrivate(update.folder()));
         }
 
         foreach (const T__SyncFolderHierarchyDeleteType &deleteFolder, changes.delete_()) {

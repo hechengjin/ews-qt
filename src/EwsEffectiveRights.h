@@ -17,13 +17,18 @@
 #define EWSEFFECTIVERIGHTS_H
 
 #include "ewsexport.h"
-//#include "ESoapElement.h"
 
+#include <QObject>
+
+class EwsEffectiveRightsPrivate;
 class EWS_EXPORT EwsEffectiveRights
 {
+    Q_GADGET
+    Q_DECLARE_PRIVATE(EwsEffectiveRights)
 public:
     EwsEffectiveRights();
-//    EwsEffectiveRights(/*const ESoapElement &emailAddressElement*/);
+    EwsEffectiveRights(EwsEffectiveRightsPrivate *priv);
+    virtual ~EwsEffectiveRights();
 
     bool canCreateAssociated() const;
     bool canCreateContents() const;
@@ -33,12 +38,7 @@ public:
     bool canRead() const;
 
 private:
-    bool m_canCreateAssociated;
-    bool m_canCreateContents;
-    bool m_canCreateHierarchy;
-    bool m_canDelete;
-    bool m_canModify;
-    bool m_canRead;
+    EwsEffectiveRightsPrivate *d_ptr;
 };
 
 #endif // EWSEFFECTIVERIGHTS_H

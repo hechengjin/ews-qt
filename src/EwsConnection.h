@@ -80,6 +80,7 @@ private slots:
 
 private:
     friend class EwsAutoDiscoverReply;
+    friend class EwsFolder;
 
     QNetworkAccessManager *m_networkMgr;
 };

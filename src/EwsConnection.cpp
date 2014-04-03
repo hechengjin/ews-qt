@@ -19,8 +19,8 @@
 #include "EwsReply.h"
 #include "EwsAutoDiscoverReply.h"
 
-#include "EwsSyncFolderHierarchyReply.h"
-#include "EwsSyncFolderItemsReply.h"
+#include "EwsSyncFolderHierarchyReply_p.h"
+#include "EwsSyncFolderItemsReply_p.h"
 #include "EwsUtils.h"
 
 #include "wsdl_Services.h"
@@ -70,7 +70,7 @@ EwsReply *EwsConnection::getFolders(const QList<EwsFolder> &folders, EwsFolder::
     baseFolderIds.setFolderId(folderIds);
     request.setFolderIds(baseFolderIds);
 
-    GetFolderJob *job = new GetFolderJob(d->service, this);
+    GetFolderJob *job = new GetFolderJob(d->service);
     job->setRequest(request);
     job->start();
 
@@ -144,7 +144,7 @@ EwsSyncFolderHierarchyReply *EwsConnection::syncFolderHierarch(EwsFolder::BaseSh
     job->setRequest(request);
     job->start();
 
-    return new EwsSyncFolderHierarchyReply(job);
+    return new EwsSyncFolderHierarchyReply(new EwsSyncFolderHierarchyReplyPrivate(job));
 }
 
 EwsSyncFolderItemsReply *EwsConnection::syncFolderItems(EwsFolder::BaseShape itemShape, const QString &folderId, int maxChanges, const QString &syncState)

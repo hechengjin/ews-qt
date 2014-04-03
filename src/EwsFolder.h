@@ -99,7 +99,7 @@ public:
      * @param changeKey required on rename operation
      */
     EwsFolder(EwsConnection *connection, const QString &folderId, const QString &changeKey = QString());
-    EwsFolder();
+    EwsFolder(EwsFolderPrivate *priv);
     virtual ~EwsFolder();
 
     QString id() const;

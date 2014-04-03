@@ -10,21 +10,13 @@
 class EwsFolderPrivate
 {
 public:
-    void setData(const T__FolderType &value);
+    EwsFolderPrivate();
+    EwsFolderPrivate(const T__FolderType &value);
     virtual ~EwsFolderPrivate();
 
     T__FolderType folder;
     EwsFolder::WellKnownFolderName wellKnownFolderName;
-//    QString id;
-//    QString changeKey;
-//    QString folderClass;
-//    QString parentId;
-//    QString parentChangeKey;
-//    QString displayName;
-//    EwsEffectiveRights effectiveRights;
-//    int totalCount;
-//    int unreadCount;
-//    int childFolderCount;
+    EwsEffectiveRights effectiveRights;
     QList<EwsPermission> permissions;
     QHash<QString, QString> changes;
     EwsConnection *connection;

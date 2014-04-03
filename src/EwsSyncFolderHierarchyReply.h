@@ -18,15 +18,16 @@
 
 #include "ewsexport.h"
 #include "EwsFolder.h"
+#include "EwsReply.h"
 
 #include <QStringList>
 
 class EwsSyncFolderHierarchyReplyPrivate;
-class EWS_EXPORT EwsSyncFolderHierarchyReply : public QObject
+class EWS_EXPORT EwsSyncFolderHierarchyReply : public EwsReply
 {
     Q_OBJECT
 public:
-    EwsSyncFolderHierarchyReply(QObject *exchangeServices);
+    EwsSyncFolderHierarchyReply(EwsSyncFolderHierarchyReplyPrivate *priv);
 
     QString responseCode() const;
     QString syncState() const;

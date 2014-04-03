@@ -155,28 +155,31 @@ void EwsAutoDiscover::performAutoDiscover(const QUrl &uri)
 
     QUrl url1 = autodiscoverUrl(QLatin1String("https"), uri);
     reply = m_connection->post(url1, m_message);
-    connect(reply, SIGNAL(finished()), this, SLOT(requestFinished()));
+    connect(reply, &EwsAutoDiscoverReply::finished,
+            this, &EwsAutoDiscover::requestFinished);
     m_replies << reply;
 
     QUrl url2 = uri;
     url2.setHost(QLatin1String("autodiscover.") % uri.host());
     url2 = autodiscoverUrl(QLatin1String("https"), uri);
     reply = m_connection->post(url2, m_message);
-    connect(reply, SIGNAL(finished()), this, SLOT(requestFinished()));
+    connect(reply, &EwsAutoDiscoverReply::finished,
+            this, &EwsAutoDiscover::requestFinished);
     m_replies << reply;
 
     QUrl url3 = uri;
     url3.setHost(QLatin1String("autodiscover.") % uri.host());
     url3 = autodiscoverUrl(QLatin1String("http"), uri);
     reply = m_connection->get(url3, m_message);
-    connect(reply, SIGNAL(finished()), this, SLOT(requestFinished()));
+    connect(reply, &EwsAutoDiscoverReply::finished,
+            this, &EwsAutoDiscover::requestFinished);
     m_replies << reply;
 
     if (!m_srvLookupDone) {
         // Create a DNS lookup.
         QDnsLookup *dns = new QDnsLookup(this);
-        connect(dns, SIGNAL(finished()),
-                this, SLOT(resultsReady()));
+        connect(dns, &QDnsLookup::finished,
+                this, &EwsAutoDiscover::resultsReady);
 
         // Find the autodiscover servers from the DNS SRV entry
         dns->setType(QDnsLookup::SRV);

@@ -13,78 +13,61 @@
  *
  */
 
-#include "EwsPermission.h"
+#include "EwsPermission_p.h"
 #include "EwsRequest.h"
 
 #include <QDebug>
 
-EwsPermission::EwsPermission()
+EwsPermission::EwsPermission() :
+    d_ptr(0)
 {
-//    ESoapElement element;;
 
-//    element = rootElement.firstChildElement();
-//    while (!element.isNull()) {
-//        if (element.equalNS(QLatin1String("UserId"), EWS_TYPES_NS)) {
-//            m_userId = element.text();
-//        } else if (element.equalNS(QLatin1String("CanCreateItems"), EWS_TYPES_NS)) {
-//            m_canCreateItems = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("CanCreateSubFolders"), EWS_TYPES_NS)) {
-//            m_canCreateSubFolders = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("IsFolderOwner"), EWS_TYPES_NS)) {
-//            m_isFolderOwner = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("IsFolderVisible"), EWS_TYPES_NS)) {
-//            m_isFolderVisible = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("IsFolderContact"), EWS_TYPES_NS)) {
-//            m_isFolderContact = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("EditItems"), EWS_TYPES_NS)) {
-//            m_editItems = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("DeleteItems"), EWS_TYPES_NS)) {
-//            m_deleteItems = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("ReadItems"), EWS_TYPES_NS)) {
-//            m_readItems = element.text();
-//        } else if (element.equalNS(QLatin1String("PermissionLevel"), EWS_TYPES_NS)) {
-//            m_permissionLevel = element.text();
-//        } else {
-//            // TODO create PermissionSet class
-//            qWarning() << Q_FUNC_INFO << "element unknown" << element.nodeName();
-//        }
+}
 
-//        element = element.nextSiblingElement();
-//    }
+EwsPermission::EwsPermission(EwsPermissionPrivate *priv) :
+    d_ptr(priv)
+{
 }
 
 QString EwsPermission::userId() const
 {
-    return m_userId;
+    Q_D(const EwsPermission);
+    return d->permission.userId().sID();
 }
 
 bool EwsPermission::canCreateItems() const
 {
-    return m_canCreateItems;
+    Q_D(const EwsPermission);
+    return d->permission.canCreateItems();
 }
 
 bool EwsPermission::canCreateSubFolders() const
 {
-    return m_canCreateSubFolders;
+    Q_D(const EwsPermission);
+    return d->permission.canCreateSubFolders();
 }
 
 bool EwsPermission::isFolderOwner() const
 {
-    return m_isFolderOwner;
+    Q_D(const EwsPermission);
+    return d->permission.isFolderOwner();
 }
 
 bool EwsPermission::isFolderVisible() const
 {
-    return m_isFolderVisible;
+    Q_D(const EwsPermission);
+    return d->permission.isFolderVisible();
 }
 
 bool EwsPermission::isFolderContact() const
 {
-    return m_isFolderContact;
+    Q_D(const EwsPermission);
+    return d->permission.isFolderContact();
 }
 
 QString EwsPermission::editItems() const
 {
+    Q_D(const EwsPermission);
     return m_editItems;
 }
 
@@ -95,10 +78,19 @@ QString EwsPermission::deleteItems() const
 
 QString EwsPermission::readItems() const
 {
+    Q_D(const EwsPermission);
     return m_readItems;
 }
 
 QString EwsPermission::permissionLevel() const
 {
-    return m_permissionLevel;
+    Q_D(const EwsPermission);
+//    return d->permission.permissionLevel();;
+}
+
+
+EwsPermissionPrivate::EwsPermissionPrivate(const T__PermissionType &permissionType) :
+    permission(permissionType)
+{
+
 }

@@ -4,14 +4,11 @@ cmake_minimum_required(VERSION 2.8)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules/)
 
 find_package(Qt5 COMPONENTS
-    Core
     Network
     Xml
     Widgets
-    Multimedia
 )
 find_package(KDSoap REQUIRED)
-add_definitions("-fexceptions")
 
 set(EWSQT_VERSION_MAJOR  "0")
 set(EWSQT_VERSION_MINOR  "0")
@@ -32,18 +29,12 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake
 
 include(FindPkgConfig)
 
-# We need add -DQT_WIDGETS_LIB when using QtWidgets in Qt 5.
-add_definitions(${Qt5Core_DEFINITIONS})
-add_definitions(-fPIC)
+add_definitions(-fPIC -std=gnu++11)
 
 include_directories(
     ${CMAKE_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/libews-qt
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Network_INCLUDE_DIRS}
-    ${Qt5Xml_INCLUDE_DIRS}
 )
 
 add_definitions("-DLOCALSTATEDIR=\"${LOCALSTATEDIR}\"")

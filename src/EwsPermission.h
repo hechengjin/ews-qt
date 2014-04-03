@@ -18,13 +18,17 @@
 
 #include "ewsexport.h"
 
+#include <QObject>
 #include <QString>
-//#include "ESoapElement.h"
 
+class EwsPermissionPrivate;
 class EWS_EXPORT EwsPermission
 {
+    Q_GADGET
+    Q_DECLARE_PRIVATE(EwsPermission)
 public:
-    EwsPermission(/*const ESoapElement &rootElement*/);
+    EwsPermission();
+    EwsPermission(EwsPermissionPrivate *priv);
 
     QString userId() const;
     bool canCreateItems() const;
@@ -39,6 +43,7 @@ public:
     QString permissionLevel() const;
 
 private:
+    EwsPermissionPrivate *d_ptr;
     QString m_userId;
     bool m_canCreateItems;
     bool m_canCreateSubFolders;

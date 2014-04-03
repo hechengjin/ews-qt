@@ -13,63 +13,64 @@
  *
  */
 
-#include "EwsEffectiveRights.h"
+#include "EwsEffectiveRights_p.h"
 #include "EwsRequest.h"
 
-EwsEffectiveRights::EwsEffectiveRights()
+EwsEffectiveRights::EwsEffectiveRights() :
+    d_ptr(0)
+{
+
+}
+
+EwsEffectiveRights::EwsEffectiveRights(EwsEffectiveRightsPrivate *priv) :
+    d_ptr(priv)
 {
 }
 
-//EwsEffectiveRights::EwsEffectiveRights(const ESoapElement &emailAddressElement)
-//{
-//    ESoapElement element;
-
-//    element = emailAddressElement.firstChildElement();
-//    while (!element.isNull()) {
-//        if (element.equalNS(QLatin1String("CreateAssociated"), EWS_TYPES_NS)) {
-//            m_canCreateAssociated = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("CreateContents"), EWS_TYPES_NS)) {
-//            m_canCreateContents = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("CreateHierarchy"), EWS_TYPES_NS)) {
-//            m_canCreateHierarchy = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("Delete"), EWS_TYPES_NS)) {
-//            m_canDelete = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("Modify"), EWS_TYPES_NS)) {
-//            m_canModify = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("Read"), EWS_TYPES_NS)) {
-//            m_canRead = element.text() == QLatin1String("true");
-//        }
-
-//        element = element.nextSiblingElement();
-//    }
-//}
+EwsEffectiveRights::~EwsEffectiveRights()
+{
+    delete d_ptr;
+}
 
 bool EwsEffectiveRights::canCreateAssociated() const
 {
-    return m_canCreateAssociated;
+    Q_D(const EwsEffectiveRights);
+    return d->rights.createAssociated();
 }
 
 bool EwsEffectiveRights::canCreateContents() const
 {
-    return m_canCreateContents;
+    Q_D(const EwsEffectiveRights);
+    return d->rights.createContents();
 }
 
 bool EwsEffectiveRights::canCreateHierarchy() const
 {
-    return m_canCreateHierarchy;
+    Q_D(const EwsEffectiveRights);
+    return d->rights.createHierarchy();
 }
 
 bool EwsEffectiveRights::canDelete() const
 {
-    return m_canDelete;
+    Q_D(const EwsEffectiveRights);
+    return d->rights.delete_();
 }
 
 bool EwsEffectiveRights::canModify() const
 {
-    return m_canModify;
+    Q_D(const EwsEffectiveRights);
+    return d->rights.modify();
 }
 
 bool EwsEffectiveRights::canRead() const
 {
-    return m_canRead;
+    Q_D(const EwsEffectiveRights);
+    return d->rights.read();
+}
+
+
+EwsEffectiveRightsPrivate::EwsEffectiveRightsPrivate(const T__EffectiveRightsType &effectiveRights) :
+    rights(effectiveRights)
+{
+
 }
