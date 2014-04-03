@@ -6,7 +6,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(libews_qt_SRCS
-    wsdl_Services.cpp
     esoapnamespaces.cpp
     esoapelement.cpp
     esoapmessage.cpp
@@ -46,6 +45,8 @@ set(ewsqt_HEADERS
     autodiscoverreply.h
     connection.h
 )
+
+KDSOAP_GENERATE_WSDL(libews_qt_SRCS Services.wsdl)
 
 add_library(ews-qt5 SHARED ${libews_qt_SRCS})
 set_target_properties(ews-qt5 PROPERTIES VERSION ${EWSQT_VERSION} SOVERSION ${EWSQT_API_LEVEL})
