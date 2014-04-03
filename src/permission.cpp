@@ -68,7 +68,7 @@ bool Permission::isFolderContact() const
 
 QString Permission::editItems() const
 {
-    Q_D(const Permission);
+//    Q_D(const Permission);
     return m_editItems;
 }
 
@@ -79,14 +79,16 @@ QString Permission::deleteItems() const
 
 QString Permission::readItems() const
 {
-    Q_D(const Permission);
+//    Q_D(const Permission);
     return m_readItems;
 }
 
 QString Permission::permissionLevel() const
 {
-    Q_D(const Permission);
+//    Q_D(const Permission);
 //    return d->permission.permissionLevel();;
+    // TODO
+    return QString();
 }
 
 

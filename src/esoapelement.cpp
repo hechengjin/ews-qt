@@ -133,7 +133,7 @@ QString ESoapElement::findParentNamespace(const QDomNode &parent, const QString 
 
     QString nodeName = QLatin1String("xmlns:") % prefix;
     QDomNamedNodeMap map = parent.attributes();
-    for (uint i = 0; i < map.length(); ++i) {
+    for (int i = 0; i < map.length(); ++i) {
         QDomNode node = map.item(i);
         if (node.toAttr().nodeName() == nodeName) {
 //            qDebug() << Q_FUNC_INFO << "found prefix:"  << prefix << parent.nodeName();

@@ -31,6 +31,8 @@ set(libews_qt_SRCS
 set(ewsqt_HEADERS
     export.h
     esoapmessage.h
+    esoapelement.h
+    esoapnamespaces.h
     emailaddress.h
     permission.h
     folder.h

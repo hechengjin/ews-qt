@@ -49,7 +49,7 @@ bool Reply::error() const
 
 Reply::ResponseCode Reply::responseCode() const
 {
-    Q_D(const Reply);
+//    Q_D(const Reply);
     return NoError;
 }
 

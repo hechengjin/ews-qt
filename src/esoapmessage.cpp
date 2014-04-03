@@ -154,7 +154,7 @@ ESoapElement ESoapMessage::createTypedHeaderElement(const QString &name, const Q
 void ESoapMessage::extractNamespaces(const QDomElement &element)
 {
     QDomNamedNodeMap map = element.attributes();
-    for (uint i = 0; i < map.length(); ++i) {
+    for (int i = 0; i < map.length(); ++i) {
         QDomNode node = map.item(i);
         if (node.nodeName().startsWith(QLatin1String("xmlns:"))) {
             QString prefix = node.nodeName().section(QLatin1Char(':'), 1, 1);
@@ -163,7 +163,7 @@ void ESoapMessage::extractNamespaces(const QDomElement &element)
     }
 
     QDomNodeList childList = element.childNodes();
-    for (uint i = 0; i < childList.length(); ++i) {
+    for (int i = 0; i < childList.length(); ++i) {
         QDomNode node = childList.item(i);
         if (node.isElement()) {
             extractNamespaces(node.toElement());

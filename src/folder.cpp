@@ -156,7 +156,7 @@ QString Folder::displayName() const
 
 void Folder::setDisplayName(const QString &displayName)
 {
-    Q_D(Folder);
+//    Q_D(Folder);
 //    d->changes[QLatin1String("DisplayName")] = displayName;
 }
 
@@ -295,3 +295,5 @@ FolderPrivate::~FolderPrivate()
 {
 
 }
+
+#include "moc_folder.cpp"
