@@ -4,12 +4,16 @@
 #include "EwsConnection.h"
 
 class ExchangeServices;
-class EwsConnectionPrivate
+namespace Ews {
+
+class ConnectionPrivate
 {
 public:
     ExchangeServices *service;
-    EwsConnection::ServerVersion serverVersion;
+    Connection::ServerVersion serverVersion;
     QUrl uri;
 };
+
+}
 
 #endif // EWSCONNECTION_P_H

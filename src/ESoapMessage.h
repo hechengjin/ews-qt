@@ -30,7 +30,6 @@
 #define EWS_TYPES_NS    "http://schemas.microsoft.com/exchange/services/2006/types"
 #define EWS_MESSAGES_NS "http://schemas.microsoft.com/exchange/services/2006/messages"
 
-class EwsConnection;
 class EWS_EXPORT ESoapMessage : public QDomDocument
 {
 public:

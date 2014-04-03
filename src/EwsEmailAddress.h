@@ -20,11 +20,13 @@
 
 #include <QString>
 
-class EWS_EXPORT EwsEmailAddress
+namespace Ews {
+
+class EWS_EXPORT EmailAddress
 {
 public:
-    EwsEmailAddress();
-//    EwsEmailAddress(/*const ESoapElement &rootElement*/);
+    EmailAddress();
+//    EmailAddress(/*const ESoapElement &rootElement*/);
 
     QString id() const;
     QString name() const;
@@ -39,5 +41,7 @@ private:
     QString m_routingType;
     QString m_mailboxType;
 };
+
+}
 
 #endif // EWSEMAILADDRESS_H

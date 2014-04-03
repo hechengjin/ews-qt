@@ -22,18 +22,20 @@
 
 #include <QStringList>
 
-class EwsSyncFolderHierarchyReplyPrivate;
-class EWS_EXPORT EwsSyncFolderHierarchyReply : public EwsReply
+namespace Ews {
+
+class SyncFolderHierarchyReplyPrivate;
+class EWS_EXPORT SyncFolderHierarchyReply : public Reply
 {
     Q_OBJECT
 public:
-    EwsSyncFolderHierarchyReply(EwsSyncFolderHierarchyReplyPrivate *priv);
+    SyncFolderHierarchyReply(SyncFolderHierarchyReplyPrivate *priv);
 
     QString responseCode() const;
     QString syncState() const;
     bool includesLastFolderInRange() const;
-    QList<EwsFolder> createFolders() const;
-    QList<EwsFolder> updateFolders() const;
+    QList<Folder> createFolders() const;
+    QList<Folder> updateFolders() const;
     /**
      * @brief deleteFolders is not empty when some folder
      * was permanetly deleted on the server
@@ -42,8 +44,10 @@ public:
     QStringList deleteFolders() const;
 
 private:
-    Q_DECLARE_PRIVATE(EwsSyncFolderHierarchyReply)
-    EwsSyncFolderHierarchyReplyPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(SyncFolderHierarchyReply)
+    SyncFolderHierarchyReplyPrivate *d_ptr;
 };
+
+}
 
 #endif // EWSSYNCFOLDERHIERARCHYREPLY_H

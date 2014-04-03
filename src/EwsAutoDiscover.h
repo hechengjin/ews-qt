@@ -26,13 +26,15 @@
 #include <QUrl>
 #include <QDomDocument>
 
-class EwsConnection;
-class EwsAutoDiscoverReply;
-class EWS_EXPORT EwsAutoDiscover : public QObject
+namespace Ews {
+
+class Connection;
+class AutoDiscoverReply;
+class EWS_EXPORT AutoDiscover : public QObject
 {
     Q_OBJECT
 public:
-    explicit EwsAutoDiscover(QObject *parent = 0);
+    explicit AutoDiscover(QObject *parent = 0);
     
     void autodiscover(const QString &emailAddress, const QString &username, const QString &password);
     bool isValid() const;
@@ -56,8 +58,8 @@ private:
     bool parseAutoDiscoverProtocol(const QDomElement &element);
     QUrl autodiscoverUrl(const QString &scheme, const QUrl &url);
 
-    EwsConnection *m_connection;
-    QList<EwsAutoDiscoverReply*> m_replies;
+    Connection *m_connection;
+    QList<AutoDiscoverReply*> m_replies;
     bool m_srvLookupDone;
     bool m_valid;
     QUrl m_uri;
@@ -67,5 +69,7 @@ private:
     QString m_oabUrl;
     QString m_errorMessage;
 };
+
+}
 
 #endif // EWSAUTODISCOVER_H

@@ -18,78 +18,79 @@
 
 #include <QDebug>
 
-EwsPermission::EwsPermission() :
+using namespace Ews;
+
+Permission::Permission() :
     d_ptr(0)
 {
-
 }
 
-EwsPermission::EwsPermission(EwsPermissionPrivate *priv) :
+Permission::Permission(PermissionPrivate *priv) :
     d_ptr(priv)
 {
 }
 
-QString EwsPermission::userId() const
+QString Permission::userId() const
 {
-    Q_D(const EwsPermission);
+    Q_D(const Permission);
     return d->permission.userId().sID();
 }
 
-bool EwsPermission::canCreateItems() const
+bool Permission::canCreateItems() const
 {
-    Q_D(const EwsPermission);
+    Q_D(const Permission);
     return d->permission.canCreateItems();
 }
 
-bool EwsPermission::canCreateSubFolders() const
+bool Permission::canCreateSubFolders() const
 {
-    Q_D(const EwsPermission);
+    Q_D(const Permission);
     return d->permission.canCreateSubFolders();
 }
 
-bool EwsPermission::isFolderOwner() const
+bool Permission::isFolderOwner() const
 {
-    Q_D(const EwsPermission);
+    Q_D(const Permission);
     return d->permission.isFolderOwner();
 }
 
-bool EwsPermission::isFolderVisible() const
+bool Permission::isFolderVisible() const
 {
-    Q_D(const EwsPermission);
+    Q_D(const Permission);
     return d->permission.isFolderVisible();
 }
 
-bool EwsPermission::isFolderContact() const
+bool Permission::isFolderContact() const
 {
-    Q_D(const EwsPermission);
+    Q_D(const Permission);
     return d->permission.isFolderContact();
 }
 
-QString EwsPermission::editItems() const
+QString Permission::editItems() const
 {
-    Q_D(const EwsPermission);
+    Q_D(const Permission);
     return m_editItems;
 }
 
-QString EwsPermission::deleteItems() const
+QString Permission::deleteItems() const
 {
     return m_deleteItems;
 }
 
-QString EwsPermission::readItems() const
+QString Permission::readItems() const
 {
-    Q_D(const EwsPermission);
+    Q_D(const Permission);
     return m_readItems;
 }
 
-QString EwsPermission::permissionLevel() const
+QString Permission::permissionLevel() const
 {
-    Q_D(const EwsPermission);
+    Q_D(const Permission);
 //    return d->permission.permissionLevel();;
 }
 
 
-EwsPermissionPrivate::EwsPermissionPrivate(const T__PermissionType &permissionType) :
+PermissionPrivate::PermissionPrivate(const T__PermissionType &permissionType) :
     permission(permissionType)
 {
 

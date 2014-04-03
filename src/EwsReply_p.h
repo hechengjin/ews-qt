@@ -25,11 +25,13 @@
 #include "EwsReply.h"
 #include "wsdl_Services.h"
 
-class EwsReplyPrivate : public QObject
+namespace Ews {
+
+class ReplyPrivate : public QObject
 {
     Q_OBJECT
 public:
-    EwsReplyPrivate(KDSoapJob *job);
+    ReplyPrivate(KDSoapJob *job);
 
     QString messageText;
     QString responseCode;
@@ -51,5 +53,7 @@ signals:
 private:
     void jobFinished(KDSoapJob *job);
 };
+
+}
 
 #endif // EWSREPLY_P_H

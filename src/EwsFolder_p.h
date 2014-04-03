@@ -7,19 +7,23 @@
 
 #include "wsdl_Services.h"
 
-class EwsFolderPrivate
+namespace Ews {
+
+class FolderPrivate
 {
 public:
-    EwsFolderPrivate();
-    EwsFolderPrivate(const T__FolderType &value);
-    virtual ~EwsFolderPrivate();
+    FolderPrivate();
+    FolderPrivate(const T__FolderType &value);
+    virtual ~FolderPrivate();
 
     T__FolderType folder;
-    EwsFolder::WellKnownFolderName wellKnownFolderName;
-    EwsEffectiveRights effectiveRights;
-    QList<EwsPermission> permissions;
+    Folder::WellKnownFolderName wellKnownFolderName;
+    EffectiveRights effectiveRights;
+    QList<Permission> permissions;
     QHash<QString, QString> changes;
-    EwsConnection *connection;
+    Connection *connection;
 };
+
+}
 
 #endif // EWSFOLDER_P_H

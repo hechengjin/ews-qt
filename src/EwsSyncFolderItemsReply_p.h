@@ -7,22 +7,24 @@
 #include "EwsSyncFolderItemsReply.h"
 #include "wsdl_Services.h"
 
-class EwsSyncFolderItemsReplyPrivate : public EwsReplyPrivate
+namespace Ews {
+
+class SyncFolderItemsReplyPrivate : public ReplyPrivate
 {
     Q_OBJECT
 public:
-    EwsSyncFolderItemsReplyPrivate(KDSoapJob *job);
+    SyncFolderItemsReplyPrivate(KDSoapJob *job);
+
+    void processJob(KDSoapJob *job);
 
     QString messageText;
     QString responseCode;
     QString syncState;
     bool includesLastItemInRange;
-    QList<EwsMessage> m_createMessages;
     QStringList deleteItems;
 
-public slots:
-    void syncFolderItemsDone(KDSoapJob *job);
-    void syncFolderItemsError(const KDSoapMessage &fault);
 };
+
+}
 
 #endif // EWSSYNCFOLDERITEMSREPLY_P_H

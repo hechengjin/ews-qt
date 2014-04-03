@@ -18,11 +18,13 @@
 
 #include <QDebug>
 
-EwsEmailAddress::EwsEmailAddress()
+using namespace Ews;
+
+EmailAddress::EmailAddress()
 {
 }
 
-//EwsEmailAddress::EwsEmailAddress(const ESoapElement &rootElement)
+//EmailAddress::EmailAddress(const ESoapElement &rootElement)
 //{
 //    ESoapElement element;
 
@@ -47,27 +49,27 @@ EwsEmailAddress::EwsEmailAddress()
 //    }
 //}
 
-QString EwsEmailAddress::id() const
+QString EmailAddress::id() const
 {
     return m_id;
 }
 
-QString EwsEmailAddress::name() const
+QString EmailAddress::name() const
 {
     return m_name;
 }
 
-QString EwsEmailAddress::emailAddress() const
+QString EmailAddress::emailAddress() const
 {
     return m_emailAddress;
 }
 
-QString EwsEmailAddress::routingType() const
+QString EmailAddress::routingType() const
 {
     return m_routingType;
 }
 
-QString EwsEmailAddress::mailboxType() const
+QString EmailAddress::mailboxType() const
 {
     return m_mailboxType;
 }

@@ -4,12 +4,16 @@
 #include "EwsEffectiveRights.h"
 #include "wsdl_Services.h"
 
-class EwsEffectiveRightsPrivate
+namespace Ews {
+
+class EffectiveRightsPrivate
 {
 public:
-    EwsEffectiveRightsPrivate(const T__EffectiveRightsType &effectiveRights);
+    EffectiveRightsPrivate(const T__EffectiveRightsType &effectiveRights);
 
     T__EffectiveRightsType rights;
 };
+
+}
 
 #endif // EWSEFFECTIVERIGHTS_P_H

@@ -25,13 +25,15 @@
 #include <QNetworkReply>
 #include <QDomDocument>
 
-class EwsConnection;
-class EWS_EXPORT EwsAutoDiscoverReply : public QObject
+namespace Ews {
+
+class Connection;
+class EWS_EXPORT AutoDiscoverReply : public QObject
 {
     Q_OBJECT
 public:
-    EwsAutoDiscoverReply(const QDomDocument &document, EwsConnection *connection);
-    ~EwsAutoDiscoverReply();
+    AutoDiscoverReply(const QDomDocument &document, Connection *connection);
+    ~AutoDiscoverReply();
 
     void setReply(QNetworkReply *reply);
     QUrl url() const;
@@ -50,9 +52,11 @@ private slots:
 private:
     QDomDocument m_document;
     QDomDocument m_replyDocument;
-    EwsConnection *m_connection;
+    Connection *m_connection;
     QNetworkReply *m_reply;
     int m_redirects;
 };
+
+}
 
 #endif // EWSAUTODISCOVERREPLY_H

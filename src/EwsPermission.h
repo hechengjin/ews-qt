@@ -21,14 +21,16 @@
 #include <QObject>
 #include <QString>
 
-class EwsPermissionPrivate;
-class EWS_EXPORT EwsPermission
+namespace Ews {
+
+class PermissionPrivate;
+class EWS_EXPORT Permission
 {
     Q_GADGET
-    Q_DECLARE_PRIVATE(EwsPermission)
+    Q_DECLARE_PRIVATE(Permission)
 public:
-    EwsPermission();
-    EwsPermission(EwsPermissionPrivate *priv);
+    Permission();
+    Permission(PermissionPrivate *priv);
 
     QString userId() const;
     bool canCreateItems() const;
@@ -43,7 +45,7 @@ public:
     QString permissionLevel() const;
 
 private:
-    EwsPermissionPrivate *d_ptr;
+    PermissionPrivate *d_ptr;
     QString m_userId;
     bool m_canCreateItems;
     bool m_canCreateSubFolders;
@@ -56,5 +58,7 @@ private:
     QString m_readItems;
     QString m_permissionLevel;
 };
+
+}
 
 #endif // EWSPERMISSION_H

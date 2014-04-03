@@ -27,58 +27,60 @@
 #include <QStringBuilder>
 #include <QDebug>
 
-EwsAutoDiscover::EwsAutoDiscover(QObject *parent) :
+using namespace Ews;
+
+AutoDiscover::AutoDiscover(QObject *parent) :
     QObject(parent),
-    m_connection(new EwsConnection(this)),
+    m_connection(new Ews::Connection(this)),
     m_srvLookupDone(false),
     m_valid(false)
 {
 }
 
-void EwsAutoDiscover::autodiscover(const QString &emailAddress, const QString &username, const QString &password)
+void AutoDiscover::autodiscover(const QString &emailAddress, const QString &username, const QString &password)
 {
     m_uri.setHost(emailAddress.section(QLatin1Char('@'), 1, 1));
     m_uri.setUserName(username);
     m_uri.setPassword(password);
     m_emailAddress = emailAddress;
-    m_message = EwsRequest::autoDiscover(emailAddress);
+    m_message = Request::autoDiscover(emailAddress);
 
     performAutoDiscover(m_uri);
 }
 
-bool EwsAutoDiscover::isValid() const
+bool AutoDiscover::isValid() const
 {
     return m_valid;
 }
 
-QString EwsAutoDiscover::errorMessage() const
+QString AutoDiscover::errorMessage() const
 {
     return m_errorMessage;
 }
 
-QUrl EwsAutoDiscover::uri() const
+QUrl AutoDiscover::uri() const
 {
     return m_uri;
 }
 
-QString EwsAutoDiscover::emailAddress() const
+QString AutoDiscover::emailAddress() const
 {
     return m_emailAddress;
 }
 
-QString EwsAutoDiscover::asUrl() const
+QString AutoDiscover::asUrl() const
 {
     return m_asUrl;
 }
 
-QString EwsAutoDiscover::oabUrl() const
+QString AutoDiscover::oabUrl() const
 {
     return m_oabUrl;
 }
 
-void EwsAutoDiscover::requestFinished()
+void AutoDiscover::requestFinished()
 {
-    EwsAutoDiscoverReply *reply = qobject_cast<EwsAutoDiscoverReply*>(sender());
+    AutoDiscoverReply *reply = qobject_cast<AutoDiscoverReply*>(sender());
     if (m_replies.isEmpty()) {
         return;
     }
@@ -86,7 +88,7 @@ void EwsAutoDiscover::requestFinished()
     m_replies.removeOne(reply);
     if (!reply->error()) {
         if (parseAutoDiscover(reply->document())) {
-            foreach (EwsAutoDiscoverReply *reply, m_replies) {
+            foreach (AutoDiscoverReply *reply, m_replies) {
                 reply->deleteLater();
             }
 
@@ -99,7 +101,7 @@ void EwsAutoDiscover::requestFinished()
         }
     } else if (reply->error() == QNetworkReply::AuthenticationRequiredError) {
         qDebug() << Q_FUNC_INFO << reply->url() << reply->error() << reply->errorMessage();
-        foreach (EwsAutoDiscoverReply *reply, m_replies) {
+        foreach (AutoDiscoverReply *reply, m_replies) {
             reply->deleteLater();
         }
 
@@ -118,7 +120,7 @@ void EwsAutoDiscover::requestFinished()
     }
 }
 
-void EwsAutoDiscover::resultsReady()
+void AutoDiscover::resultsReady()
 {
     m_srvLookupDone = true;
 
@@ -142,7 +144,7 @@ void EwsAutoDiscover::resultsReady()
     dns->deleteLater();
 }
 
-void EwsAutoDiscover::performAutoDiscover(const QUrl &uri)
+void AutoDiscover::performAutoDiscover(const QUrl &uri)
 {
     /**
      * @brief http://msdn.microsoft.com/en-us/library/ee332364.aspx
@@ -151,35 +153,35 @@ void EwsAutoDiscover::performAutoDiscover(const QUrl &uri)
      * lead to long timeouts so we process all urls at once and use
      * the first sucessfull one
      */
-    EwsAutoDiscoverReply *reply;
+    AutoDiscoverReply *reply;
 
     QUrl url1 = autodiscoverUrl(QLatin1String("https"), uri);
     reply = m_connection->post(url1, m_message);
-    connect(reply, &EwsAutoDiscoverReply::finished,
-            this, &EwsAutoDiscover::requestFinished);
+    connect(reply, &AutoDiscoverReply::finished,
+            this, &AutoDiscover::requestFinished);
     m_replies << reply;
 
     QUrl url2 = uri;
     url2.setHost(QLatin1String("autodiscover.") % uri.host());
     url2 = autodiscoverUrl(QLatin1String("https"), uri);
     reply = m_connection->post(url2, m_message);
-    connect(reply, &EwsAutoDiscoverReply::finished,
-            this, &EwsAutoDiscover::requestFinished);
+    connect(reply, &AutoDiscoverReply::finished,
+            this, &AutoDiscover::requestFinished);
     m_replies << reply;
 
     QUrl url3 = uri;
     url3.setHost(QLatin1String("autodiscover.") % uri.host());
     url3 = autodiscoverUrl(QLatin1String("http"), uri);
     reply = m_connection->get(url3, m_message);
-    connect(reply, &EwsAutoDiscoverReply::finished,
-            this, &EwsAutoDiscover::requestFinished);
+    connect(reply, &AutoDiscoverReply::finished,
+            this, &AutoDiscover::requestFinished);
     m_replies << reply;
 
     if (!m_srvLookupDone) {
         // Create a DNS lookup.
         QDnsLookup *dns = new QDnsLookup(this);
         connect(dns, &QDnsLookup::finished,
-                this, &EwsAutoDiscover::resultsReady);
+                this, &AutoDiscover::resultsReady);
 
         // Find the autodiscover servers from the DNS SRV entry
         dns->setType(QDnsLookup::SRV);
@@ -188,7 +190,7 @@ void EwsAutoDiscover::performAutoDiscover(const QUrl &uri)
     }
 }
 
-bool EwsAutoDiscover::parseAutoDiscover(const QDomDocument &document)
+bool AutoDiscover::parseAutoDiscover(const QDomDocument &document)
 {
     qDebug() << Q_FUNC_INFO;
 
@@ -262,7 +264,7 @@ bool EwsAutoDiscover::parseAutoDiscover(const QDomDocument &document)
     return false;
 }
 
-bool EwsAutoDiscover::parseAutoDiscoverProtocol(const QDomElement &element)
+bool AutoDiscover::parseAutoDiscoverProtocol(const QDomElement &element)
 {
     QDomElement urlElem;
     urlElem = element.firstChildElement(QLatin1String("ASUrl"));
@@ -279,7 +281,7 @@ bool EwsAutoDiscover::parseAutoDiscoverProtocol(const QDomElement &element)
     return !m_asUrl.isEmpty() && !m_oabUrl.isEmpty();
 }
 
-QUrl EwsAutoDiscover::autodiscoverUrl(const QString &scheme, const QUrl &url)
+QUrl AutoDiscover::autodiscoverUrl(const QString &scheme, const QUrl &url)
 {
     QUrl ret;
     ret = scheme % QLatin1String("://") % url.authority() % QLatin1String("/autodiscover/autodiscover.xml");

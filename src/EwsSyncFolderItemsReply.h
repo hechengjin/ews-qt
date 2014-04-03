@@ -17,32 +17,28 @@
 #define EWSSYNCFOLDERITEMSREPLY_H
 
 #include "ewsexport.h"
-#include "EwsMessage.h"
+#include "EwsReply.h"
 
-class EwsSyncFolderItemsReplyPrivate;
-class EWS_EXPORT EwsSyncFolderItemsReply : public QObject
+namespace Ews {
+
+class SyncFolderItemsReplyPrivate;
+class EWS_EXPORT SyncFolderItemsReply : public Reply
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(SyncFolderItemsReply)
 public:
     QString responseCode() const;
     QString syncState() const;
     bool includesLastItemInRange() const;
-    QList<EwsMessage> createMessages() const;
 
 protected:
-    EwsSyncFolderItemsReply(QObject *reply);
+    SyncFolderItemsReply(SyncFolderItemsReplyPrivate *priv);
 
 private:
-    QString m_messageText;
-    QString m_responseCode;
-    QString m_syncState;
-    bool m_includesLastItemInRange;
-    QList<EwsMessage> m_createMessages;
-
-private:
-    friend class EwsConnection;
-    Q_DECLARE_PRIVATE(EwsSyncFolderItemsReply)
-    EwsSyncFolderItemsReplyPrivate *d_ptr;
+    friend class Connection;
+    SyncFolderItemsReplyPrivate *d_ptr;
 };
+
+}
 
 #endif // EWSSYNCFOLDERITEMSREPLY_H

@@ -25,12 +25,14 @@
 #define EWS_AUTODISCOVER_REQUEST_SCHEMA  "http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006"
 #define EWS_AUTODISCOVER_RESPONSE_SCHEMA "http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a"
 
-EwsRequest::EwsRequest(const QDomDocument &document) :
+using namespace Ews;
+
+Request::Request(const QDomDocument &document) :
     ESoapMessage(document)
 {
 }
 
-EwsRequest::EwsRequest(const QString &method, ServerVersion version)
+Request::Request(const QString &method, ServerVersion version)
 {
     init(version);
 
@@ -42,17 +44,17 @@ EwsRequest::EwsRequest(const QString &method, ServerVersion version)
     body().appendChild(m_method);
 }
 
-ESoapElement EwsRequest::method() const
+ESoapElement Request::method() const
 {
     return m_method;
 }
 
-QString EwsRequest::methodName() const
+QString Request::methodName() const
 {
     return m_method.nodeName();
 }
 
-QDomDocument EwsRequest::autoDiscover(const QString &emailAddress)
+QDomDocument Request::autoDiscover(const QString &emailAddress)
 {
     QDomDocument ret;
     QDomImplementation impl;
@@ -75,7 +77,7 @@ QDomDocument EwsRequest::autoDiscover(const QString &emailAddress)
     return ret;
 }
 
-void EwsRequest::init(ServerVersion version)
+void Request::init(ServerVersion version)
 {
     QString versionString;
     switch (version) {

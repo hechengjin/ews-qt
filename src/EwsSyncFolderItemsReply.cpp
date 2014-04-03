@@ -18,92 +18,38 @@
 
 #include <QDebug>
 
-EwsSyncFolderItemsReply::EwsSyncFolderItemsReply(QObject *job)
-{
-    SyncFolderItemsJob *syncJob = qobject_cast<SyncFolderItemsJob*>(job);
+using namespace Ews;
 
-    connect(syncJob, &SyncFolderItemsJob::finished,
-            d_ptr, &EwsSyncFolderItemsReplyPrivate::syncFolderItemsDone);
+SyncFolderItemsReply::SyncFolderItemsReply(SyncFolderItemsReplyPrivate *priv) :
+    Reply(priv)
+{
 }
 
-QString EwsSyncFolderItemsReply::responseCode() const
+QString SyncFolderItemsReply::responseCode() const
 {
-    return m_responseCode;
+    Q_D(const SyncFolderItemsReply);
+    return d->responseCode;
 }
 
-QString EwsSyncFolderItemsReply::syncState() const
+QString SyncFolderItemsReply::syncState() const
 {
-    return m_syncState;
+    Q_D(const SyncFolderItemsReply);
+    return d->syncState;
 }
 
-bool EwsSyncFolderItemsReply::includesLastItemInRange() const
+bool SyncFolderItemsReply::includesLastItemInRange() const
 {
-    return m_includesLastItemInRange;
+    Q_D(const SyncFolderItemsReply);
+    return d->includesLastItemInRange;
 }
 
-QList<EwsMessage> EwsSyncFolderItemsReply::createMessages() const
+SyncFolderItemsReplyPrivate::SyncFolderItemsReplyPrivate(KDSoapJob *job) :
+    ReplyPrivate(job)
 {
-    return m_createMessages;
 }
 
-//bool EwsSyncFolderItemsReply::parseDocument(ESoapElement &response)
-//{
-//    ESoapElement element;
-//    element = response.firstChildTypedElement(QLatin1String("SyncState"), EWS_MESSAGES_NS);
-//    if (!element.isNull()) {
-//        m_syncState = element.text();
-//    }
-
-//    element = response.firstChildTypedElement(QLatin1String("IncludesLastItemInRange"), EWS_MESSAGES_NS);
-//    if (!element.isNull()) {
-//        m_includesLastItemInRange = element.text() == QLatin1String("true");
-//    }
-
-//    element = response.firstChildTypedElement(QLatin1String("ResponseCode"), EWS_MESSAGES_NS);
-//    if (!element.isNull()) {
-//        m_responseCode = element.text();
-//    }
-
-//    element = response.firstChildTypedElement(QLatin1String("MessageText"), EWS_MESSAGES_NS);
-//    if (!element.isNull()) {
-//        m_messageText = element.text();
-//    }
-
-//    ESoapElement changes = response.firstChildTypedElement(QLatin1String("Changes"), EWS_MESSAGES_NS);
-//    if (!changes.isNull()) {
-//        element = changes.firstChildElement();
-//        while (!element.isNull()) {
-//            if (element.equalNS(QLatin1String("Create"), EWS_TYPES_NS)) {
-//                ESoapElement childElement = element.firstChildElement();
-//                if (childElement.equalNS(QLatin1String("Message"), EWS_TYPES_NS)) {
-//                    m_createMessages << EwsMessage(childElement);
-//                }
-//            } else {
-//                qWarning() << Q_FUNC_INFO << "Unknown Changes child:" <<  element.nodeName();
-//            }
-
-//            element = element.nextSiblingElement();
-//        }
-//    } else {
-//        qWarning() << Q_FUNC_INFO << "Changes is null";
-//    }
-
-//    return true;
-//}
-
-
-EwsSyncFolderItemsReplyPrivate::EwsSyncFolderItemsReplyPrivate(KDSoapJob *job) :
-    EwsReplyPrivate(job)
+void SyncFolderItemsReplyPrivate::processJob(KDSoapJob *job)
 {
-
-}
-
-void EwsSyncFolderItemsReplyPrivate::syncFolderItemsDone(KDSoapJob *job)
-{
-    if (job->isFault()) {
-        qWarning() << Q_FUNC_INFO << job->faultAsString();
-    }
-
     SyncFolderItemsJob *syncJob = qobject_cast<SyncFolderItemsJob*>(job);
     const TNS__SyncFolderItemsResponseType &response = syncJob->syncFolderItemsResult();
 
@@ -144,9 +90,4 @@ void EwsSyncFolderItemsReplyPrivate::syncFolderItemsDone(KDSoapJob *job)
 //        qDebug() << Q_FUNC_INFO << msg.messageXml();
 //        msg.changes();
     }
-}
-
-void EwsSyncFolderItemsReplyPrivate::syncFolderItemsError(const KDSoapMessage &fault)
-{
-
 }

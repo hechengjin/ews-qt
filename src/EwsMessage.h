@@ -23,10 +23,12 @@
 
 #include <QDateTime>
 
-class EWS_EXPORT EwsMessage
+namespace Ews {
+
+class EWS_EXPORT Message
 {
 public:
-    EwsMessage(/*const ESoapElement &rootElement*/);
+    Message(/*const ESoapElement &rootElement*/);
 
     QString id() const;
     QString changeKey() const;
@@ -51,10 +53,10 @@ public:
     bool isReadReceiptRequested() const;
     bool isDeliveryReceiptRequested() const;
     QString references() const;
-    EwsEmailAddress sender() const;
-    EwsEmailAddress from() const;
-    EwsEmailAddress receivedBy() const;
-    EwsEmailAddress receivedRepresenting() const;
+    EmailAddress sender() const;
+    EmailAddress from() const;
+    EmailAddress receivedBy() const;
+    EmailAddress receivedRepresenting() const;
     bool isSubmitted() const;
     bool isDraft() const;
     bool isFromMe() const;
@@ -66,7 +68,7 @@ public:
     QString displayCC() const;
     bool hasAttachments() const;
     QString culture() const;
-    EwsEffectiveRights effectiveRights() const;
+    EffectiveRights effectiveRights() const;
     QString lastModifiedName() const;
     QDateTime lastModifiedTime() const;
     QString body() const;
@@ -94,10 +96,10 @@ private:
     bool m_isReadReceiptRequested;
     bool m_isDeliveryReceiptRequested;
     QString m_references;
-    EwsEmailAddress m_sender;
-    EwsEmailAddress m_from;
-    EwsEmailAddress m_receivedBy;
-    EwsEmailAddress m_receivedRepresenting;
+    EmailAddress m_sender;
+    EmailAddress m_from;
+    EmailAddress m_receivedBy;
+    EmailAddress m_receivedRepresenting;
     bool m_isSubmitted;
     bool m_isDraft;
     bool m_isFromMe;
@@ -109,10 +111,12 @@ private:
     QString m_displayCC;
     bool m_hasAttachments;
     QString m_culture;
-    EwsEffectiveRights m_effectiveRights;
+    EffectiveRights m_effectiveRights;
     QString m_lastModifiedName;
     QDateTime m_lastModifiedTime;
     QString m_body;
 };
+
+}
 
 #endif // EWSMESSAGE_H

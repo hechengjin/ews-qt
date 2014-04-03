@@ -26,34 +26,36 @@
 #include <QStringBuilder>
 #include <QDebug>
 
-EwsFolder::EwsFolder(EwsConnection *connection, EwsFolder::WellKnownFolderName wellKnownFolderName, const QString &changeKey) :
-    d_ptr(new EwsFolderPrivate)
+using namespace Ews;
+
+Folder::Folder(Connection *connection, Folder::WellKnownFolderName wellKnownFolderName, const QString &changeKey) :
+    d_ptr(new FolderPrivate)
 {
-    Q_D(EwsFolder);
+    Q_D(Folder);
     d->wellKnownFolderName = wellKnownFolderName;
     d->connection = connection;
 //    d->folder.f
 }
 
-EwsFolder::EwsFolder(EwsConnection *connection, const QString &folderId, const QString &changeKey) :
-    d_ptr(new EwsFolderPrivate)
+Folder::Folder(Connection *connection, const QString &folderId, const QString &changeKey) :
+    d_ptr(new FolderPrivate)
 {
-    Q_D(EwsFolder);
+    Q_D(Folder);
 //    d->wellKnownFolderName = wellKnownFolderName;
     d->connection = connection;
 }
 
-EwsFolder::EwsFolder(EwsFolderPrivate *priv) :
+Folder::Folder(FolderPrivate *priv) :
     d_ptr(priv)
 {
 }
 
-EwsFolder::~EwsFolder()
+Folder::~Folder()
 {
     delete d_ptr;
 }
 
-//EwsFolder::EwsFolder(const ESoapElement &rootElement) :
+//Folder::Folder(const ESoapElement &rootElement) :
 //    m_wellKnownFolderName(WellKnownFolderNameUnknown)
 //{
 //    ESoapElement element;
@@ -94,110 +96,109 @@ EwsFolder::~EwsFolder()
 //    }
 //}
 
-QString EwsFolder::id() const
+QString Folder::id() const
 {
-    Q_D(const EwsFolder);
+    Q_D(const Folder);
     return d->folder.folderId().id();
 }
 
-void EwsFolder::setId(const QString &id)
+void Folder::setId(const QString &id)
 {
 //    m_id = id;
 }
 
-QString EwsFolder::changeKey() const
+QString Folder::changeKey() const
 {
-    Q_D(const EwsFolder);
+    Q_D(const Folder);
     return d->folder.folderId().changeKey();
 }
 
-void EwsFolder::setChangeKey(const QString &changeKey)
+void Folder::setChangeKey(const QString &changeKey)
 {
 //    m_changeKey = changeKey;
 }
 
-EwsFolder::WellKnownFolderName EwsFolder::wellKnownFolderName() const
+Folder::WellKnownFolderName Folder::wellKnownFolderName() const
 {
-    Q_D(const EwsFolder);
+    Q_D(const Folder);
     return d->wellKnownFolderName;
 }
 
-QString EwsFolder::wellKnownFolderNameString() const
+QString Folder::wellKnownFolderNameString() const
 {
-    Q_D(const EwsFolder);
-    return EwsUtils::enumToString<EwsFolder>("WellKnownFolderName", d->wellKnownFolderName).toLower();
+    Q_D(const Folder);
+    return EwsUtils::enumToString<Folder>("WellKnownFolderName", d->wellKnownFolderName).toLower();
 }
 
-QString EwsFolder::folderClass() const
+QString Folder::folderClass() const
 {
-    Q_D(const EwsFolder);
+    Q_D(const Folder);
     return d->folder.folderClass();
 }
 
-QString EwsFolder::parentId() const
+QString Folder::parentId() const
 {
-    Q_D(const EwsFolder);
+    Q_D(const Folder);
     return d->folder.parentFolderId().id();
 }
 
-QString EwsFolder::parentChangeKey() const
+QString Folder::parentChangeKey() const
 {
-    Q_D(const EwsFolder);
+    Q_D(const Folder);
     return d->folder.parentFolderId().changeKey();
 }
 
-QString EwsFolder::displayName() const
+QString Folder::displayName() const
 {
-    Q_D(const EwsFolder);
+    Q_D(const Folder);
     return d->folder.displayName();
 }
 
-void EwsFolder::setDisplayName(const QString &displayName)
+void Folder::setDisplayName(const QString &displayName)
 {
-    Q_D(EwsFolder);
+    Q_D(Folder);
 //    d->changes[QLatin1String("DisplayName")] = displayName;
 }
 
-EwsEffectiveRights EwsFolder::effectiveRights() const
+EffectiveRights Folder::effectiveRights() const
 {
-    Q_D(const EwsFolder);
+    Q_D(const Folder);
     return d->effectiveRights;
 }
 
-int EwsFolder::totalCount() const
+int Folder::totalCount() const
 {
-    Q_D(const EwsFolder);
+    Q_D(const Folder);
     return d->folder.totalCount();
 }
 
-int EwsFolder::unreadCount() const
+int Folder::unreadCount() const
 {
-    Q_D(const EwsFolder);
+    Q_D(const Folder);
     return d->folder.unreadCount();
 }
 
-int EwsFolder::childFolderCount() const
+int Folder::childFolderCount() const
 {
-    Q_D(const EwsFolder);
+    Q_D(const Folder);
     return d->folder.childFolderCount();
 }
 
-QList<EwsPermission> EwsFolder::permissions() const
+QList<Permission> Folder::permissions() const
 {
-    Q_D(const EwsFolder);
+    Q_D(const Folder);
     return d->permissions;
 }
 
-EwsReply *EwsFolder::load(BaseShape folderShape) const
+Reply *Folder::load(BaseShape folderShape) const
 {
-    Q_D(const EwsFolder);
-    return d->connection->getFolders(QList<EwsFolder>() << *this, folderShape);
+    Q_D(const Folder);
+    return d->connection->getFolders(QList<Folder>() << *this, folderShape);
 }
 
-EwsReply *EwsFolder::update() const
+Reply *Folder::update() const
 {
-    Q_D(const EwsFolder);
-
+    Q_D(const Folder);
 
     TNS__UpdateFolderType request;
 
@@ -227,7 +228,7 @@ EwsReply *EwsFolder::update() const
     UpdateFolderJob *job = new UpdateFolderJob(d->connection->d_ptr->service);
     job->setRequest(request);
 
-    return new EwsReply(job);
+    return new Reply(job);
 
 //    EwsRequest message(QLatin1String("UpdateFolder"), m_connection->serverVersion());
 //    ESoapElement folderChanges = message.createElement(QLatin1String("FolderChanges"));
@@ -268,31 +269,31 @@ EwsReply *EwsFolder::update() const
 //    return new EwsReply(d->connection->post(message), message.methodName());
 }
 
-EwsReply *EwsFolder::remove(DeleteType mode) const
+Reply *Folder::remove(DeleteType mode) const
 {
-    Q_D(const EwsFolder);
-    return d->connection->deleteFolders(QList<EwsFolder>() << *this, mode);
+    Q_D(const Folder);
+    return d->connection->deleteFolders(QList<Folder>() << *this, mode);
 }
 
-#include "moc_EwsFolder.cpp"
-
-EwsFolderPrivate::EwsFolderPrivate()
+FolderPrivate::FolderPrivate()
 {
 
 }
 
-EwsFolderPrivate::EwsFolderPrivate(const T__FolderType &value) :
+FolderPrivate::FolderPrivate(const T__FolderType &value) :
     folder(value)
 {
-    effectiveRights = EwsEffectiveRights(new EwsEffectiveRightsPrivate(value.effectiveRights()));
+    effectiveRights = EffectiveRights(new EffectiveRightsPrivate(value.effectiveRights()));
 
     QList<T__PermissionType> permissionList = value.permissionSet().permissions().permission();
     foreach (const T__PermissionType &permission, permissionList) {
-        permissions << EwsPermission(new EwsPermissionPrivate(permission));
+        permissions << Permission(new PermissionPrivate(permission));
     }
 }
 
-EwsFolderPrivate::~EwsFolderPrivate()
+FolderPrivate::~FolderPrivate()
 {
 
 }
+
+#include "moc_EwsFolder.cpp"

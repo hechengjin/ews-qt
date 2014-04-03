@@ -17,16 +17,17 @@
 #define EWSFOLDER_H
 
 #include "ewsexport.h"
-//#include "ESoapElement.h"
 #include "EwsEffectiveRights.h"
 #include "EwsPermission.h"
 
 #include <QObject>
 
-class EwsReply;
-class EwsConnection;
-class EwsFolderPrivate;
-class EWS_EXPORT EwsFolder
+namespace Ews {
+
+class Reply;
+class Connection;
+class FolderPrivate;
+class EWS_EXPORT Folder
 {
     Q_GADGET
     Q_ENUMS(BaseShape)
@@ -85,22 +86,22 @@ public:
     };
 
     /**
-     * @brief EwsFolder
+     * @brief Folder
      * @param connection
      * @param wellKnownFolderName
      * @param changeKey required on rename operation
      */
-    EwsFolder(EwsConnection *connection, WellKnownFolderName wellKnownFolderName, const QString &changeKey = QString());
+    Folder(Connection *connection, WellKnownFolderName wellKnownFolderName, const QString &changeKey = QString());
 
     /**
-     * @brief EwsFolder
+     * @brief Folder
      * @param connection
      * @param folderId
      * @param changeKey required on rename operation
      */
-    EwsFolder(EwsConnection *connection, const QString &folderId, const QString &changeKey = QString());
-    EwsFolder(EwsFolderPrivate *priv);
-    virtual ~EwsFolder();
+    Folder(Connection *connection, const QString &folderId, const QString &changeKey = QString());
+    Folder(FolderPrivate *priv);
+    virtual ~Folder();
 
     QString id() const;
     void setId(const QString &id);
@@ -113,22 +114,21 @@ public:
     QString parentChangeKey() const;
     QString displayName() const;
     void setDisplayName(const QString &displayName);
-    EwsEffectiveRights effectiveRights() const;
+    EffectiveRights effectiveRights() const;
     int totalCount() const;
     int unreadCount() const;
     int childFolderCount() const;
-    QList<EwsPermission> permissions() const;
+    QList<Permission> permissions() const;
 
-    EwsReply *load(BaseShape folderShape) const;
-    EwsReply *update() const;
-    EwsReply *remove(DeleteType mode) const;
+    Reply *load(BaseShape folderShape) const;
+    Reply *update() const;
+    Reply *remove(DeleteType mode) const;
 
 protected:
-    Q_DECLARE_PRIVATE(EwsFolder)
-    EwsFolderPrivate *d_ptr;
-
-private:
-    friend class EwsSyncFolderHierarchyReplyPrivate;
+    Q_DECLARE_PRIVATE(Folder)
+    FolderPrivate *d_ptr;
 };
+
+}
 
 #endif // EWSFOLDER_H

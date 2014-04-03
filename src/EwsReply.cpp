@@ -26,50 +26,52 @@
 #include <QStringBuilder>
 #include <QDebug>
 
-EwsReply::EwsReply(void *job) :
-    d_ptr(new EwsReplyPrivate(static_cast<KDSoapJob *>(job)))
+using namespace Ews;
+
+Reply::Reply(void *job) :
+    d_ptr(new ReplyPrivate(static_cast<KDSoapJob *>(job)))
 {
-    Q_D(EwsReply);
-    connect(d, &EwsReplyPrivate::finished,
-            this, &EwsReply::finished);
+    Q_D(Reply);
+    connect(d, &ReplyPrivate::finished,
+            this, &Reply::finished);
 }
 
-EwsReply::~EwsReply()
+Reply::~Reply()
 {
     delete d_ptr;
 }
 
-bool EwsReply::error() const
+bool Reply::error() const
 {
-    Q_D(const EwsReply);
+    Q_D(const Reply);
     return !d->responseCode.isEmpty();
 }
 
-EwsReply::ResponseCode EwsReply::responseCode() const
+Reply::ResponseCode Reply::responseCode() const
 {
-    Q_D(const EwsReply);
+    Q_D(const Reply);
     return NoError;
 }
 
-QString EwsReply::errorMessage() const
+QString Reply::errorMessage() const
 {
-    Q_D(const EwsReply);
+    Q_D(const Reply);
     return d->responseCode;
 }
 
-EwsReplyPrivate::EwsReplyPrivate(KDSoapJob *job)
+ReplyPrivate::ReplyPrivate(KDSoapJob *job)
 {
     connect(job, &KDSoapJob::finished,
-            this, &EwsReplyPrivate::jobFinished);
+            this, &ReplyPrivate::jobFinished);
     job->start();
 }
 
-void EwsReplyPrivate::processJob(KDSoapJob *job)
+void ReplyPrivate::processJob(KDSoapJob *job)
 {
     // TODO make this pure virtual
 }
 
-void EwsReplyPrivate::jobFinished(KDSoapJob *job)
+void ReplyPrivate::jobFinished(KDSoapJob *job)
 {
     if (job->isFault()) {
         responseCode = job->faultAsString();

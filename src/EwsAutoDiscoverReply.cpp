@@ -22,7 +22,9 @@
 
 #include <QDebug>
 
-EwsAutoDiscoverReply::EwsAutoDiscoverReply(const QDomDocument &document, EwsConnection *connection) :
+using namespace Ews;
+
+AutoDiscoverReply::AutoDiscoverReply(const QDomDocument &document, Connection *connection) :
     m_document(document),
     m_connection(connection),
     m_reply(0),
@@ -30,14 +32,14 @@ EwsAutoDiscoverReply::EwsAutoDiscoverReply(const QDomDocument &document, EwsConn
 {
 }
 
-EwsAutoDiscoverReply::~EwsAutoDiscoverReply()
+AutoDiscoverReply::~AutoDiscoverReply()
 {
     if (m_reply) {
         m_reply->deleteLater();
     }
 }
 
-void EwsAutoDiscoverReply::setReply(QNetworkReply *reply)
+void AutoDiscoverReply::setReply(QNetworkReply *reply)
 {
     if (m_reply) {
         m_reply->deleteLater();
@@ -49,7 +51,7 @@ void EwsAutoDiscoverReply::setReply(QNetworkReply *reply)
     ++m_redirects;
 }
 
-QUrl EwsAutoDiscoverReply::url() const
+QUrl AutoDiscoverReply::url() const
 {
     if (m_reply) {
         return m_reply->url();
@@ -57,7 +59,7 @@ QUrl EwsAutoDiscoverReply::url() const
     return QUrl();
 }
 
-QNetworkReply::NetworkError EwsAutoDiscoverReply::error() const
+QNetworkReply::NetworkError AutoDiscoverReply::error() const
 {
     if (m_reply) {
         return m_reply->error();
@@ -65,7 +67,7 @@ QNetworkReply::NetworkError EwsAutoDiscoverReply::error() const
     return QNetworkReply::NoError;
 }
 
-QString EwsAutoDiscoverReply::errorMessage() const
+QString AutoDiscoverReply::errorMessage() const
 {
     if (m_reply) {
         return m_reply->errorString();
@@ -73,12 +75,12 @@ QString EwsAutoDiscoverReply::errorMessage() const
     return QString();
 }
 
-QDomDocument EwsAutoDiscoverReply::document() const
+QDomDocument AutoDiscoverReply::document() const
 {
     return m_replyDocument;
 }
 
-void EwsAutoDiscoverReply::requestFinished()
+void AutoDiscoverReply::requestFinished()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     qDebug() << Q_FUNC_INFO << reply->url().host() << reply->error();
@@ -107,12 +109,12 @@ void EwsAutoDiscoverReply::requestFinished()
     }
 }
 
-void EwsAutoDiscoverReply::error(QNetworkReply::NetworkError error)
+void AutoDiscoverReply::error(QNetworkReply::NetworkError error)
 {
     qDebug() << Q_FUNC_INFO << error;
 }
 
-void EwsAutoDiscoverReply::sslErrors(const QList<QSslError> &errors)
+void AutoDiscoverReply::sslErrors(const QList<QSslError> &errors)
 {
     qDebug() << Q_FUNC_INFO << errors.size();
 }

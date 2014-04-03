@@ -26,15 +26,17 @@
 #include <QUrl>
 #include <QDomDocument>
 
-class EwsAutoDiscoverReply;
-class EwsReply;
-class EwsSyncFolderItemsReply;
-class EwsSyncFolderHierarchyReply;
-class EwsConnectionPrivate;
-class EWS_EXPORT EwsConnection : public QObject
+namespace Ews {
+
+class AutoDiscoverReply;
+class Reply;
+class SyncFolderItemsReply;
+class SyncFolderHierarchyReply;
+class ConnectionPrivate;
+class EWS_EXPORT Connection : public QObject
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(EwsConnection)
+    Q_DECLARE_PRIVATE(Connection)
 public:
     enum ServerVersion {
         Exchange2007,
@@ -43,13 +45,13 @@ public:
         Exchange2010_SP1,
         Exchange2010_SP2
     };
-    explicit EwsConnection(QObject *parent = 0, QNetworkAccessManager *networkAccessManager = 0);
-    ~EwsConnection();
+    explicit Connection(QObject *parent = 0, QNetworkAccessManager *networkAccessManager = 0);
+    ~Connection();
 
-    EwsReply *getFolders(const QList<EwsFolder> &folders, EwsFolder::BaseShape folderShape);
-    EwsReply *deleteFolders(const QList<EwsFolder> &folders, EwsFolder::DeleteType mode);
-    EwsSyncFolderHierarchyReply *syncFolderHierarch(EwsFolder::BaseShape folderShape, const QString &folderId = QString(), const QString &syncState = QString());
-    EwsSyncFolderItemsReply *syncFolderItems(EwsFolder::BaseShape itemShape, const QString &folderId, int maxChanges, const QString &syncState = QString());
+    Reply *getFolders(const QList<Folder> &folders, Folder::BaseShape folderShape);
+    Reply *deleteFolders(const QList<Folder> &folders, Folder::DeleteType mode);
+    SyncFolderHierarchyReply *syncFolderHierarch(Folder::BaseShape folderShape, const QString &folderId = QString(), const QString &syncState = QString());
+    SyncFolderItemsReply *syncFolderItems(Folder::BaseShape itemShape, const QString &folderId, int maxChanges, const QString &syncState = QString());
 
     void setUri(const QUrl &uri);
     ServerVersion serverVersion() const;
@@ -58,31 +60,33 @@ public:
     /**
      * Needed for autodiscover
      */
-    EwsAutoDiscoverReply *post(const QUrl &url, const QDomDocument &document);
-    EwsAutoDiscoverReply *get(const QUrl &url, const QDomDocument &document);
+    AutoDiscoverReply *post(const QUrl &url, const QDomDocument &document);
+    AutoDiscoverReply *get(const QUrl &url, const QDomDocument &document);
 
 signals:
     void finished();
 
 protected:
     /**
-     * @brief POST a message to the give url
+     * @brief POST a message to the given url
      * @param url where the message should be sent to (including username/password)
      * @param document the document to be sent
      * @return QNetworkReply is returned to keep track of the request.
      */
     QNetworkReply *postDocument(const QUrl &url, const QDomDocument &document);
 
-    EwsConnectionPrivate *d_ptr;
+    ConnectionPrivate *d_ptr;
 
 private slots:
     void sslErrors(QNetworkReply *reply, const QList<QSslError> &errors);
 
 private:
-    friend class EwsAutoDiscoverReply;
-    friend class EwsFolder;
+    friend class AutoDiscoverReply;
+    friend class Folder;
 
     QNetworkAccessManager *m_networkMgr;
 };
+
+}
 
 #endif // EWSCONNECTION_H

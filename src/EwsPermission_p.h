@@ -4,12 +4,16 @@
 #include "EwsPermission.h"
 #include "wsdl_Services.h"
 
-class EwsPermissionPrivate
+namespace Ews {
+
+class PermissionPrivate
 {
 public:
-    EwsPermissionPrivate(const T__PermissionType &permissionType);
+    PermissionPrivate(const T__PermissionType &permissionType);
 
     T__PermissionType permission;
 };
+
+}
 
 #endif // EWSPERMISSION_P_H

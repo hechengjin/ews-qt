@@ -25,9 +25,11 @@
 
 #include <QNetworkReply>
 
+namespace Ews {
+
 class EwsConnection;
-class EwsReplyPrivate;
-class EWS_EXPORT EwsReply : public QObject
+class ReplyPrivate;
+class EWS_EXPORT Reply : public QObject
 {
     Q_OBJECT
     Q_ENUMS(ResponseCode)
@@ -478,8 +480,8 @@ public:
         ErrorInvalidRetentionTagNone,
         ErrorDiscoverySearchesDisabled
     };
-    EwsReply(void *job);
-    ~EwsReply();
+    Reply(void *job);
+    ~Reply();
 
     void setReply(QNetworkReply *reply);
     bool error() const;
@@ -491,8 +493,10 @@ signals:
 
 private:
     friend class EwsConnection;
-    Q_DECLARE_PRIVATE(EwsReply)
-    EwsReplyPrivate *d_ptr;
+    Q_DECLARE_PRIVATE(Reply)
+    ReplyPrivate *d_ptr;
 };
+
+}
 
 #endif // EWSREPLY_H

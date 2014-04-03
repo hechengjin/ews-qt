@@ -16,60 +16,62 @@
 #include "EwsEffectiveRights_p.h"
 #include "EwsRequest.h"
 
-EwsEffectiveRights::EwsEffectiveRights() :
+using namespace Ews;
+
+EffectiveRights::EffectiveRights() :
     d_ptr(0)
 {
 
 }
 
-EwsEffectiveRights::EwsEffectiveRights(EwsEffectiveRightsPrivate *priv) :
+EffectiveRights::EffectiveRights(EffectiveRightsPrivate *priv) :
     d_ptr(priv)
 {
 }
 
-EwsEffectiveRights::~EwsEffectiveRights()
+EffectiveRights::~EffectiveRights()
 {
     delete d_ptr;
 }
 
-bool EwsEffectiveRights::canCreateAssociated() const
+bool EffectiveRights::canCreateAssociated() const
 {
-    Q_D(const EwsEffectiveRights);
+    Q_D(const EffectiveRights);
     return d->rights.createAssociated();
 }
 
-bool EwsEffectiveRights::canCreateContents() const
+bool EffectiveRights::canCreateContents() const
 {
-    Q_D(const EwsEffectiveRights);
+    Q_D(const EffectiveRights);
     return d->rights.createContents();
 }
 
-bool EwsEffectiveRights::canCreateHierarchy() const
+bool EffectiveRights::canCreateHierarchy() const
 {
-    Q_D(const EwsEffectiveRights);
+    Q_D(const EffectiveRights);
     return d->rights.createHierarchy();
 }
 
-bool EwsEffectiveRights::canDelete() const
+bool EffectiveRights::canDelete() const
 {
-    Q_D(const EwsEffectiveRights);
+    Q_D(const EffectiveRights);
     return d->rights.delete_();
 }
 
-bool EwsEffectiveRights::canModify() const
+bool EffectiveRights::canModify() const
 {
-    Q_D(const EwsEffectiveRights);
+    Q_D(const EffectiveRights);
     return d->rights.modify();
 }
 
-bool EwsEffectiveRights::canRead() const
+bool EffectiveRights::canRead() const
 {
-    Q_D(const EwsEffectiveRights);
+    Q_D(const EffectiveRights);
     return d->rights.read();
 }
 
 
-EwsEffectiveRightsPrivate::EwsEffectiveRightsPrivate(const T__EffectiveRightsType &effectiveRights) :
+EffectiveRightsPrivate::EffectiveRightsPrivate(const T__EffectiveRightsType &effectiveRights) :
     rights(effectiveRights)
 {
 

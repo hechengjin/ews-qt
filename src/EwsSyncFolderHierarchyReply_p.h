@@ -8,23 +8,25 @@
 
 #include "wsdl_Services.h"
 
-class EwsSyncFolderHierarchyReplyPrivate : public EwsReplyPrivate
+namespace Ews {
+
+class SyncFolderHierarchyReplyPrivate : public ReplyPrivate
 {
     Q_OBJECT
 public:
-    EwsSyncFolderHierarchyReplyPrivate(KDSoapJob *job);
+    SyncFolderHierarchyReplyPrivate(KDSoapJob *job);
+
+    void processJob(KDSoapJob *job);
 
     QString messageText;
     QString responseCode;
     QString syncState;
     bool includesLastFolderInRange = false;
-    QList<EwsFolder> createFolders;
-    QList<EwsFolder> updateFolders;
+    QList<Folder> createFolders;
+    QList<Folder> updateFolders;
     QStringList deleteFolders;
-
-public slots:
-    void syncFolderHierarchyDone(KDSoapJob *job);
-    void syncFolderHierarchyError(const KDSoapMessage &fault);
 };
+
+}
 
 #endif // EWSSYNCFOLDERHIERARCHYREPLY_P_H

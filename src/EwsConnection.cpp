@@ -30,11 +30,13 @@
 #include <QStringBuilder>
 #include <QDebug>
 
-EwsConnection::EwsConnection(QObject *parent, QNetworkAccessManager *networkAccessManager) :
+using namespace Ews;
+
+Connection::Connection(QObject *parent, QNetworkAccessManager *networkAccessManager) :
     QObject(parent),
-    d_ptr(new EwsConnectionPrivate)
+    d_ptr(new ConnectionPrivate)
 {
-    Q_D(EwsConnection);
+    Q_D(Connection);
 
     d->service = new ExchangeServices(this);
     if (networkAccessManager) {
@@ -45,23 +47,23 @@ EwsConnection::EwsConnection(QObject *parent, QNetworkAccessManager *networkAcce
     connect(m_networkMgr, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
             SLOT(sslErrors(QNetworkReply*,QList<QSslError>)));
 
-    setServerVersion(EwsConnection::Exchange2007);
+    setServerVersion(Connection::Exchange2007);
 }
 
-EwsConnection::~EwsConnection()
+Connection::~Connection()
 {
     delete d_ptr;
 }
 
-EwsReply *EwsConnection::getFolders(const QList<EwsFolder> &folders, EwsFolder::BaseShape folderShape)
+Reply *Connection::getFolders(const QList<Folder> &folders, Folder::BaseShape folderShape)
 {
-    Q_D(EwsConnection);
+    Q_D(Connection);
 
     TNS__GetFolderType request;
 
     T__NonEmptyArrayOfBaseFolderIdsType baseFolderIds;
     QList<T__FolderIdType> folderIds;
-    foreach (const EwsFolder &folder, folders) {
+    foreach (const Folder &folder, folders) {
         T__FolderIdType folderId;
         folderId.setId(folder.id());
         folderId.setChangeKey(folder.changeKey());
@@ -70,28 +72,27 @@ EwsReply *EwsConnection::getFolders(const QList<EwsFolder> &folders, EwsFolder::
     baseFolderIds.setFolderId(folderIds);
     request.setFolderIds(baseFolderIds);
 
-    GetFolderJob *job = new GetFolderJob(d->service);
+    GetFolderJob *job = new GetFolderJob(d->service, this);
     job->setRequest(request);
-    job->start();
 
-    return new EwsReply(job);
+    return new Reply(new ReplyPrivate(job));
 }
 
-EwsReply *EwsConnection::deleteFolders(const QList<EwsFolder> &folders, EwsFolder::DeleteType mode)
+Reply *Connection::deleteFolders(const QList<Folder> &folders, Folder::DeleteType mode)
 {
-    Q_D(EwsConnection);
+    Q_D(Connection);
 
     TNS__DeleteFolderType request;
 
     T__DisposalType deleteMode;
     switch (mode) {
-    case EwsFolder::HardDelete:
+    case Folder::HardDelete:
         deleteMode.setType(T__DisposalType::HardDelete);
         break;
-    case EwsFolder::MoveToDeletedItems:
+    case Folder::MoveToDeletedItems:
         deleteMode.setType(T__DisposalType::MoveToDeletedItems);
         break;
-    case EwsFolder::SoftDelete:
+    case Folder::SoftDelete:
         deleteMode.setType(T__DisposalType::SoftDelete);
         break;
     }
@@ -99,7 +100,7 @@ EwsReply *EwsConnection::deleteFolders(const QList<EwsFolder> &folders, EwsFolde
 
     T__NonEmptyArrayOfBaseFolderIdsType baseFolderIds;
     QList<T__FolderIdType> folderIds;
-    foreach (const EwsFolder &folder, folders) {
+    foreach (const Folder &folder, folders) {
         T__FolderIdType folderId;
         folderId.setId(folder.id());
         folderId.setChangeKey(folder.changeKey());
@@ -110,14 +111,13 @@ EwsReply *EwsConnection::deleteFolders(const QList<EwsFolder> &folders, EwsFolde
 
     DeleteFolderJob *job = new DeleteFolderJob(d->service, this);
     job->setRequest(request);
-    job->start();
 
-    return new EwsReply(job);
+    return new Reply(new ReplyPrivate(job));
 }
 
-EwsSyncFolderHierarchyReply *EwsConnection::syncFolderHierarch(EwsFolder::BaseShape folderShape, const QString &folderId, const QString &syncState)
+SyncFolderHierarchyReply *Connection::syncFolderHierarch(Folder::BaseShape folderShape, const QString &folderId, const QString &syncState)
 {
-    Q_D(EwsConnection);
+    Q_D(Connection);
 
     TNS__SyncFolderHierarchyType request;
 
@@ -142,14 +142,13 @@ EwsSyncFolderHierarchyReply *EwsConnection::syncFolderHierarch(EwsFolder::BaseSh
 
     SyncFolderHierarchyJob *job = new SyncFolderHierarchyJob(d->service, this);
     job->setRequest(request);
-    job->start();
 
-    return new EwsSyncFolderHierarchyReply(new EwsSyncFolderHierarchyReplyPrivate(job));
+    return new SyncFolderHierarchyReply(new SyncFolderHierarchyReplyPrivate(job));
 }
 
-EwsSyncFolderItemsReply *EwsConnection::syncFolderItems(EwsFolder::BaseShape itemShape, const QString &folderId, int maxChanges, const QString &syncState)
+SyncFolderItemsReply *Connection::syncFolderItems(Folder::BaseShape itemShape, const QString &folderId, int maxChanges, const QString &syncState)
 {
-    Q_D(EwsConnection);
+    Q_D(Connection);
 
     TNS__SyncFolderItemsType request;
 
@@ -178,35 +177,34 @@ EwsSyncFolderItemsReply *EwsConnection::syncFolderItems(EwsFolder::BaseShape ite
 
     SyncFolderItemsJob *job = new SyncFolderItemsJob(d->service, this);
     job->setRequest(request);
-    job->start();
 
-    return new EwsSyncFolderItemsReply(job);
+    return new SyncFolderItemsReply(new SyncFolderItemsReplyPrivate(job));
 }
 
-void EwsConnection::setUri(const QUrl &uri)
+void Connection::setUri(const QUrl &uri)
 {
-    Q_D(EwsConnection);
+    Q_D(Connection);
     d->uri = uri;
     d->service->setEndPoint(uri.toString());
 }
 
-EwsConnection::ServerVersion EwsConnection::serverVersion() const
+Connection::ServerVersion Connection::serverVersion() const
 {
-    Q_D(const EwsConnection);
+    Q_D(const Connection);
     return d->serverVersion;
 }
 
-void EwsConnection::setServerVersion(EwsConnection::ServerVersion ver)
+void Connection::setServerVersion(Connection::ServerVersion ver)
 {
-    Q_D(EwsConnection);
+    Q_D(Connection);
 
     d->serverVersion = ver;
     T__RequestServerVersion version;
     switch (ver) {
-    case EwsConnection::Exchange2007:
+    case Connection::Exchange2007:
         version.setVersion(T__ExchangeVersionType(T__ExchangeVersionType::Exchange2007));
         break;
-    case EwsConnection::Exchange2007_SP1:
+    case Connection::Exchange2007_SP1:
         version.setVersion(T__ExchangeVersionType(T__ExchangeVersionType::Exchange2007_SP1));
         break;
     default:
@@ -216,17 +214,17 @@ void EwsConnection::setServerVersion(EwsConnection::ServerVersion ver)
     d->service->setRequestVersionHeader(version);
 }
 
-EwsAutoDiscoverReply *EwsConnection::post(const QUrl &url, const QDomDocument &document)
+AutoDiscoverReply *Connection::post(const QUrl &url, const QDomDocument &document)
 {
     qDebug() << Q_FUNC_INFO << url.toString(QUrl::PrettyDecoded);
-    EwsAutoDiscoverReply *messageReply = new EwsAutoDiscoverReply(document, this);
+    AutoDiscoverReply *messageReply = new AutoDiscoverReply(document, this);
     messageReply->setReply(postDocument(url, document));
     return messageReply;
 }
 
-EwsAutoDiscoverReply *EwsConnection::get(const QUrl &url, const QDomDocument &document)
+AutoDiscoverReply *Connection::get(const QUrl &url, const QDomDocument &document)
 {
-    EwsAutoDiscoverReply *messageReply = new EwsAutoDiscoverReply(document, this);
+    AutoDiscoverReply *messageReply = new AutoDiscoverReply(document, this);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, QLatin1String("text/xml; charset=utf-8"));
 
@@ -234,7 +232,7 @@ EwsAutoDiscoverReply *EwsConnection::get(const QUrl &url, const QDomDocument &do
     return messageReply;
 }
 
-QNetworkReply *EwsConnection::postDocument(const QUrl &url, const QDomDocument &document)
+QNetworkReply *Connection::postDocument(const QUrl &url, const QDomDocument &document)
 {
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, QLatin1String("text/xml; charset=utf-8"));
@@ -242,7 +240,7 @@ QNetworkReply *EwsConnection::postDocument(const QUrl &url, const QDomDocument &
     return m_networkMgr->post(request, document.toString(-1).toUtf8().constData());
 }
 
-void EwsConnection::sslErrors(QNetworkReply *reply, const QList<QSslError> &errors)
+void Connection::sslErrors(QNetworkReply *reply, const QList<QSslError> &errors)
 {
     qDebug() << Q_FUNC_INFO << reply->url().host();
     foreach (const QSslError &error, errors) {

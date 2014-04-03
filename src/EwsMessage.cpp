@@ -18,7 +18,9 @@
 
 #include <QDebug>
 
-EwsMessage::EwsMessage(/*const ESoapElement &rootElement*/) :
+using namespace Ews;
+
+Message::Message(/*const ESoapElement &rootElement*/) :
     m_size(0),
     m_isRead(false),
     m_isResponseRequested(false),
@@ -76,13 +78,13 @@ EwsMessage::EwsMessage(/*const ESoapElement &rootElement*/) :
 //        } else if (element.equalNS(QLatin1String("References"), EWS_TYPES_NS)) {
 //            m_references = element.text();
 //        } else if (element.equalNS(QLatin1String("Sender"), EWS_TYPES_NS)) {
-//            m_sender = EwsEmailAddress(element.firstChildElement());
+//            m_sender = EmailAddress(element.firstChildElement());
 //        } else if (element.equalNS(QLatin1String("From"), EWS_TYPES_NS)) {
-//            m_from = EwsEmailAddress(element.firstChildElement());
+//            m_from = EmailAddress(element.firstChildElement());
 //        } else if (element.equalNS(QLatin1String("ReceivedBy"), EWS_TYPES_NS)) {
-//            m_receivedBy = EwsEmailAddress(element.firstChildElement());
+//            m_receivedBy = EmailAddress(element.firstChildElement());
 //        } else if (element.equalNS(QLatin1String("ReceivedRepresenting"), EWS_TYPES_NS)) {
-//            m_receivedRepresenting = EwsEmailAddress(element.firstChildElement());
+//            m_receivedRepresenting = EmailAddress(element.firstChildElement());
 //        } else if (element.equalNS(QLatin1String("IsDraft"), EWS_TYPES_NS)) {
 //            m_isDraft = element.text() == QLatin1String("true");
 //        } else if (element.equalNS(QLatin1String("IsFromMe"), EWS_TYPES_NS)) {
@@ -122,202 +124,202 @@ EwsMessage::EwsMessage(/*const ESoapElement &rootElement*/) :
 //    }
 }
 
-QString EwsMessage::id() const
+QString Message::id() const
 {
     return m_id;
 }
 
-QString EwsMessage::changeKey() const
+QString Message::changeKey() const
 {
     return m_changeKey;
 }
 
-QString EwsMessage::parentFolderId() const
+QString Message::parentFolderId() const
 {
     return m_parentId;
 }
 
-QString EwsMessage::parentFolderChangeKey() const
+QString Message::parentFolderChangeKey() const
 {
     return m_parentChangeKey;
 }
 
-QString EwsMessage::itemClass() const
+QString Message::itemClass() const
 {
     return m_itemClass;
 }
 
-QString EwsMessage::subject() const
+QString Message::subject() const
 {
     return m_subject;
 }
 
-QString EwsMessage::sensivity() const
+QString Message::sensivity() const
 {
     return m_sensivity;
 }
 
-QDateTime EwsMessage::dateTimeReceived() const
+QDateTime Message::dateTimeReceived() const
 {
     return m_dateTimeReceived;
 }
 
-QDateTime EwsMessage::dateTimeSent() const
+QDateTime Message::dateTimeSent() const
 {
     return m_dateTimeSent;
 }
 
-QDateTime EwsMessage::dateTimeCreated() const
+QDateTime Message::dateTimeCreated() const
 {
     return m_dateTimeCreated;
 }
 
-int EwsMessage::size() const
+int Message::size() const
 {
     return m_size;
 }
 
-QString EwsMessage::importance() const
+QString Message::importance() const
 {
     return m_importance;
 }
 
-QString EwsMessage::inReplyTo() const
+QString Message::inReplyTo() const
 {
     return m_inReplyTo;
 }
 
-QString EwsMessage::conversationIndex() const
+QString Message::conversationIndex() const
 {
     return m_conversationIndex;
 }
 
-QString EwsMessage::conversationTopic() const
+QString Message::conversationTopic() const
 {
     return m_conversationTopic;
 }
 
-QString EwsMessage::internetMessageId() const
+QString Message::internetMessageId() const
 {
     return m_internetMessageId;
 }
 
-bool EwsMessage::isRead() const
+bool Message::isRead() const
 {
     return m_isRead;
 }
 
-bool EwsMessage::isResponseRequested() const
+bool Message::isResponseRequested() const
 {
     return m_isResponseRequested;
 }
 
-bool EwsMessage::isReadReceiptRequested() const
+bool Message::isReadReceiptRequested() const
 {
     return m_isReadReceiptRequested;
 }
 
-bool EwsMessage::isDeliveryReceiptRequested() const
+bool Message::isDeliveryReceiptRequested() const
 {
     return m_isDeliveryReceiptRequested;
 }
 
-QString EwsMessage::references() const
+QString Message::references() const
 {
     return m_references;
 }
 
-EwsEmailAddress EwsMessage::sender() const
+EmailAddress Message::sender() const
 {
     return m_sender;
 }
 
-EwsEmailAddress EwsMessage::from() const
+EmailAddress Message::from() const
 {
     return m_from;
 }
 
-EwsEmailAddress EwsMessage::receivedBy() const
+EmailAddress Message::receivedBy() const
 {
     return m_receivedBy;
 }
 
-EwsEmailAddress EwsMessage::receivedRepresenting() const
+EmailAddress Message::receivedRepresenting() const
 {
     return m_receivedRepresenting;
 }
 
-bool EwsMessage::isSubmitted() const
+bool Message::isSubmitted() const
 {
     return m_isSubmitted;
 }
 
-bool EwsMessage::isDraft() const
+bool Message::isDraft() const
 {
     return m_isDraft;
 }
 
-bool EwsMessage::isFromMe() const
+bool Message::isFromMe() const
 {
     return m_isFromMe;
 }
 
-bool EwsMessage::isResend() const
+bool Message::isResend() const
 {
     return m_isResend;
 }
 
-bool EwsMessage::isUnmodified() const
+bool Message::isUnmodified() const
 {
     return m_isUnmodified;
 }
 
-bool EwsMessage::isReminderSet() const
+bool Message::isReminderSet() const
 {
     return m_isReminderSet;
 }
 
-int EwsMessage::reminderMinutesBeforeStart() const
+int Message::reminderMinutesBeforeStart() const
 {
     return m_reminderMinutesBeforeStart;
 }
 
-QString EwsMessage::displayTo() const
+QString Message::displayTo() const
 {
     return m_displayTo;
 }
 
-QString EwsMessage::displayCC() const
+QString Message::displayCC() const
 {
     return m_displayCC;
 }
 
-bool EwsMessage::hasAttachments() const
+bool Message::hasAttachments() const
 {
     return m_hasAttachments;
 }
 
-QString EwsMessage::culture() const
+QString Message::culture() const
 {
     return m_culture;
 }
 
-EwsEffectiveRights EwsMessage::effectiveRights() const
+EffectiveRights Message::effectiveRights() const
 {
     return m_effectiveRights;
 }
 
-QString EwsMessage::lastModifiedName() const
+QString Message::lastModifiedName() const
 {
     return m_lastModifiedName;
 }
 
-QDateTime EwsMessage::lastModifiedTime() const
+QDateTime Message::lastModifiedTime() const
 {
     return m_lastModifiedTime;
 }
 
-QString EwsMessage::body() const
+QString Message::body() const
 {
     return m_body;
 }

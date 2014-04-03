@@ -28,7 +28,9 @@
 
 #include "ewsexport.h"
 
-class EWS_EXPORT EwsRequest : public ESoapMessage
+namespace Ews {
+
+class EWS_EXPORT Request : public ESoapMessage
 {
     Q_GADGET
     Q_ENUMS(ServerVersion)
@@ -40,8 +42,8 @@ public:
         Exchange2010_SP1,
         Exchange2010_SP2
     };
-    EwsRequest(const QDomDocument &document);
-    EwsRequest(const QString &method,
+    Request(const QDomDocument &document);
+    Request(const QString &method,
                ServerVersion version);
 
     static QDomDocument autoDiscover(const QString &emailAddress);
@@ -54,5 +56,7 @@ private:
 //    ESoapElement createMethod(const QString &method);
     ESoapElement m_method;
 };
+
+}
 
 #endif // EWSREQUEST_H

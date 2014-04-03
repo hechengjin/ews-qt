@@ -20,15 +20,17 @@
 
 #include <QObject>
 
-class EwsEffectiveRightsPrivate;
-class EWS_EXPORT EwsEffectiveRights
+namespace Ews {
+
+class EffectiveRightsPrivate;
+class EWS_EXPORT EffectiveRights
 {
     Q_GADGET
-    Q_DECLARE_PRIVATE(EwsEffectiveRights)
+    Q_DECLARE_PRIVATE(EffectiveRights)
 public:
-    EwsEffectiveRights();
-    EwsEffectiveRights(EwsEffectiveRightsPrivate *priv);
-    virtual ~EwsEffectiveRights();
+    EffectiveRights();
+    EffectiveRights(EffectiveRightsPrivate *priv);
+    virtual ~EffectiveRights();
 
     bool canCreateAssociated() const;
     bool canCreateContents() const;
@@ -38,7 +40,9 @@ public:
     bool canRead() const;
 
 private:
-    EwsEffectiveRightsPrivate *d_ptr;
+    EffectiveRightsPrivate *d_ptr;
 };
+
+}
 
 #endif // EWSEFFECTIVERIGHTS_H
