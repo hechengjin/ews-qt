@@ -49,7 +49,7 @@ add_library(ews-qt5 SHARED ${libews_qt_SRCS})
 set_target_properties(ews-qt5 PROPERTIES VERSION ${EWSQT_VERSION} SOVERSION ${EWSQT_API_LEVEL})
 set_property(TARGET ews-qt5 PROPERTY COMPILE_DEFINITIONS MAKE_EWS_LIB)
 
-qt5_use_modules(ews-qt5 Network Xml Widgets)
+qt5_use_modules(ews-qt5 Network Xml)
 target_link_libraries(ews-qt5
     KDSoap::kdsoap
 )

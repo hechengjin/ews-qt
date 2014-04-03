@@ -6,7 +6,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/mod
 find_package(Qt5 COMPONENTS
     Network
     Xml
-    Widgets
 )
 find_package(KDSoap REQUIRED)
 
