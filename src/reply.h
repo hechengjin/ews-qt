@@ -32,6 +32,7 @@ class ReplyPrivate;
 class EWS_EXPORT Reply : public QObject
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(Reply)
     Q_ENUMS(ResponseCode)
 public:
     enum ResponseCode {
@@ -480,7 +481,6 @@ public:
         ErrorInvalidRetentionTagNone,
         ErrorDiscoverySearchesDisabled
     };
-    Reply(void *job);
     ~Reply();
 
     void setReply(QNetworkReply *reply);
@@ -491,9 +491,10 @@ public:
 signals:
     void finished();
 
-private:
-    friend class EwsConnection;
-    Q_DECLARE_PRIVATE(Reply)
+protected:
+    friend class Connection;
+    friend class Folder;// TODO remove this one once we have specialized Replies
+    Reply(ReplyPrivate *priv);
     ReplyPrivate *d_ptr;
 };
 

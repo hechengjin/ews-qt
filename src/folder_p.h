@@ -18,18 +18,16 @@
 
 #include "folder.h"
 
-#include <QObject>
-
 #include "wsdl_Services.h"
 
 namespace Ews {
 
-class FolderPrivate
+class FolderPrivate : public QSharedData
 {
 public:
-    FolderPrivate();
-    FolderPrivate(const T__FolderType &value);
-    virtual ~FolderPrivate();
+    explicit FolderPrivate();
+    explicit FolderPrivate(const T__FolderType &value);
+    explicit FolderPrivate(const FolderPrivate &copy);
 
     T__FolderType folder;
     Folder::WellKnownFolderName wellKnownFolderName;

@@ -70,7 +70,8 @@ void SyncFolderItemsReplyPrivate::processJob(KDSoapJob *job)
         qDebug() << "delete" <<  changes.delete_().size();
         qDebug() << "update" <<  changes.update().size();
         foreach (const T__SyncFolderItemsCreateOrUpdateType &create, changes.create()) {
-            qDebug() << create.item().subject();
+            KDSoapValue value;
+            qDebug() << create.deserialize(KDSoapValue);
 //            createFolders << folder;
         }
 

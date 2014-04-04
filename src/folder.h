@@ -20,7 +20,7 @@
 #include "effectiverights.h"
 #include "permission.h"
 
-#include <QObject>
+#include <QSharedDataPointer>
 
 namespace Ews {
 
@@ -29,10 +29,6 @@ class Connection;
 class FolderPrivate;
 class EWS_EXPORT Folder
 {
-    Q_GADGET
-    Q_ENUMS(BaseShape)
-    Q_ENUMS(WellKnownFolderName)
-    Q_ENUMS(DeleteType)
 public:
     enum BaseShape {
         IdOnly,
@@ -100,8 +96,10 @@ public:
      * @param changeKey required on rename operation
      */
     Folder(Connection *connection, const QString &folderId, const QString &changeKey = QString());
-    Folder(FolderPrivate *priv);
-    virtual ~Folder();
+    Folder(const Folder &other);
+    ~Folder();
+
+    Folder &operator=(const Folder &);
 
     QString id() const;
     void setId(const QString &id);
@@ -125,8 +123,19 @@ public:
     Reply *remove(DeleteType mode) const;
 
 protected:
-    Q_DECLARE_PRIVATE(Folder)
-    FolderPrivate *d_ptr;
+    explicit Folder(FolderPrivate &d);
+
+    QSharedDataPointer<FolderPrivate> d_ptr;
+
+private:
+    friend class SyncFolderHierarchyReplyPrivate;
+
+    // Q_DECLARE_PRIVATE equivalent for shared data pointers
+    FolderPrivate* d_func();
+    inline const FolderPrivate* d_func() const
+    {
+        return d_ptr.constData();
+    }
 };
 
 }

@@ -45,7 +45,6 @@ public:
 
 private:
     Q_DECLARE_PRIVATE(SyncFolderHierarchyReply)
-    SyncFolderHierarchyReplyPrivate *d_ptr;
 };
 
 }

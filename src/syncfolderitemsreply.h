@@ -32,11 +32,8 @@ public:
     bool includesLastItemInRange() const;
 
 protected:
-    SyncFolderItemsReply(SyncFolderItemsReplyPrivate *priv);
-
-private:
     friend class Connection;
-    SyncFolderItemsReplyPrivate *d_ptr;
+    SyncFolderItemsReply(SyncFolderItemsReplyPrivate *priv);
 };
 
 }

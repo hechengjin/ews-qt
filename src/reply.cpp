@@ -28,16 +28,20 @@
 
 using namespace Ews;
 
-Reply::Reply(void *job) :
-    d_ptr(new ReplyPrivate(static_cast<KDSoapJob *>(job)))
+Reply::Reply(ReplyPrivate *priv) :
+    d_ptr(priv)
 {
     Q_D(Reply);
+
+    qDebug() << Q_FUNC_INFO;
+
     connect(d, &ReplyPrivate::finished,
             this, &Reply::finished);
 }
 
 Reply::~Reply()
 {
+    qDebug() << Q_FUNC_INFO;
     delete d_ptr;
 }
 
@@ -69,10 +73,12 @@ ReplyPrivate::ReplyPrivate(KDSoapJob *job)
 void ReplyPrivate::processJob(KDSoapJob *job)
 {
     // TODO make this pure virtual
+    qWarning() << "Nooooo!";
 }
 
 void ReplyPrivate::jobFinished(KDSoapJob *job)
 {
+    qDebug() << Q_FUNC_INFO << 1 << this;
     if (job->isFault()) {
         responseCode = job->faultAsString();
     } else {
@@ -80,5 +86,7 @@ void ReplyPrivate::jobFinished(KDSoapJob *job)
         // do their job
         processJob(job);
     }
+    qDebug() << Q_FUNC_INFO << 2 << this;
     emit finished();
+    qDebug() << Q_FUNC_INFO << 3 << this;
 }

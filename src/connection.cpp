@@ -63,6 +63,7 @@ Reply *Connection::getFolders(const QList<Folder> &folders, Folder::BaseShape fo
 
     T__NonEmptyArrayOfBaseFolderIdsType baseFolderIds;
     QList<T__FolderIdType> folderIds;
+
     foreach (const Folder &folder, folders) {
         T__FolderIdType folderId;
         folderId.setId(folder.id());

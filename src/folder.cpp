@@ -28,8 +28,8 @@
 
 using namespace Ews;
 
-Folder::Folder(Connection *connection, Folder::WellKnownFolderName wellKnownFolderName, const QString &changeKey) :
-    d_ptr(new FolderPrivate)
+Folder::Folder(Connection *connection, Folder::WellKnownFolderName wellKnownFolderName, const QString &changeKey)
+    : d_ptr(new FolderPrivate)
 {
     Q_D(Folder);
     d->wellKnownFolderName = wellKnownFolderName;
@@ -37,22 +37,38 @@ Folder::Folder(Connection *connection, Folder::WellKnownFolderName wellKnownFold
 //    d->folder.f
 }
 
-Folder::Folder(Connection *connection, const QString &folderId, const QString &changeKey) :
-    d_ptr(new FolderPrivate)
+Folder::Folder(Connection *connection, const QString &folderId, const QString &changeKey)
+    : d_ptr(new FolderPrivate)
 {
     Q_D(Folder);
 //    d->wellKnownFolderName = wellKnownFolderName;
     d->connection = connection;
 }
 
-Folder::Folder(FolderPrivate *priv) :
-    d_ptr(priv)
+Folder::Folder(const Folder &other)
+    : d_ptr(other.d_ptr)
 {
+}
+
+Folder::Folder(FolderPrivate &priv)
+    : d_ptr(&priv)
+{
+
+}
+
+FolderPrivate *Folder::d_func()
+{
+    return d_ptr.data();
 }
 
 Folder::~Folder()
 {
-    delete d_ptr;
+}
+
+Folder &Folder::operator=(const Folder &folder)
+{
+    d_ptr = folder.d_ptr;
+    return *this;
 }
 
 //Folder::Folder(const ESoapElement &rootElement) :
@@ -127,7 +143,8 @@ Folder::WellKnownFolderName Folder::wellKnownFolderName() const
 QString Folder::wellKnownFolderNameString() const
 {
     Q_D(const Folder);
-    return EwsUtils::enumToString<Folder>("WellKnownFolderName", d->wellKnownFolderName).toLower();
+    return d->folder.folderClass();
+//    return EwsUtils::enumToString<Folder>("WellKnownFolderName", d->wellKnownFolderName).toLower();
 }
 
 QString Folder::folderClass() const
@@ -228,7 +245,7 @@ Reply *Folder::update() const
     UpdateFolderJob *job = new UpdateFolderJob(d->connection->d_ptr->service);
     job->setRequest(request);
 
-    return new Reply(job);
+    return new Reply(new ReplyPrivate(job));
 
 //    EwsRequest message(QLatin1String("UpdateFolder"), m_connection->serverVersion());
 //    ESoapElement folderChanges = message.createElement(QLatin1String("FolderChanges"));
@@ -291,9 +308,8 @@ FolderPrivate::FolderPrivate(const T__FolderType &value) :
     }
 }
 
-FolderPrivate::~FolderPrivate()
+FolderPrivate::FolderPrivate(const FolderPrivate &copy) :
+    QSharedData(copy)
 {
 
 }
-
-#include "moc_folder.cpp"

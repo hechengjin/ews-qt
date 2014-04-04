@@ -21,8 +21,7 @@
 using namespace Ews;
 
 SyncFolderHierarchyReply::SyncFolderHierarchyReply(SyncFolderHierarchyReplyPrivate *priv) :
-    Reply(priv),
-    d_ptr(priv)
+    Reply(priv)
 {
 }
 
@@ -90,14 +89,17 @@ void SyncFolderHierarchyReplyPrivate::processJob(KDSoapJob *job)
         qDebug() << "create" <<  changes.create().size();
         qDebug() << "delete" <<  changes.delete_().size();
         qDebug() << "update" <<  changes.update().size();
+
         foreach (const T__SyncFolderHierarchyCreateOrUpdateType &create, changes.create()) {
             qDebug() << Q_FUNC_INFO << create.folder().displayName();
-            createFolders << Folder(new FolderPrivate(create.folder()));
+            FolderPrivate *priv = new FolderPrivate(create.folder());
+            createFolders << Folder(*priv);
         }
 
         foreach (const T__SyncFolderHierarchyCreateOrUpdateType &update, changes.update()) {
             qDebug() << Q_FUNC_INFO << update.folder().displayName();
-            updateFolders << Folder(new FolderPrivate(update.folder()));
+            FolderPrivate *priv = new FolderPrivate(update.folder());
+            updateFolders << Folder(*priv);
         }
 
         foreach (const T__SyncFolderHierarchyDeleteType &deleteFolder, changes.delete_()) {
@@ -105,10 +107,11 @@ void SyncFolderHierarchyReplyPrivate::processJob(KDSoapJob *job)
             deleteFolders << deleteFolder.folderId().id();
         }
 
-        qDebug() << Q_FUNC_INFO << msg.includesLastFolderInRange();
-        qDebug() << Q_FUNC_INFO << msg.responseCode();
-        qDebug() << Q_FUNC_INFO << msg.messageText();
+//        qDebug() << Q_FUNC_INFO << msg.includesLastFolderInRange();
+//        qDebug() << Q_FUNC_INFO << msg.responseCode();
+//        qDebug() << Q_FUNC_INFO << msg.messageText();
 //        qDebug() << Q_FUNC_INFO << msg.messageXml();
 //        msg.changes();
     }
+    qDebug() << Q_FUNC_INFO << "fiiiim";
 }
