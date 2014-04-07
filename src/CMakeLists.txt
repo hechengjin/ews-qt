@@ -11,10 +11,15 @@ set(libews_qt_SRCS
     esoapmessage.cpp
     emailaddress.cpp
     permission.cpp
+    item.cpp
+    item_p.h
     folder.cpp
     folder_p.h
     effectiverights.cpp
     message.cpp
+    message_p.h
+
+    # Response classes
     reply.cpp
     reply_p.h
     syncfolderitemsreply.cpp
@@ -25,6 +30,7 @@ set(libews_qt_SRCS
     autodiscover.cpp
     autodiscoverreply.cpp
     connection.cpp
+    connection_p.h
 )
 
 set(ewsqt_HEADERS

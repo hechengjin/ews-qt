@@ -21,15 +21,19 @@
 
 namespace Ews {
 
+class Message;
 class SyncFolderItemsReplyPrivate;
 class EWS_EXPORT SyncFolderItemsReply : public Reply
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(SyncFolderItemsReply)
 public:
-    QString responseCode() const;
     QString syncState() const;
     bool includesLastItemInRange() const;
+
+    QList<Message> create() const;
+    QList<Message> update() const;
+    QStringList remove() const;
 
 protected:
     friend class Connection;

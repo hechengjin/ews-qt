@@ -25,12 +25,6 @@ SyncFolderHierarchyReply::SyncFolderHierarchyReply(SyncFolderHierarchyReplyPriva
 {
 }
 
-QString SyncFolderHierarchyReply::responseCode() const
-{
-    Q_D(const SyncFolderHierarchyReply);
-    return d->responseCode;
-}
-
 QString SyncFolderHierarchyReply::syncState() const
 {
     Q_D(const SyncFolderHierarchyReply);
@@ -79,11 +73,11 @@ void SyncFolderHierarchyReplyPrivate::processJob(KDSoapJob *job)
     responseMsgs = messages.syncFolderHierarchyResponseMessage();
 
     foreach (const TNS__SyncFolderHierarchyResponseMessageType &msg, responseMsgs) {
-        qDebug() << Q_FUNC_INFO << msg.serialize(QString());
+        qDebug() << Q_FUNC_INFO;
+        setResponseMessage(msg);
+
         syncState = msg.syncState();
         includesLastFolderInRange = msg.includesLastFolderInRange();
-        responseCode = msg.responseCode();
-        messageText = msg.messageText();
 
         T__SyncFolderHierarchyChangesType changes = msg.changes();
         qDebug() << "create" <<  changes.create().size();
@@ -106,12 +100,5 @@ void SyncFolderHierarchyReplyPrivate::processJob(KDSoapJob *job)
             qDebug() << Q_FUNC_INFO << deleteFolder.folderId().id();
             deleteFolders << deleteFolder.folderId().id();
         }
-
-//        qDebug() << Q_FUNC_INFO << msg.includesLastFolderInRange();
-//        qDebug() << Q_FUNC_INFO << msg.responseCode();
-//        qDebug() << Q_FUNC_INFO << msg.messageText();
-//        qDebug() << Q_FUNC_INFO << msg.messageXml();
-//        msg.changes();
     }
-    qDebug() << Q_FUNC_INFO << "fiiiim";
 }

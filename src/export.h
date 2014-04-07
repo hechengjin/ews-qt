@@ -40,4 +40,9 @@
 # endif
 #endif
 
+#define EWS_DECLARE_PRIVATE(Class) \
+    inline Class##Private* d_func() { return reinterpret_cast<Class##Private *>(d_ptr.data()); } \
+    inline const Class##Private* d_func() const { return reinterpret_cast<const Class##Private *>(d_ptr.constData()); } \
+    friend class Class##Private;
+
 #endif // EWSEXPORT_H

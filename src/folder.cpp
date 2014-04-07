@@ -28,20 +28,10 @@
 
 using namespace Ews;
 
-Folder::Folder(Connection *connection, Folder::WellKnownFolderName wellKnownFolderName, const QString &changeKey)
-    : d_ptr(new FolderPrivate)
-{
-    Q_D(Folder);
-    d->wellKnownFolderName = wellKnownFolderName;
-    d->connection = connection;
-//    d->folder.f
-}
-
 Folder::Folder(Connection *connection, const QString &folderId, const QString &changeKey)
     : d_ptr(new FolderPrivate)
 {
     Q_D(Folder);
-//    d->wellKnownFolderName = wellKnownFolderName;
     d->connection = connection;
 }
 
@@ -120,31 +110,18 @@ QString Folder::id() const
 
 void Folder::setId(const QString &id)
 {
-//    m_id = id;
+    Q_D(Folder);
+    d->dirty = true;
+    // TODO have our own
+    T__FolderIdType fId;
+    fId.setId(id);
+    d->folder.setFolderId(fId);
 }
 
 QString Folder::changeKey() const
 {
     Q_D(const Folder);
     return d->folder.folderId().changeKey();
-}
-
-void Folder::setChangeKey(const QString &changeKey)
-{
-//    m_changeKey = changeKey;
-}
-
-Folder::WellKnownFolderName Folder::wellKnownFolderName() const
-{
-    Q_D(const Folder);
-    return d->wellKnownFolderName;
-}
-
-QString Folder::wellKnownFolderNameString() const
-{
-    Q_D(const Folder);
-    return d->folder.folderClass();
-//    return EwsUtils::enumToString<Folder>("WellKnownFolderName", d->wellKnownFolderName).toLower();
 }
 
 QString Folder::folderClass() const
@@ -173,8 +150,9 @@ QString Folder::displayName() const
 
 void Folder::setDisplayName(const QString &displayName)
 {
-//    Q_D(Folder);
-//    d->changes[QLatin1String("DisplayName")] = displayName;
+    Q_D(Folder);
+    d->dirty = true;
+    d->folder.setDisplayName(displayName);
 }
 
 EffectiveRights Folder::effectiveRights() const
@@ -205,6 +183,12 @@ QList<Permission> Folder::permissions() const
 {
     Q_D(const Folder);
     return d->permissions;
+}
+
+bool Folder::isDirty() const
+{
+    Q_D(const Folder);
+    return d->dirty;
 }
 
 Reply *Folder::load(BaseShape folderShape) const
@@ -245,45 +229,7 @@ Reply *Folder::update() const
     UpdateFolderJob *job = new UpdateFolderJob(d->connection->d_ptr->service);
     job->setRequest(request);
 
-    return new Reply(new ReplyPrivate(job));
-
-//    EwsRequest message(QLatin1String("UpdateFolder"), m_connection->serverVersion());
-//    ESoapElement folderChanges = message.createElement(QLatin1String("FolderChanges"));
-//    message.method().appendChild(folderChanges);
-
-//    QHash<QString, QString>::ConstIterator i = d->changes.begin();
-//    while (i != d->changes.end()) {
-//        ESoapElement folderChange = message.createTypedElement(QLatin1String("FolderChange"), EWS_TYPES_NS);
-//        folderChanges.appendChild(folderChange);
-
-//        ESoapElement folderIdElement = message.createTypedElement(QLatin1String("FolderId"), EWS_TYPES_NS);
-////        folderIdElement.setAttribute(QLatin1String("Id"), d->id);
-////        if (!d->changeKey.isEmpty()) {
-////            folderIdElement.setAttribute(QLatin1String("ChangeKey"), d->changeKey);
-////        }
-//        folderChange.appendChild(folderIdElement);
-
-//        ESoapElement updates = message.createTypedElement(QLatin1String("Updates"), EWS_TYPES_NS);
-//        folderChange.appendChild(updates);
-
-//        ESoapElement setFolderField = message.createTypedElement(QLatin1String("SetFolderField"), EWS_TYPES_NS);
-//        updates.appendChild(setFolderField);
-
-//        ESoapElement fieldURI = message.createTypedElement(QLatin1String("FieldURI"), EWS_TYPES_NS);
-//        fieldURI.setAttribute(QLatin1String("FieldURI"), QLatin1String("folder:") % i.key());
-//        setFolderField.appendChild(fieldURI);
-
-//        ESoapElement folderElement = message.createTypedElement(QLatin1String("Folder"), EWS_TYPES_NS);
-//        setFolderField.appendChild(folderElement);
-
-//        ESoapElement itemChanged = message.createTypedElement(i.key(), EWS_TYPES_NS);
-//        itemChanged.setText(i.value());
-//        folderElement.appendChild(itemChanged);
-
-//        ++i;
-//    }
-
-//    return new EwsReply(d->connection->post(message), message.methodName());
+    return 0;// new Reply(new ReplyPrivate(job));
 }
 
 Reply *Folder::remove(DeleteType mode) const

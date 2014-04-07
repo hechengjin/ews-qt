@@ -29,10 +29,7 @@ class ReplyPrivate : public QObject
 public:
     ReplyPrivate(KDSoapJob *job);
 
-    QString messageText;
-    QString responseCode;
-    QString syncState;
-    bool includesLastFolderInRange;
+    QString error;
 
 protected:
     /**
@@ -41,12 +38,16 @@ protected:
      *
      * DO NOT EMIT FINISHED
      */
-    virtual void processJob(KDSoapJob *job);
+    virtual void processJob(KDSoapJob *job) = 0;
+
+    void setResponseMessage(const TNS__ResponseMessageType &message);
+    TNS__ResponseMessageType responseMessage;
 
 signals:
     void finished();
 
 private:
+    friend class Reply;
     void jobFinished(KDSoapJob *job);
 };
 

@@ -30,11 +30,11 @@ public:
     explicit FolderPrivate(const FolderPrivate &copy);
 
     T__FolderType folder;
-    Folder::WellKnownFolderName wellKnownFolderName;
     EffectiveRights effectiveRights;
     QList<Permission> permissions;
+    bool dirty = false;
     QHash<QString, QString> changes;
-    Connection *connection;
+    Connection *connection = 0;
 };
 
 }

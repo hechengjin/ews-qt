@@ -76,7 +76,7 @@ Reply *Connection::getFolders(const QList<Folder> &folders, Folder::BaseShape fo
     GetFolderJob *job = new GetFolderJob(d->service, this);
     job->setRequest(request);
 
-    return new Reply(new ReplyPrivate(job));
+    return 0;//new Reply(new ReplyPrivate(job));
 }
 
 Reply *Connection::deleteFolders(const QList<Folder> &folders, Folder::DeleteType mode)
@@ -113,7 +113,7 @@ Reply *Connection::deleteFolders(const QList<Folder> &folders, Folder::DeleteTyp
     DeleteFolderJob *job = new DeleteFolderJob(d->service, this);
     job->setRequest(request);
 
-    return new Reply(new ReplyPrivate(job));
+    return 0;//new Reply(new ReplyPrivate(job));
 }
 
 SyncFolderHierarchyReply *Connection::syncFolderHierarch(Folder::BaseShape folderShape, const QString &folderId, const QString &syncState)

@@ -48,19 +48,37 @@ Reply::~Reply()
 bool Reply::error() const
 {
     Q_D(const Reply);
-    return !d->responseCode.isEmpty();
-}
-
-Reply::ResponseCode Reply::responseCode() const
-{
-//    Q_D(const Reply);
-    return NoError;
+    return !d->error.isEmpty();
 }
 
 QString Reply::errorMessage() const
 {
     Q_D(const Reply);
-    return d->responseCode;
+    return d->error;
+}
+
+Reply::ResponseCode Reply::responseCode() const
+{
+    Q_D(const Reply);
+    return static_cast<Reply::ResponseCode>(d->responseMessage.responseCode().type());
+}
+
+QString Reply::messageText() const
+{
+    Q_D(const Reply);
+    return d->responseMessage.messageText();
+}
+
+int Reply::descriptiveLinkKey() const
+{
+    Q_D(const Reply);
+    return d->responseMessage.descriptiveLinkKey();
+}
+
+Reply::ResponseClass Reply::responseClass() const
+{
+    Q_D(const Reply);
+    return static_cast<Reply::ResponseClass>(d->responseMessage.responseClass().type());
 }
 
 ReplyPrivate::ReplyPrivate(KDSoapJob *job)
@@ -70,17 +88,11 @@ ReplyPrivate::ReplyPrivate(KDSoapJob *job)
     job->start();
 }
 
-void ReplyPrivate::processJob(KDSoapJob *job)
-{
-    // TODO make this pure virtual
-    qWarning() << "Nooooo!";
-}
-
 void ReplyPrivate::jobFinished(KDSoapJob *job)
 {
     qDebug() << Q_FUNC_INFO << 1 << this;
     if (job->isFault()) {
-        responseCode = job->faultAsString();
+        error = job->faultAsString();
     } else {
         // Tell the specialization to
         // do their job
@@ -89,4 +101,10 @@ void ReplyPrivate::jobFinished(KDSoapJob *job)
     qDebug() << Q_FUNC_INFO << 2 << this;
     emit finished();
     qDebug() << Q_FUNC_INFO << 3 << this;
+}
+
+
+void Ews::ReplyPrivate::setResponseMessage(const TNS__ResponseMessageType &message)
+{
+    responseMessage = message;
 }

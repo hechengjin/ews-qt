@@ -18,9 +18,11 @@
 
 #include <QObject>
 
+#include "wsdl_Services.h"
+
 #include "reply_p.h"
 #include "syncfolderitemsreply.h"
-#include "wsdl_Services.h"
+#include "message_p.h"
 
 namespace Ews {
 
@@ -32,11 +34,11 @@ public:
 
     void processJob(KDSoapJob *job);
 
-    QString messageText;
-    QString responseCode;
+    QList<Message> createList;
+    QList<Message> updateList;
+    QStringList removeList;
     QString syncState;
     bool includesLastItemInRange;
-    QStringList deleteItems;
 
 };
 

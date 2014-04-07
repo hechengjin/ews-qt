@@ -33,8 +33,6 @@ public:
 
     void processJob(KDSoapJob *job);
 
-    QString messageText;
-    QString responseCode;
     QString syncState;
     bool includesLastFolderInRange = false;
     QList<Folder> createFolders;

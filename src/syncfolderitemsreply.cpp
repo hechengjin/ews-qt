@@ -25,12 +25,6 @@ SyncFolderItemsReply::SyncFolderItemsReply(SyncFolderItemsReplyPrivate *priv) :
 {
 }
 
-QString SyncFolderItemsReply::responseCode() const
-{
-    Q_D(const SyncFolderItemsReply);
-    return d->responseCode;
-}
-
 QString SyncFolderItemsReply::syncState() const
 {
     Q_D(const SyncFolderItemsReply);
@@ -43,6 +37,24 @@ bool SyncFolderItemsReply::includesLastItemInRange() const
     return d->includesLastItemInRange;
 }
 
+QList<Message> SyncFolderItemsReply::create() const
+{
+    Q_D(const SyncFolderItemsReply);
+    return d->createList;
+}
+
+QList<Message> SyncFolderItemsReply::update() const
+{
+    Q_D(const SyncFolderItemsReply);
+    return d->updateList;
+}
+
+QStringList SyncFolderItemsReply::remove() const
+{
+    Q_D(const SyncFolderItemsReply);
+    return d->removeList;
+}
+
 SyncFolderItemsReplyPrivate::SyncFolderItemsReplyPrivate(KDSoapJob *job) :
     ReplyPrivate(job)
 {
@@ -53,6 +65,10 @@ void SyncFolderItemsReplyPrivate::processJob(KDSoapJob *job)
     SyncFolderItemsJob *syncJob = qobject_cast<SyncFolderItemsJob*>(job);
     const TNS__SyncFolderItemsResponseType &response = syncJob->syncFolderItemsResult();
 
+    qDebug() << "===========";
+    qDebug() << syncJob->reply();
+    qDebug() << "===========";
+
     TNS__ArrayOfResponseMessagesType messages = response.responseMessages();
 
     QList<TNS__SyncFolderItemsResponseMessageType> responseMsgs;
@@ -60,29 +76,30 @@ void SyncFolderItemsReplyPrivate::processJob(KDSoapJob *job)
 
     foreach (const TNS__SyncFolderItemsResponseMessageType &msg, responseMsgs) {
         qDebug() << Q_FUNC_INFO << msg.serialize(QString());
+        setResponseMessage(msg);
+
         syncState = msg.syncState();
         includesLastItemInRange = msg.includesLastItemInRange();
-        responseCode = msg.responseCode();
-        messageText = msg.messageText();
 
         T__SyncFolderItemsChangesType changes = msg.changes();
         qDebug() << "create" <<  changes.create().size();
         qDebug() << "delete" <<  changes.delete_().size();
         qDebug() << "update" <<  changes.update().size();
         foreach (const T__SyncFolderItemsCreateOrUpdateType &create, changes.create()) {
-            KDSoapValue value;
-            qDebug() << create.deserialize(KDSoapValue);
-//            createFolders << folder;
+            qDebug() << Q_FUNC_INFO << create.message().subject();
+            MessagePrivate *priv = new MessagePrivate(create.message());
+            createList << Message(*priv);
         }
 
         foreach (const T__SyncFolderItemsCreateOrUpdateType &update, changes.update()) {
             qDebug() << Q_FUNC_INFO << update.item().subject();
-//            updateFolders << folder;
+            MessagePrivate *priv = new MessagePrivate(update.message());
+            updateList << Message(*priv);
         }
 
         foreach (const T__SyncFolderItemsDeleteType &deleteFolder, changes.delete_()) {
             qDebug() << Q_FUNC_INFO << deleteFolder.itemId().id();
-            deleteItems << deleteFolder.itemId().id();
+            removeList << deleteFolder.itemId().id();
         }
 
         qDebug() << Q_FUNC_INFO << msg.includesLastItemInRange();

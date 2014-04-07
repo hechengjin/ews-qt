@@ -36,77 +36,17 @@ public:
         AllProperties
     };
 
-    enum WellKnownFolderName {
-        WellKnownFolderNameUnknown,
-        Calendar,
-        Contacts,
-        DeletedItems,
-        Drafts,
-        Inbox,
-        Journal,
-        Notes,
-        Outbox,
-        SentItems,
-        Tasks,
-        MsgFolderRoot,
-        PublicFoldersRoot,
-        Root,
-        JunkEmail,
-        SearchFolders,
-        VoiceMail,
-        RecoverableItemsRoot,
-        RecoverableItemsDeletions,
-        RecoverableItemsVersions,
-        RecoverableItemsPurges,
-        ArchiveRoot,
-        ArchiveMsgFolderRoot,
-        ArchiveDeletedItems,
-        ArchiveRecoverableItemsRoot,
-        ArchiveRecoverableItemsDeletions,
-        ArchiveRecoverableItemsVersions,
-        ArchiveRecoverableItemsPurges,
-        SyncIssues,
-        Conflicts,
-        LocalFailures,
-        ServerFailures,
-        RecipientCache,
-        QuickContacts,
-        ConversationHistory,
-        ToDoSearch
-    };
-
     enum DeleteType {
         HardDelete,
         MoveToDeletedItems,
         SoftDelete
     };
 
-    /**
-     * @brief Folder
-     * @param connection
-     * @param wellKnownFolderName
-     * @param changeKey required on rename operation
-     */
-    Folder(Connection *connection, WellKnownFolderName wellKnownFolderName, const QString &changeKey = QString());
-
-    /**
-     * @brief Folder
-     * @param connection
-     * @param folderId
-     * @param changeKey required on rename operation
-     */
-    Folder(Connection *connection, const QString &folderId, const QString &changeKey = QString());
-    Folder(const Folder &other);
-    ~Folder();
-
     Folder &operator=(const Folder &);
 
     QString id() const;
     void setId(const QString &id);
     QString changeKey() const;
-    void setChangeKey(const QString &changeKey);
-    WellKnownFolderName wellKnownFolderName() const;
-    QString wellKnownFolderNameString() const;
     QString folderClass() const;
     QString parentId() const;
     QString parentChangeKey() const;
@@ -118,17 +58,35 @@ public:
     int childFolderCount() const;
     QList<Permission> permissions() const;
 
+    /**
+     * @brief isDirty
+     * @return returns if the class has been modified
+     */
+    bool isDirty() const;
+
     Reply *load(BaseShape folderShape) const;
     Reply *update() const;
     Reply *remove(DeleteType mode) const;
 
+    /**
+     * @brief Folder
+     * @param connection
+     * @param folderId
+     * @param changeKey required on rename operation
+     */
+    Folder(Connection *connection, const QString &folderId, const QString &changeKey = QString());
+    Folder(const Folder &other);
+    virtual ~Folder();
+
 protected:
-    explicit Folder(FolderPrivate &d);
+    Folder(FolderPrivate &d);
 
     QSharedDataPointer<FolderPrivate> d_ptr;
 
 private:
     friend class SyncFolderHierarchyReplyPrivate;
+
+//    EWS_DECLARE_PRIVATE(Folder)
 
     // Q_DECLARE_PRIVATE equivalent for shared data pointers
     FolderPrivate* d_func();

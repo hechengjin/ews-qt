@@ -31,7 +31,6 @@ class EWS_EXPORT SyncFolderHierarchyReply : public Reply
 public:
     SyncFolderHierarchyReply(SyncFolderHierarchyReplyPrivate *priv);
 
-    QString responseCode() const;
     QString syncState() const;
     bool includesLastFolderInRange() const;
     QList<Folder> createFolders() const;

@@ -13,215 +13,151 @@
  *
  */
 
-#include "message.h"
-#include "request.h"
+#include "message_p.h"
 
 #include <QDebug>
 
 using namespace Ews;
 
-Message::Message(/*const ESoapElement &rootElement*/) :
-    m_size(0),
-    m_isRead(false),
-    m_isResponseRequested(false),
-    m_isDeliveryReceiptRequested(false),
-    m_isDraft(false),
-    m_isFromMe(false),
-    m_isResend(false),
-    m_isUnmodified(false),
-    m_isReminderSet(false),
-    m_reminderMinutesBeforeStart(0),
-    m_hasAttachments(false)
+Message::Message()
 {
-//    ESoapElement element;
+}
 
-//    element = rootElement.firstChildElement();
-//    while (!element.isNull()) {
-//        if (element.equalNS(QLatin1String("ItemId"), EWS_TYPES_NS)) {
-//            m_id = element.attribute(QLatin1String("Id"));
-//            m_changeKey = element.attribute(QLatin1String("ChangeKey"));
-//        } else if (element.equalNS(QLatin1String("ParentFolderId"), EWS_TYPES_NS)) {
-//            m_parentId = element.attribute(QLatin1String("Id"));
-//            m_parentChangeKey = element.attribute(QLatin1String("ChangeKey"));
-//        } else if (element.equalNS(QLatin1String("ItemClass"), EWS_TYPES_NS)) {
-//            m_itemClass = element.text();
-//        } else if (element.equalNS(QLatin1String("Subject"), EWS_TYPES_NS)) {
-//            m_subject = element.text();
-//        } else if (element.equalNS(QLatin1String("DateTimeReceived"), EWS_TYPES_NS)) {
-//            m_dateTimeReceived = QDateTime::fromString(element.text(), Qt::ISODate);
-//        } else if (element.equalNS(QLatin1String("DateTimeSent"), EWS_TYPES_NS)) {
-//            m_dateTimeSent = QDateTime::fromString(element.text(), Qt::ISODate);
-//        } else if (element.equalNS(QLatin1String("DateTimeCreated"), EWS_TYPES_NS)) {
-//            m_dateTimeCreated = QDateTime::fromString(element.text(), Qt::ISODate);
-//        } else if (element.equalNS(QLatin1String("Size"), EWS_TYPES_NS)) {
-//            m_size = element.text().toInt();
-//        } else if (element.equalNS(QLatin1String("HasAttachments"), EWS_TYPES_NS)) {
-//            m_hasAttachments = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("Importance"), EWS_TYPES_NS)) {
-//            m_importance = element.text();
-//        } else if (element.equalNS(QLatin1String("InReplyTo"), EWS_TYPES_NS)) {
-//            m_inReplyTo = element.text();
-//        } else if (element.equalNS(QLatin1String("ConversationIndex"), EWS_TYPES_NS)) {
-//            m_conversationIndex = element.text();
-//        } else if (element.equalNS(QLatin1String("ConversationTopic"), EWS_TYPES_NS)) {
-//            m_conversationTopic = element.text();
-//        } else if (element.equalNS(QLatin1String("InternetMessageId"), EWS_TYPES_NS)) {
-//            m_internetMessageId = element.text();
-//        } else if (element.equalNS(QLatin1String("IsRead"), EWS_TYPES_NS)) {
-//            m_isRead = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("IsResponseRequested"), EWS_TYPES_NS)) {
-//            m_isResponseRequested = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("IsReadReceiptRequested"), EWS_TYPES_NS)) {
-//            m_isReadReceiptRequested = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("IsDeliveryReceiptRequested"), EWS_TYPES_NS)) {
-//            m_isDeliveryReceiptRequested = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("References"), EWS_TYPES_NS)) {
-//            m_references = element.text();
-//        } else if (element.equalNS(QLatin1String("Sender"), EWS_TYPES_NS)) {
-//            m_sender = EmailAddress(element.firstChildElement());
-//        } else if (element.equalNS(QLatin1String("From"), EWS_TYPES_NS)) {
-//            m_from = EmailAddress(element.firstChildElement());
-//        } else if (element.equalNS(QLatin1String("ReceivedBy"), EWS_TYPES_NS)) {
-//            m_receivedBy = EmailAddress(element.firstChildElement());
-//        } else if (element.equalNS(QLatin1String("ReceivedRepresenting"), EWS_TYPES_NS)) {
-//            m_receivedRepresenting = EmailAddress(element.firstChildElement());
-//        } else if (element.equalNS(QLatin1String("IsDraft"), EWS_TYPES_NS)) {
-//            m_isDraft = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("IsFromMe"), EWS_TYPES_NS)) {
-//            m_isFromMe = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("IsResend"), EWS_TYPES_NS)) {
-//            m_isResend = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("IsSubmitted"), EWS_TYPES_NS)) {
-//            m_isSubmitted = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("IsUnmodified"), EWS_TYPES_NS)) {
-//            m_isUnmodified = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("Body"), EWS_TYPES_NS)) {
-//            m_body = element.text();
-//        } else if (element.equalNS(QLatin1String("Sensitivity"), EWS_TYPES_NS)) {
-//            m_sensivity = element.text();
-//        } else if (element.equalNS(QLatin1String("ReminderIsSet"), EWS_TYPES_NS)) {
-//            m_isReminderSet = element.text() == QLatin1String("true");
-//        } else if (element.equalNS(QLatin1String("ReminderMinutesBeforeStart"), EWS_TYPES_NS)) {
-//            m_reminderMinutesBeforeStart = element.text().toInt();
-//        } else if (element.equalNS(QLatin1String("DisplayCc"), EWS_TYPES_NS)) {
-//            m_displayCC = element.text();
-//        } else if (element.equalNS(QLatin1String("DisplayTo"), EWS_TYPES_NS)) {
-//            m_displayTo = element.text();
-//        } else if (element.equalNS(QLatin1String("Culture"), EWS_TYPES_NS)) {
-//            m_culture = element.text();
-//        } else if (element.equalNS(QLatin1String("EffectiveRights"), EWS_TYPES_NS)) {
-//            m_effectiveRights = EwsEffectiveRights(element);
-//        } else if (element.equalNS(QLatin1String("LastModifiedName"), EWS_TYPES_NS)) {
-//            m_lastModifiedName = element.text();
-//        } else if (element.equalNS(QLatin1String("LastModifiedTime"), EWS_TYPES_NS)) {
-//            m_lastModifiedTime = QDateTime::fromString(element.text(), Qt::ISODate);
-//        } else {
-//            // TODO create PermissionSet class
-//            qWarning() << Q_FUNC_INFO << "element unknown" << element.nodeName() << element.text();
-//        }
+Message::~Message()
+{
 
-//        element = element.nextSiblingElement();
-//    }
+}
+
+Message::Message(const Message &)
+{
+
+}
+
+Message &Message::operator=(const Message &message)
+{
+    d_ptr = message.d_ptr;
+    return *this;
+}
+
+Message::Message(MessagePrivate &d)
+    : Item(d)
+{
+
 }
 
 QString Message::id() const
 {
-    return m_id;
+    Q_D(const Message);
+    return d->message.itemId().id();
 }
 
 QString Message::changeKey() const
 {
-    return m_changeKey;
+    Q_D(const Message);
+    return d->message.itemId().changeKey();
 }
 
 QString Message::parentFolderId() const
 {
-    return m_parentId;
+    Q_D(const Message);
+    return d->message.parentFolderId().id();
 }
 
 QString Message::parentFolderChangeKey() const
 {
-    return m_parentChangeKey;
+    // TODO
+    Q_D(const Message);
+    return d->message.parentFolderId().changeKey();
 }
 
 QString Message::itemClass() const
 {
-    return m_itemClass;
-}
-
-QString Message::subject() const
-{
-    return m_subject;
+    Q_D(const Message);
+    return d->message.itemClass().value();
 }
 
 QString Message::sensivity() const
 {
+    // TODO
     return m_sensivity;
 }
 
 QDateTime Message::dateTimeReceived() const
 {
-    return m_dateTimeReceived;
+    Q_D(const Message);
+    return d->message.dateTimeReceived();
 }
 
 QDateTime Message::dateTimeSent() const
 {
-    return m_dateTimeSent;
+    Q_D(const Message);
+    return d->message.dateTimeSent();
 }
 
 QDateTime Message::dateTimeCreated() const
 {
-    return m_dateTimeCreated;
+    Q_D(const Message);
+    return d->message.dateTimeCreated();
 }
 
 int Message::size() const
 {
-    return m_size;
+    Q_D(const Message);
+    return d->message.size();
 }
 
 QString Message::importance() const
 {
+    // TODO
     return m_importance;
 }
 
 QString Message::inReplyTo() const
 {
-    return m_inReplyTo;
+    Q_D(const Message);
+    return d->message.inReplyTo();
 }
 
-QString Message::conversationIndex() const
+QByteArray Message::conversationIndex() const
 {
-    return m_conversationIndex;
+    Q_D(const Message);
+    return d->message.conversationIndex();
 }
 
 QString Message::conversationTopic() const
 {
-    return m_conversationTopic;
+    Q_D(const Message);
+    return d->message.conversationTopic();
 }
 
 QString Message::internetMessageId() const
 {
-    return m_internetMessageId;
+    Q_D(const Message);
+    return d->message.internetMessageId();
 }
 
 bool Message::isRead() const
 {
-    return m_isRead;
+    Q_D(const Message);
+    return d->message.isRead();
 }
 
 bool Message::isResponseRequested() const
 {
-    return m_isResponseRequested;
+    Q_D(const Message);
+    return d->message.isResponseRequested();
 }
 
 bool Message::isReadReceiptRequested() const
 {
-    return m_isReadReceiptRequested;
+    Q_D(const Message);
+    return d->message.isReadReceiptRequested();
 }
 
 bool Message::isDeliveryReceiptRequested() const
 {
-    return m_isDeliveryReceiptRequested;
+    Q_D(const Message);
+    return d->message.isDeliveryReceiptRequested();
 }
 
 QString Message::references() const
@@ -251,57 +187,69 @@ EmailAddress Message::receivedRepresenting() const
 
 bool Message::isSubmitted() const
 {
-    return m_isSubmitted;
+    Q_D(const Message);
+    return d->message.isSubmitted();
 }
 
 bool Message::isDraft() const
 {
-    return m_isDraft;
+    Q_D(const Message);
+    return d->message.isDraft();
 }
 
 bool Message::isFromMe() const
 {
-    return m_isFromMe;
+    Q_D(const Message);
+    return d->message.isFromMe();
 }
 
 bool Message::isResend() const
 {
-    return m_isResend;
+    Q_D(const Message);
+    return d->message.isResend();
 }
 
 bool Message::isUnmodified() const
 {
-    return m_isUnmodified;
+    Q_D(const Message);
+    return d->message.isUnmodified();
 }
 
 bool Message::isReminderSet() const
 {
-    return m_isReminderSet;
+    Q_D(const Message);
+    return d->message.reminderIsSet();
 }
 
 int Message::reminderMinutesBeforeStart() const
 {
-    return m_reminderMinutesBeforeStart;
+    Q_D(const Message);
+    // TODO check this one
+    return d->message.reminderMinutesBeforeStart().value().toInt();
 }
 
 QString Message::displayTo() const
 {
-    return m_displayTo;
+    Q_D(const Message);
+    return d->message.displayTo();
 }
 
 QString Message::displayCC() const
 {
-    return m_displayCC;
+    Q_D(const Message);
+    return d->message.displayCc();
 }
 
 bool Message::hasAttachments() const
 {
-    return m_hasAttachments;
+    Q_D(const Message);
+    return d->message.hasAttachments();
 }
 
 QString Message::culture() const
 {
-    return m_culture;
+    Q_D(const Message);
+    return d->message.culture();
 }
 
 EffectiveRights Message::effectiveRights() const
@@ -311,15 +259,30 @@ EffectiveRights Message::effectiveRights() const
 
 QString Message::lastModifiedName() const
 {
-    return m_lastModifiedName;
+    Q_D(const Message);
+    return d->message.lastModifiedName();
 }
 
 QDateTime Message::lastModifiedTime() const
 {
-    return m_lastModifiedTime;
+    Q_D(const Message);
+    return d->message.lastModifiedTime();
 }
 
 QString Message::body() const
 {
     return m_body;
+}
+
+
+MessagePrivate::MessagePrivate()
+{
+
+}
+
+MessagePrivate::MessagePrivate(const T__MessageType &itemType)
+    : ItemPrivate(itemType)
+    , message(itemType)
+{
+
 }

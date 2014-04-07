@@ -33,7 +33,6 @@ class EWS_EXPORT Reply : public QObject
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(Reply)
-    Q_ENUMS(ResponseCode)
 public:
     enum ResponseCode {
         NoError,
@@ -481,12 +480,18 @@ public:
         ErrorInvalidRetentionTagNone,
         ErrorDiscoverySearchesDisabled
     };
+
+    enum ResponseClass { Success, Warning, Error };
+
     ~Reply();
 
-    void setReply(QNetworkReply *reply);
     bool error() const;
-    ResponseCode responseCode() const;
     QString errorMessage() const;
+
+    ResponseCode responseCode() const;
+    QString messageText() const;
+    int descriptiveLinkKey() const;
+    ResponseClass responseClass() const;
 
 signals:
     void finished();
