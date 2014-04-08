@@ -61,47 +61,6 @@ Folder &Folder::operator=(const Folder &folder)
     return *this;
 }
 
-//Folder::Folder(const ESoapElement &rootElement) :
-//    m_wellKnownFolderName(WellKnownFolderNameUnknown)
-//{
-//    ESoapElement element;
-
-//    element = rootElement.firstChildElement();
-//    while (!element.isNull()) {
-//        if (element.equalNS(QLatin1String("FolderId"), EWS_TYPES_NS)) {
-//            m_id = element.attribute(QLatin1String("Id"));
-//            m_changeKey = element.attribute(QLatin1String("ChangeKey"));
-//        } else if (element.equalNS(QLatin1String("ParentFolderId"), EWS_TYPES_NS)) {
-//            m_parentId = element.attribute(QLatin1String("Id"));
-//            m_parentChangeKey = element.attribute(QLatin1String("ChangeKey"));
-//        } else if (element.equalNS(QLatin1String("FolderClass"), EWS_TYPES_NS)) {
-//            m_folderClass = element.text();
-//        } else if (element.equalNS(QLatin1String("DisplayName"), EWS_TYPES_NS)) {
-//            m_displayName = element.text();
-//        } else if (element.equalNS(QLatin1String("TotalCount"), EWS_TYPES_NS)) {
-//            m_totalCount = element.text().toInt();
-//        } else if (element.equalNS(QLatin1String("ChildFolderCount"), EWS_TYPES_NS)) {
-//            m_childFolderCount = element.text().toInt();
-//        } else if (element.equalNS(QLatin1String("EffectiveRights"), EWS_TYPES_NS)) {
-//            m_effectiveRights = EwsEffectiveRights(element);
-//        } else if (element.equalNS(QLatin1String("UnreadCount"), EWS_TYPES_NS)) {
-//            m_unreadCount = element.text().toInt();
-//        } else if (element.equalNS(QLatin1String("PermissionSet"), EWS_TYPES_NS)) {
-//            ESoapElement permissions = element.firstChildTypedElement(QLatin1String("Permissions"), EWS_TYPES_NS);
-//            ESoapElement permission = permissions.firstChildTypedElement(QLatin1String("Permission"), EWS_TYPES_NS);
-//            while (!permission.isNull()) {
-//                m_permissions << EwsPermission(permission);
-
-//                permission = permission.nextSiblingElement();
-//            }
-//        } else {
-//            qWarning() << Q_FUNC_INFO << "element unknown" << element.nodeName();
-//        }
-
-//        element = element.nextSiblingElement();
-//    }
-//}
-
 QString Folder::id() const
 {
     Q_D(const Folder);

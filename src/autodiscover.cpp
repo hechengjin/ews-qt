@@ -44,6 +44,8 @@ void AutoDiscover::autodiscover(const QString &emailAddress, const QString &user
     m_uri.setPassword(password);
     m_emailAddress = emailAddress;
     m_message = Request::autoDiscover(emailAddress);
+    m_authRequired = false;
+    m_errorMessage.clear();
 
     performAutoDiscover(m_uri);
 }
@@ -78,6 +80,11 @@ QString AutoDiscover::oabUrl() const
     return m_oabUrl;
 }
 
+bool AutoDiscover::authRequired() const
+{
+    return m_authRequired;
+}
+
 void AutoDiscover::requestFinished()
 {
     AutoDiscoverReply *reply = qobject_cast<AutoDiscoverReply*>(sender());
@@ -107,6 +114,7 @@ void AutoDiscover::requestFinished()
 
         m_uri = QUrl();
         m_valid = false;
+        m_authRequired = true;
         m_errorMessage = reply->errorMessage();
         m_replies.clear();
         emit finished();

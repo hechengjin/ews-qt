@@ -95,50 +95,16 @@ public:
     EffectiveRights effectiveRights() const;
     QString lastModifiedName() const;
     QDateTime lastModifiedTime() const;
-    QString body() const;
 
 private:
-//    QString m_id;
-//    QString m_changeKey;
-//    QString m_parentId;
-//    QString m_parentChangeKey;
-//    QString m_itemClass;
-//    QString m_subject;
     QString m_sensivity;
-//    QDateTime m_dateTimeReceived;
-//    QDateTime m_dateTimeSent;
-//    QDateTime m_dateTimeCreated;
-//    int m_size;
     QString m_importance;
-//    QString m_inReplyTo;
-
-//    QByteArray m_conversationIndex;
-//    QString m_conversationTopic;
-//    QString m_internetMessageId;
-//    bool m_isRead;
-//    bool m_isResponseRequested;
-//    bool m_isReadReceiptRequested;
-//    bool m_isDeliveryReceiptRequested;
     QString m_references;
     EmailAddress m_sender;
     EmailAddress m_from;
     EmailAddress m_receivedBy;
     EmailAddress m_receivedRepresenting;
-//    bool m_isSubmitted;
-//    bool m_isDraft;
-//    bool m_isFromMe;
-//    bool m_isResend;
-//    bool m_isUnmodified;
-//    bool m_isReminderSet;
-//    int m_reminderMinutesBeforeStart;
-//    QString m_displayTo;
-//    QString m_displayCC;
-//    bool m_hasAttachments;
-//    QString m_culture;
     EffectiveRights m_effectiveRights;
-//    QString m_lastModifiedName;
-//    QDateTime m_lastModifiedTime;
-    QString m_body;
 
 public:
     Message();

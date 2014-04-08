@@ -27,7 +27,7 @@ class ReplyPrivate : public QObject
 {
     Q_OBJECT
 public:
-    ReplyPrivate(KDSoapJob *job);
+    explicit ReplyPrivate(KDSoapJob *job, QObject *parent);
 
     QString error;
 

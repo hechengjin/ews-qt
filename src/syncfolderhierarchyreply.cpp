@@ -56,7 +56,7 @@ QStringList SyncFolderHierarchyReply::deleteFolders() const
 }
 
 SyncFolderHierarchyReplyPrivate::SyncFolderHierarchyReplyPrivate(KDSoapJob *job) :
-    ReplyPrivate(job),
+    ReplyPrivate(job, this),
     includesLastFolderInRange(false)
 {
 
@@ -73,31 +73,23 @@ void SyncFolderHierarchyReplyPrivate::processJob(KDSoapJob *job)
     responseMsgs = messages.syncFolderHierarchyResponseMessage();
 
     foreach (const TNS__SyncFolderHierarchyResponseMessageType &msg, responseMsgs) {
-        qDebug() << Q_FUNC_INFO;
         setResponseMessage(msg);
 
         syncState = msg.syncState();
         includesLastFolderInRange = msg.includesLastFolderInRange();
 
         T__SyncFolderHierarchyChangesType changes = msg.changes();
-        qDebug() << "create" <<  changes.create().size();
-        qDebug() << "delete" <<  changes.delete_().size();
-        qDebug() << "update" <<  changes.update().size();
-
         foreach (const T__SyncFolderHierarchyCreateOrUpdateType &create, changes.create()) {
-            qDebug() << Q_FUNC_INFO << create.folder().displayName();
             FolderPrivate *priv = new FolderPrivate(create.folder());
             createFolders << Folder(*priv);
         }
 
         foreach (const T__SyncFolderHierarchyCreateOrUpdateType &update, changes.update()) {
-            qDebug() << Q_FUNC_INFO << update.folder().displayName();
             FolderPrivate *priv = new FolderPrivate(update.folder());
             updateFolders << Folder(*priv);
         }
 
         foreach (const T__SyncFolderHierarchyDeleteType &deleteFolder, changes.delete_()) {
-            qDebug() << Q_FUNC_INFO << deleteFolder.folderId().id();
             deleteFolders << deleteFolder.folderId().id();
         }
     }

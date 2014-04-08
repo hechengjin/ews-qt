@@ -32,16 +32,12 @@ Reply::Reply(ReplyPrivate *priv) :
     d_ptr(priv)
 {
     Q_D(Reply);
-
-    qDebug() << Q_FUNC_INFO;
-
     connect(d, &ReplyPrivate::finished,
             this, &Reply::finished);
 }
 
 Reply::~Reply()
 {
-    qDebug() << Q_FUNC_INFO;
     delete d_ptr;
 }
 
@@ -81,8 +77,9 @@ Reply::ResponseClass Reply::responseClass() const
     return static_cast<Reply::ResponseClass>(d->responseMessage.responseClass().type());
 }
 
-ReplyPrivate::ReplyPrivate(KDSoapJob *job)
+ReplyPrivate::ReplyPrivate(KDSoapJob *job, QObject *parent)
 {
+    parent->setParent(job);
     connect(job, &KDSoapJob::finished,
             this, &ReplyPrivate::jobFinished);
     job->start();
@@ -90,7 +87,6 @@ ReplyPrivate::ReplyPrivate(KDSoapJob *job)
 
 void ReplyPrivate::jobFinished(KDSoapJob *job)
 {
-    qDebug() << Q_FUNC_INFO << 1 << this;
     if (job->isFault()) {
         error = job->faultAsString();
     } else {
@@ -98,9 +94,7 @@ void ReplyPrivate::jobFinished(KDSoapJob *job)
         // do their job
         processJob(job);
     }
-    qDebug() << Q_FUNC_INFO << 2 << this;
     emit finished();
-    qDebug() << Q_FUNC_INFO << 3 << this;
 }
 
 

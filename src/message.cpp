@@ -269,11 +269,6 @@ QDateTime Message::lastModifiedTime() const
     return d->message.lastModifiedTime();
 }
 
-QString Message::body() const
-{
-    return m_body;
-}
-
 
 MessagePrivate::MessagePrivate()
 {

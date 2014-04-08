@@ -56,7 +56,7 @@ QStringList SyncFolderItemsReply::remove() const
 }
 
 SyncFolderItemsReplyPrivate::SyncFolderItemsReplyPrivate(KDSoapJob *job) :
-    ReplyPrivate(job)
+    ReplyPrivate(job, this)
 {
 }
 
@@ -65,47 +65,30 @@ void SyncFolderItemsReplyPrivate::processJob(KDSoapJob *job)
     SyncFolderItemsJob *syncJob = qobject_cast<SyncFolderItemsJob*>(job);
     const TNS__SyncFolderItemsResponseType &response = syncJob->syncFolderItemsResult();
 
-    qDebug() << "===========";
-    qDebug() << syncJob->reply();
-    qDebug() << "===========";
-
     TNS__ArrayOfResponseMessagesType messages = response.responseMessages();
 
     QList<TNS__SyncFolderItemsResponseMessageType> responseMsgs;
     responseMsgs = messages.syncFolderItemsResponseMessage();
 
     foreach (const TNS__SyncFolderItemsResponseMessageType &msg, responseMsgs) {
-        qDebug() << Q_FUNC_INFO << msg.serialize(QString());
         setResponseMessage(msg);
 
         syncState = msg.syncState();
         includesLastItemInRange = msg.includesLastItemInRange();
 
         T__SyncFolderItemsChangesType changes = msg.changes();
-        qDebug() << "create" <<  changes.create().size();
-        qDebug() << "delete" <<  changes.delete_().size();
-        qDebug() << "update" <<  changes.update().size();
         foreach (const T__SyncFolderItemsCreateOrUpdateType &create, changes.create()) {
-            qDebug() << Q_FUNC_INFO << create.message().subject();
             MessagePrivate *priv = new MessagePrivate(create.message());
             createList << Message(*priv);
         }
 
         foreach (const T__SyncFolderItemsCreateOrUpdateType &update, changes.update()) {
-            qDebug() << Q_FUNC_INFO << update.item().subject();
             MessagePrivate *priv = new MessagePrivate(update.message());
             updateList << Message(*priv);
         }
 
         foreach (const T__SyncFolderItemsDeleteType &deleteFolder, changes.delete_()) {
-            qDebug() << Q_FUNC_INFO << deleteFolder.itemId().id();
             removeList << deleteFolder.itemId().id();
         }
-
-        qDebug() << Q_FUNC_INFO << msg.includesLastItemInRange();
-        qDebug() << Q_FUNC_INFO << msg.responseCode();
-        qDebug() << Q_FUNC_INFO << msg.messageText();
-//        qDebug() << Q_FUNC_INFO << msg.messageXml();
-//        msg.changes();
     }
 }

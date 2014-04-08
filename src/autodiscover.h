@@ -43,6 +43,7 @@ public:
     QString emailAddress() const;
     QString asUrl() const;
     QString oabUrl() const;
+    bool authRequired() const;
 
 signals:
     void finished();
@@ -68,6 +69,7 @@ private:
     QString m_asUrl;
     QString m_oabUrl;
     QString m_errorMessage;
+    bool m_authRequired = false;
 };
 
 }
