@@ -217,7 +217,6 @@ void Connection::setServerVersion(Connection::ServerVersion ver)
 
 AutoDiscoverReply *Connection::post(const QUrl &url, const QDomDocument &document)
 {
-    qDebug() << Q_FUNC_INFO << url.toString(QUrl::PrettyDecoded);
     AutoDiscoverReply *messageReply = new AutoDiscoverReply(document, this);
     messageReply->setReply(postDocument(url, document));
     return messageReply;

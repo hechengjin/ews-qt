@@ -98,6 +98,7 @@ void AutoDiscover::requestFinished()
             foreach (AutoDiscoverReply *reply, m_replies) {
                 reply->deleteLater();
             }
+            qDebug() << reply->document().toString(2);
 
             m_uri = reply->url();
             m_valid = true;
@@ -107,12 +108,12 @@ void AutoDiscover::requestFinished()
             return;
         }
     } else if (reply->error() == QNetworkReply::AuthenticationRequiredError) {
-        qDebug() << Q_FUNC_INFO << reply->url() << reply->error() << reply->errorMessage();
+        qDebug() << Q_FUNC_INFO << reply->url().host() << reply->error() << reply->errorMessage();
         foreach (AutoDiscoverReply *reply, m_replies) {
             reply->deleteLater();
         }
 
-        m_uri = QUrl();
+        m_uri = reply->url();
         m_valid = false;
         m_authRequired = true;
         m_errorMessage = reply->errorMessage();
@@ -200,8 +201,6 @@ void AutoDiscover::performAutoDiscover(const QUrl &uri)
 
 bool AutoDiscover::parseAutoDiscover(const QDomDocument &document)
 {
-    qDebug() << Q_FUNC_INFO;
-
     // print out the element names of all elements that are direct children
     // of the outermost element.
     QDomElement docElem = document.documentElement();
