@@ -37,9 +37,9 @@ AutoDiscover::AutoDiscover(QObject *parent) :
 {
 }
 
-void AutoDiscover::autodiscover(const QString &emailAddress, const QString &username, const QString &password)
+void AutoDiscover::autodiscover(const QString &emailAddress, const QString &serverAddress, const QString &username, const QString &password)
 {
-    m_uri.setHost(emailAddress.section(QLatin1Char('@'), 1, 1));
+    m_uri.setHost(serverAddress);
     m_uri.setUserName(username);
     m_uri.setPassword(password);
     m_emailAddress = emailAddress;

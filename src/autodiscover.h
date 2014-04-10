@@ -36,7 +36,7 @@ class EWS_EXPORT AutoDiscover : public QObject
 public:
     explicit AutoDiscover(QObject *parent = 0);
     
-    void autodiscover(const QString &emailAddress, const QString &username, const QString &password);
+    void autodiscover(const QString &emailAddress, const QString &serverAddress, const QString &username, const QString &password);
     bool isValid() const;
     QString errorMessage() const;
     QUrl uri() const;
