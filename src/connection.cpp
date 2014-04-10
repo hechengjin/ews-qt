@@ -23,8 +23,6 @@
 #include "syncfolderitemsreply_p.h"
 #include "utils.h"
 
-#include "wsdl_Services.h"
-
 #include <QNetworkRequest>
 #include <QSslConfiguration>
 #include <QStringBuilder>
@@ -56,6 +54,51 @@ Connection::Connection(QObject *parent, QNetworkAccessManager *networkAccessMana
 Connection::~Connection()
 {
     delete d_ptr;
+}
+
+void Connection::setPrincipalName(const QString &principalName)
+{
+    Q_D(Connection);
+    T__ExchangeImpersonationType impersonation;
+    d->connectingSID.setPrincipalName(principalName);
+    impersonation.setConnectingSID(d->connectingSID);
+    d->service->setImpersonationHeader(impersonation);
+}
+
+QString Connection::principalName() const
+{
+    Q_D(const Connection);
+    return d->connectingSID.principalName();
+}
+
+void Connection::setSID(const QString &sID)
+{
+    Q_D(Connection);
+    T__ExchangeImpersonationType impersonation;
+    d->connectingSID.setSID(sID);
+    impersonation.setConnectingSID(d->connectingSID);
+    d->service->setImpersonationHeader(impersonation);
+}
+
+QString Connection::sID() const
+{
+    Q_D(const Connection);
+    return d->connectingSID.sID();
+}
+
+void Connection::setPrimarySmtpAddress(const QString &primarySmtpAddress)
+{
+    Q_D(Connection);
+    T__ExchangeImpersonationType impersonation;
+    d->connectingSID.setPrimarySmtpAddress(primarySmtpAddress);
+    impersonation.setConnectingSID(d->connectingSID);
+    d->service->setImpersonationHeader(impersonation);
+}
+
+QString Connection::primarySmtpAddress() const
+{
+    Q_D(const Connection);
+    return d->connectingSID.primarySmtpAddress();
 }
 
 Reply *Connection::getFolders(const QList<Folder> &folders, Folder::BaseShape folderShape)

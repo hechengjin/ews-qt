@@ -48,6 +48,13 @@ public:
     explicit Connection(QObject *parent = 0, QNetworkAccessManager *networkAccessManager = 0);
     ~Connection();
 
+    void setPrincipalName(const QString &principalName);
+    QString principalName() const;
+    void setSID(const QString &sID);
+    QString sID() const;
+    void setPrimarySmtpAddress(const QString &primarySmtpAddress);
+    QString primarySmtpAddress() const;
+
     Reply *getFolders(const QList<Folder> &folders, Folder::BaseShape folderShape);
     Reply *deleteFolders(const QList<Folder> &folders, Folder::DeleteType mode);
     SyncFolderHierarchyReply *syncFolderHierarch(Folder::BaseShape folderShape, const QString &folderId = QString(), const QString &syncState = QString());

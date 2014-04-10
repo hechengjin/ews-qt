@@ -17,14 +17,15 @@
 #define EWSCONNECTION_P_H
 
 #include "connection.h"
+#include "wsdl_Services.h"
 
-class ExchangeServices;
 namespace Ews {
 
 class ConnectionPrivate
 {
 public:
     ExchangeServices *service;
+    T__ConnectingSIDType connectingSID;
     Connection::ServerVersion serverVersion;
     QUrl uri;
 };
