@@ -14,6 +14,7 @@
  */
 
 #include "message_p.h"
+//#include "effectiverights.h"
 
 #include <QDebug>
 
@@ -252,10 +253,11 @@ QString Message::culture() const
     return d->message.culture();
 }
 
-EffectiveRights Message::effectiveRights() const
-{
-    return m_effectiveRights;
-}
+//EffectiveRights Message::effectiveRights() const
+//{
+//    Q_D(const Message);
+//    return d->effectiveRights;
+//}
 
 QString Message::lastModifiedName() const
 {

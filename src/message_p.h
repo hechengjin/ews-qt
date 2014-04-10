@@ -3,6 +3,7 @@
 
 #include "item_p.h"
 #include "message.h"
+//#include "effectiverights.h"
 
 #include "wsdl_Services.h"
 
@@ -15,6 +16,7 @@ public:
     MessagePrivate(const T__MessageType &itemType);
 
     T__MessageType message;
+//    EffectiveRights m_effectiveRights;
 };
 
 }

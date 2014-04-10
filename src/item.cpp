@@ -12,7 +12,8 @@ Item::~Item()
 
 }
 
-Item::Item(const Item &)
+Item::Item(const Item &other)
+    : d_ptr(other.d_ptr)
 {
 
 }

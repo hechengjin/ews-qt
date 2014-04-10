@@ -79,6 +79,7 @@ protected:
 
 private slots:
     void sslErrors(QNetworkReply *reply, const QList<QSslError> &errors);
+    void soapError(const QString &error);
 
 private:
     friend class AutoDiscoverReply;

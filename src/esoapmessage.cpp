@@ -19,7 +19,6 @@
 
 #include "esoapmessage.h"
 
-#include "connection.h"
 #include "esoapnamespaces.h"
 
 #define SOAPv11_ENVELOPE    "http://schemas.xmlsoap.org/soap/envelope/"

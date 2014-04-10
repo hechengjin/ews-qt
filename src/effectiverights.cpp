@@ -18,20 +18,37 @@
 
 using namespace Ews;
 
-EffectiveRights::EffectiveRights() :
-    d_ptr(0)
+EffectiveRights::EffectiveRights()
+    : d_ptr(new EffectiveRightsPrivate)
 {
 
-}
-
-EffectiveRights::EffectiveRights(EffectiveRightsPrivate *priv) :
-    d_ptr(priv)
-{
 }
 
 EffectiveRights::~EffectiveRights()
 {
-    delete d_ptr;
+}
+
+EffectiveRights::EffectiveRights(const EffectiveRights &other)
+    : d_ptr(other.d_ptr)
+{
+
+}
+
+EffectiveRights &EffectiveRights::operator=(const EffectiveRights &other)
+{
+    d_ptr = other.d_ptr;
+    return *this;
+}
+
+EffectiveRights::EffectiveRights(EffectiveRightsPrivate &d)
+    : d_ptr(&d)
+{
+
+}
+
+EffectiveRightsPrivate *EffectiveRights::d_func()
+{
+    return d_ptr.data();
 }
 
 bool EffectiveRights::canCreateAssociated() const
@@ -70,6 +87,11 @@ bool EffectiveRights::canRead() const
     return d->rights.read();
 }
 
+
+EffectiveRightsPrivate::EffectiveRightsPrivate()
+{
+
+}
 
 EffectiveRightsPrivate::EffectiveRightsPrivate(const T__EffectiveRightsType &effectiveRights) :
     rights(effectiveRights)

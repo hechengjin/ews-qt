@@ -205,7 +205,8 @@ FolderPrivate::FolderPrivate()
 FolderPrivate::FolderPrivate(const T__FolderType &value) :
     folder(value)
 {
-    effectiveRights = EffectiveRights(new EffectiveRightsPrivate(value.effectiveRights()));
+    EffectiveRightsPrivate *priv = new EffectiveRightsPrivate(value.effectiveRights());
+    effectiveRights = EffectiveRights(*priv);
 
     QList<T__PermissionType> permissionList = value.permissionSet().permissions().permission();
     foreach (const T__PermissionType &permission, permissionList) {

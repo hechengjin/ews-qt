@@ -39,6 +39,9 @@ Connection::Connection(QObject *parent, QNetworkAccessManager *networkAccessMana
     Q_D(Connection);
 
     d->service = new ExchangeServices(this);
+    d->service->ignoreSslErrors();
+    connect(d->service, SIGNAL(soapError(QString,KDSoapMessage)),
+            this, SLOT(soapError(QString)));
     if (networkAccessManager) {
         m_networkMgr = networkAccessManager;
     } else {
@@ -47,7 +50,7 @@ Connection::Connection(QObject *parent, QNetworkAccessManager *networkAccessMana
     connect(m_networkMgr, SIGNAL(sslErrors(QNetworkReply*,QList<QSslError>)),
             SLOT(sslErrors(QNetworkReply*,QList<QSslError>)));
 
-    setServerVersion(Connection::Exchange2007);
+    setServerVersion(Connection::Exchange2007_SP1);
 }
 
 Connection::~Connection()
@@ -247,4 +250,9 @@ void Connection::sslErrors(QNetworkReply *reply, const QList<QSslError> &errors)
         qDebug() << Q_FUNC_INFO << error.errorString();
     }
     reply->ignoreSslErrors();
+}
+
+void Connection::soapError(const QString &error)
+{
+    qDebug() << Q_FUNC_INFO << error;
 }

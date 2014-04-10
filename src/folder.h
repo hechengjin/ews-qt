@@ -17,7 +17,6 @@
 #define EWSFOLDER_H
 
 #include "export.h"
-#include "effectiverights.h"
 #include "permission.h"
 
 #include <QSharedDataPointer>
@@ -27,6 +26,7 @@ namespace Ews {
 class Reply;
 class Connection;
 class FolderPrivate;
+class EffectiveRights;
 class EWS_EXPORT Folder
 {
 public:

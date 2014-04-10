@@ -19,12 +19,12 @@
 #include "export.h"
 #include "item.h"
 #include "emailaddress.h"
-#include "effectiverights.h"
 
 #include <QDateTime>
 
 namespace Ews {
 
+class EffectiveRights;
 class MessagePrivate;
 class EWS_EXPORT Message : public Item
 {
@@ -92,7 +92,7 @@ public:
     QString displayCC() const;
     bool hasAttachments() const;
     QString culture() const;
-    EffectiveRights effectiveRights() const;
+//    EffectiveRights effectiveRights() const;
     QString lastModifiedName() const;
     QDateTime lastModifiedTime() const;
 
@@ -104,7 +104,6 @@ private:
     EmailAddress m_from;
     EmailAddress m_receivedBy;
     EmailAddress m_receivedRepresenting;
-    EffectiveRights m_effectiveRights;
 
 public:
     Message();

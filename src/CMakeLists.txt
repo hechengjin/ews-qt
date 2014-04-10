@@ -16,6 +16,7 @@ set(libews_qt_SRCS
     folder.cpp
     folder_p.h
     effectiverights.cpp
+    effectiverights_p.h
     message.cpp
     message_p.h
 

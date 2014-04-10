@@ -19,19 +19,14 @@
 #include "export.h"
 
 #include <QObject>
+#include <QSharedDataPointer>
 
 namespace Ews {
 
 class EffectiveRightsPrivate;
 class EWS_EXPORT EffectiveRights
 {
-    Q_GADGET
-    Q_DECLARE_PRIVATE(EffectiveRights)
 public:
-    EffectiveRights();
-    EffectiveRights(EffectiveRightsPrivate *priv);
-    virtual ~EffectiveRights();
-
     bool canCreateAssociated() const;
     bool canCreateContents() const;
     bool canCreateHierarchy() const;
@@ -39,8 +34,25 @@ public:
     bool canModify() const;
     bool canRead() const;
 
-private:
-    EffectiveRightsPrivate *d_ptr;
+    EffectiveRights();
+    virtual ~EffectiveRights();
+
+public:
+    EffectiveRights(const EffectiveRights &);
+    EffectiveRights &operator=(const EffectiveRights &);
+
+protected:
+    friend class FolderPrivate;
+    EffectiveRights(EffectiveRightsPrivate &d);
+    QSharedDataPointer<EffectiveRightsPrivate> d_ptr;
+
+protected:
+    // Q_DECLARE_PRIVATE equivalent for shared data pointers
+    EffectiveRightsPrivate* d_func();
+    inline const EffectiveRightsPrivate* d_func() const
+    {
+        return d_ptr.constData();
+    }
 };
 
 }

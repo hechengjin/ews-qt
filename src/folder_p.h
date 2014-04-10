@@ -17,6 +17,7 @@
 #define EWSFOLDER_P_H
 
 #include "folder.h"
+#include "effectiverights.h"
 
 #include "wsdl_Services.h"
 

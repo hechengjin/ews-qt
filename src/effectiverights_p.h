@@ -21,9 +21,10 @@
 
 namespace Ews {
 
-class EffectiveRightsPrivate
+class EffectiveRightsPrivate : public QSharedData
 {
 public:
+    EffectiveRightsPrivate();
     EffectiveRightsPrivate(const T__EffectiveRightsType &effectiveRights);
 
     T__EffectiveRightsType rights;
