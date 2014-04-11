@@ -70,14 +70,14 @@ QString AutoDiscover::emailAddress() const
     return m_emailAddress;
 }
 
-QString AutoDiscover::asUrl() const
+QString AutoDiscover::internalASUrl() const
 {
-    return m_asUrl;
+    return m_internalASUrl;
 }
 
-QString AutoDiscover::oabUrl() const
+QString AutoDiscover::externalASUrl() const
 {
-    return m_oabUrl;
+    return m_externalASUrl;
 }
 
 bool AutoDiscover::authRequired() const
@@ -93,7 +93,7 @@ void AutoDiscover::requestFinished()
     }
 
     m_replies.removeOne(reply);
-    if (!reply->error()) {
+    if (!reply->error() && !reply->document().isNull()) {
         if (parseAutoDiscover(reply->document())) {
             foreach (AutoDiscoverReply *reply, m_replies) {
                 reply->deleteLater();
@@ -238,6 +238,12 @@ bool AutoDiscover::parseAutoDiscover(const QDomDocument &document)
         return false;
     }
 
+    QDomElement accountType = account.firstChildElement(QLatin1String("AccountType"));
+    if (accountType.isNull()) {
+        qWarning() << Q_FUNC_INFO << "Failed to find <AccountType> element";
+        return false;
+    }
+
     QDomElement action = account.firstChildElement(QLatin1String("Action"));
     if (action.isNull()) {
         qWarning() << Q_FUNC_INFO << "Failed to find <Action> element";
@@ -247,11 +253,20 @@ bool AutoDiscover::parseAutoDiscover(const QDomDocument &document)
     if (action.text() == QLatin1String("settings")) {
         QDomElement protocol = account.firstChildElement(QLatin1String("Protocol"));
         while (!protocol.isNull()) {
-            if (parseAutoDiscoverProtocol(protocol)) {
-                return true;
-            }
+            parseAutoDiscoverProtocol(protocol,
+                                      accountType.text() == QLatin1String("email"));
 
-            protocol = account.nextSiblingElement(QLatin1String("Protocol"));
+            protocol = protocol.nextSiblingElement(QLatin1String("Protocol"));
+        }
+
+        qWarning() << Q_FUNC_INFO << m_externalASUrl << m_internalASUrl;
+
+        if (!m_externalASUrl.isEmpty() || !m_internalASUrl.isEmpty()) {
+            return true;
+        } else {
+            m_internalASUrl.clear();
+            m_externalASUrl.clear();
+            return false;
         }
     } else if (action.text() == QLatin1String("redirectAddr")) {
         // From the specification we should start from step 1
@@ -271,21 +286,37 @@ bool AutoDiscover::parseAutoDiscover(const QDomDocument &document)
     return false;
 }
 
-bool AutoDiscover::parseAutoDiscoverProtocol(const QDomElement &element)
+void AutoDiscover::parseAutoDiscoverProtocol(const QDomElement &element, bool accountTypeIsEmail)
 {
-    QDomElement urlElem;
-    urlElem = element.firstChildElement(QLatin1String("ASUrl"));
-    if (!urlElem.isNull()) {
-        m_asUrl = urlElem.text();
+    QDomElement typeElement = element.firstChildElement(QLatin1String("Type"));
+    if (typeElement.isNull()) {
+        qWarning() << Q_FUNC_INFO << "Failed to find <Type> element";
+        return;
+    } else if (typeElement.text() != QLatin1String("EXCH") &&
+               typeElement.text() != QLatin1String("EXPR")) {
+        return;
     }
 
-    urlElem = element.firstChildElement(QLatin1String("OABUrl"));
-    if (!urlElem.isNull()) {
-        m_oabUrl = urlElem.text();
+    QDomElement serverElement = element.firstChildElement(QLatin1String("Server"));
+    if (serverElement.isNull()) {
+        qWarning() << Q_FUNC_INFO << "Failed to find <Server> element";
+        return;
     }
-    qWarning() << Q_FUNC_INFO << m_asUrl << m_oabUrl;
 
-    return !m_asUrl.isEmpty() && !m_oabUrl.isEmpty();
+    QDomElement urlElem = element.firstChildElement(QLatin1String("ASUrl"));
+    if (!urlElem.isNull()) {
+        QUrl url = urlElem.text();
+        url.setHost(serverElement.text());
+        if (typeElement.text() == QLatin1String("EXCH")) {
+            // The protocol that is used to connect to the server is Exchange RPC.
+            m_internalASUrl = url.toString();
+        } else if (typeElement.text() == QLatin1String("EXPR") && accountTypeIsEmail) {
+            // The protocol that is used to connect to the server is Exchange RPC
+            // over HTTP, using an RPC proxy server.
+            // This is only applicable when the AccountType (POX) element is set to email.
+            m_externalASUrl = url.toString();
+        }
+    }
 }
 
 QUrl AutoDiscover::autodiscoverUrl(const QString &scheme, const QUrl &url)

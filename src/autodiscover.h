@@ -41,8 +41,8 @@ public:
     QString errorMessage() const;
     QUrl uri() const;
     QString emailAddress() const;
-    QString asUrl() const;
-    QString oabUrl() const;
+    QString internalASUrl() const;
+    QString externalASUrl() const;
     bool authRequired() const;
 
 signals:
@@ -56,7 +56,7 @@ private slots:
 private:
     void performAutoDiscover(const QUrl &uri);
     bool parseAutoDiscover(const QDomDocument &document);
-    bool parseAutoDiscoverProtocol(const QDomElement &element);
+    void parseAutoDiscoverProtocol(const QDomElement &element, bool accountTypeIsEmail);
     QUrl autodiscoverUrl(const QString &scheme, const QUrl &url);
 
     Connection *m_connection;
@@ -66,8 +66,8 @@ private:
     QUrl m_uri;
     QDomDocument m_message;
     QString m_emailAddress;
-    QString m_asUrl;
-    QString m_oabUrl;
+    QString m_internalASUrl;
+    QString m_externalASUrl;
     QString m_errorMessage;
     bool m_authRequired = false;
 };

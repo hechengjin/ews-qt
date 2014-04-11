@@ -104,7 +104,9 @@ void AutoDiscoverReply::requestFinished()
             }
         }
     } else {
-        m_replyDocument.setContent(reply->readAll());
+        if (reply->bytesAvailable()) {
+            m_replyDocument.setContent(reply->readAll());
+        }
         emit finished();
     }
 }
