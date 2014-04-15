@@ -80,13 +80,21 @@ void SyncFolderHierarchyReplyPrivate::processJob(KDSoapJob *job)
 
         T__SyncFolderHierarchyChangesType changes = msg.changes();
         foreach (const T__SyncFolderHierarchyCreateOrUpdateType &create, changes.create()) {
-            FolderPrivate *priv = new FolderPrivate(create.folder());
-            createFolders << Folder(*priv);
+            if (!create.folder().folderId().id().isNull()) {
+                FolderPrivate *priv = new FolderPrivate(create.folder());
+                createFolders << Folder(*priv);
+            } else {
+                qWarning() << Q_FUNC_INFO << "Unknown create type";
+            }
         }
 
         foreach (const T__SyncFolderHierarchyCreateOrUpdateType &update, changes.update()) {
-            FolderPrivate *priv = new FolderPrivate(update.folder());
-            updateFolders << Folder(*priv);
+            if (!update.folder().folderId().id().isNull()) {
+                FolderPrivate *priv = new FolderPrivate(update.folder());
+                updateFolders << Folder(*priv);
+            } else {
+                qWarning() << Q_FUNC_INFO << "Unknown update type";
+            }
         }
 
         foreach (const T__SyncFolderHierarchyDeleteType &deleteFolder, changes.delete_()) {

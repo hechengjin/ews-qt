@@ -87,9 +87,8 @@ ReplyPrivate::ReplyPrivate(KDSoapJob *job, QObject *parent)
 
 void ReplyPrivate::jobFinished(KDSoapJob *job)
 {
-    qDebug() << job->reply();
-    qDebug() << job->faultAsString();
     if (job->isFault()) {
+        qDebug() << job->faultAsString();
         error = job->faultAsString();
     } else {
         // Tell the specialization to
