@@ -27,6 +27,9 @@ set(libews_qt_SRCS
     syncfolderitemsreply_p.h
     syncfolderhierarchyreply.cpp
     syncfolderhierarchyreply_p.h
+    getfolderreply.cpp
+    getfolderreply.h
+    getfolderreply_p.h
     request.cpp
     autodiscover.cpp
     autodiscoverreply.cpp
@@ -47,6 +50,7 @@ set(ewsqt_HEADERS
     reply.h
     syncfolderitemsreply.h
     syncfolderhierarchyreply.h
+    getfolderreply.h
     request.h
     autodiscover.h
     autodiscoverreply.h

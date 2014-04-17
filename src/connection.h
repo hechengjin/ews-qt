@@ -30,6 +30,7 @@ namespace Ews {
 
 class AutoDiscoverReply;
 class Reply;
+class GetFolderReply;
 class SyncFolderItemsReply;
 class SyncFolderHierarchyReply;
 class ConnectionPrivate;
@@ -55,7 +56,7 @@ public:
     void setPrimarySmtpAddress(const QString &primarySmtpAddress);
     QString primarySmtpAddress() const;
 
-    Reply *getFolders(const QList<Folder> &folders, Folder::BaseShape folderShape);
+    GetFolderReply *getFolders(const QList<Folder> &folders, Folder::BaseShape folderShape);
     Reply *deleteFolders(const QList<Folder> &folders, Folder::DeleteType mode);
     SyncFolderHierarchyReply *syncFolderHierarch(Folder::BaseShape folderShape, const QString &folderId = QString(), const QString &syncState = QString());
     SyncFolderItemsReply *syncFolderItems(Folder::BaseShape itemShape, const QString &folderId, int maxChanges, const QString &syncState = QString());

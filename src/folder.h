@@ -24,6 +24,7 @@
 namespace Ews {
 
 class Reply;
+class GetFolderReply;
 class Connection;
 class FolderPrivate;
 class EffectiveRights;
@@ -64,7 +65,7 @@ public:
      */
     bool isDirty() const;
 
-    Reply *load(BaseShape folderShape) const;
+    GetFolderReply *load(BaseShape folderShape) const;
     Reply *update() const;
     Reply *remove(DeleteType mode) const;
 
@@ -85,8 +86,7 @@ protected:
 
 private:
     friend class SyncFolderHierarchyReplyPrivate;
-
-//    EWS_DECLARE_PRIVATE(Folder)
+    friend class GetFolderReplyPrivate;
 
     // Q_DECLARE_PRIVATE equivalent for shared data pointers
     FolderPrivate* d_func();

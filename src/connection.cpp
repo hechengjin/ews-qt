@@ -19,6 +19,7 @@
 #include "reply.h"
 #include "autodiscoverreply.h"
 
+#include "getfolderreply_p.h"
 #include "syncfolderhierarchyreply_p.h"
 #include "syncfolderitemsreply_p.h"
 #include "utils.h"
@@ -101,11 +102,17 @@ QString Connection::primarySmtpAddress() const
     return d->connectingSID.primarySmtpAddress();
 }
 
-Reply *Connection::getFolders(const QList<Folder> &folders, Folder::BaseShape folderShape)
+GetFolderReply *Connection::getFolders(const QList<Folder> &folders, Folder::BaseShape folderShape)
 {
     Q_D(Connection);
 
     TNS__GetFolderType request;
+
+    T__DefaultShapeNamesType baseShape;
+    baseShape.setType(static_cast<T__DefaultShapeNamesType::Type>(folderShape));
+    T__FolderResponseShapeType shape;
+    shape.setBaseShape(baseShape);
+    request.setFolderShape(shape);
 
     T__NonEmptyArrayOfBaseFolderIdsType baseFolderIds;
     QList<T__FolderIdType> folderIds;
@@ -122,7 +129,7 @@ Reply *Connection::getFolders(const QList<Folder> &folders, Folder::BaseShape fo
     GetFolderJob *job = new GetFolderJob(d->service, this);
     job->setRequest(request);
 
-    return 0;//new Reply(new ReplyPrivate(job));
+    return new GetFolderReply(new GetFolderReplyPrivate(job));
 }
 
 Reply *Connection::deleteFolders(const QList<Folder> &folders, Folder::DeleteType mode)
@@ -169,7 +176,7 @@ SyncFolderHierarchyReply *Connection::syncFolderHierarch(Folder::BaseShape folde
     TNS__SyncFolderHierarchyType request;
 
     T__DefaultShapeNamesType baseShape;
-    baseShape.setType(T__DefaultShapeNamesType::AllProperties);
+    baseShape.setType(static_cast<T__DefaultShapeNamesType::Type>(folderShape));
     T__FolderResponseShapeType shape;
     shape.setBaseShape(baseShape);
     request.setFolderShape(shape);

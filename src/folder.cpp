@@ -150,7 +150,7 @@ bool Folder::isDirty() const
     return d->dirty;
 }
 
-Reply *Folder::load(BaseShape folderShape) const
+GetFolderReply *Folder::load(BaseShape folderShape) const
 {
     Q_D(const Folder);
     return d->connection->getFolders(QList<Folder>() << *this, folderShape);
