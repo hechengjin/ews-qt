@@ -44,6 +44,10 @@ public:
     QString internalASUrl() const;
     QString externalASUrl() const;
     bool authRequired() const;
+    bool cancelled();
+
+public slots:
+    void cancel();
 
 signals:
     void finished();
@@ -63,6 +67,7 @@ private:
     QList<AutoDiscoverReply*> m_replies;
     bool m_srvLookupDone;
     bool m_valid;
+    bool m_cancelled = false;
     QUrl m_uri;
     QDomDocument m_message;
     QString m_emailAddress;

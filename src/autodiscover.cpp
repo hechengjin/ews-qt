@@ -85,6 +85,24 @@ bool AutoDiscover::authRequired() const
     return m_authRequired;
 }
 
+bool AutoDiscover::cancelled()
+{
+    return m_cancelled;
+}
+
+void AutoDiscover::cancel()
+{
+    while (!m_replies.isEmpty()) {
+        AutoDiscoverReply *reply = m_replies.takeFirst();
+        delete reply;
+    }
+
+    m_valid = false;
+    m_cancelled = true;
+    m_errorMessage = QString();
+    emit finished();
+}
+
 void AutoDiscover::requestFinished()
 {
     AutoDiscoverReply *reply = qobject_cast<AutoDiscoverReply*>(sender());
@@ -172,7 +190,7 @@ void AutoDiscover::performAutoDiscover(const QUrl &uri)
 
     QUrl url2 = uri;
     url2.setHost(QLatin1String("autodiscover.") % uri.host());
-    url2 = autodiscoverUrl(QLatin1String("https"), uri);
+    url2 = autodiscoverUrl(QLatin1String("https"), url2);
     reply = m_connection->post(url2, m_message);
     connect(reply, &AutoDiscoverReply::finished,
             this, &AutoDiscover::requestFinished);
@@ -180,7 +198,7 @@ void AutoDiscover::performAutoDiscover(const QUrl &uri)
 
     QUrl url3 = uri;
     url3.setHost(QLatin1String("autodiscover.") % uri.host());
-    url3 = autodiscoverUrl(QLatin1String("http"), uri);
+    url3 = autodiscoverUrl(QLatin1String("http"), url3);
     reply = m_connection->get(url3, m_message);
     connect(reply, &AutoDiscoverReply::finished,
             this, &AutoDiscover::requestFinished);

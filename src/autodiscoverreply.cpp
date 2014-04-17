@@ -44,6 +44,7 @@ void AutoDiscoverReply::setReply(QNetworkReply *reply)
     if (m_reply) {
         m_reply->deleteLater();
     }
+
     m_reply = reply;
     connect(reply, SIGNAL(finished()), SLOT(requestFinished()));
     connect(reply, SIGNAL(sslErrors(QList<QSslError>)), SLOT(sslErrors(QList<QSslError>)));
@@ -83,12 +84,9 @@ QDomDocument AutoDiscoverReply::document() const
 void AutoDiscoverReply::requestFinished()
 {
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
-    qDebug() << Q_FUNC_INFO << reply->url().host() << reply->error();
+    qDebug() << Q_FUNC_INFO << reply->url() << reply->error();
     if (reply->error()) {
         qDebug() << Q_FUNC_INFO << QString("Network transport error (%1): %2").arg(reply->error()).arg(reply->errorString());
-        qDebug() << Q_FUNC_INFO << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        qDebug() << Q_FUNC_INFO << reply->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
-        qDebug() << Q_FUNC_INFO << reply->attribute(QNetworkRequest::RedirectionTargetAttribute);
 
         QUrl url = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
         if (url.isEmpty()) {
