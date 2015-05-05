@@ -31,7 +31,6 @@ namespace Ews {
 
 class EWS_EXPORT Request : public ESoapMessage
 {
-    Q_GADGET
     Q_ENUMS(ServerVersion)
 public:
     enum ServerVersion {
