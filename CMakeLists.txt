@@ -31,6 +31,7 @@ include(FindPkgConfig)
 add_definitions(-fPIC -std=gnu++11)
 
 include_directories(
+		/home/hechengjin/gitProjects/FM/KDSoap/include
     ${CMAKE_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/libews-qt
